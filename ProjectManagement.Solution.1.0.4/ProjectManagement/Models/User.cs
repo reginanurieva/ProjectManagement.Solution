@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Data.Sqlite;
 using ProjectManagement;
+using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Models
 {
@@ -24,29 +24,29 @@ namespace ProjectManagement.Models
 
         public void Save()
         {
-            SqliteConnection conn = DB.Connection();
+            MySqlConnection conn = DB.Connection();
             conn.Open();
 
-            SqliteCommand cmd = conn.CreateCommand() as SqliteCommand;
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"INSERT INTO users (name, username, password, email) VALUES (@newName, @newUsername, @newPassword, @newEmail);";
 
 
-            SqliteParameter name = new SqliteParameter();
+            MySqlParameter name = new MySqlParameter();
             name.ParameterName = "@newName";
             name.Value = this.Name;
             cmd.Parameters.Add(name);
 
-            SqliteParameter newUsername = new SqliteParameter();
+            MySqlParameter newUsername = new MySqlParameter();
             newUsername.ParameterName = "@newUsername";
             newUsername.Value = this.Username;
             cmd.Parameters.Add(newUsername);
 
-            SqliteParameter newPassword = new SqliteParameter();
+            MySqlParameter newPassword = new MySqlParameter();
             newPassword.ParameterName = "@newPassword";
             newPassword.Value = this.Password;
             cmd.Parameters.Add(newPassword);
 
-            SqliteParameter newEmail = new SqliteParameter();
+            MySqlParameter newEmail = new MySqlParameter();
             newEmail.ParameterName = "@newEmail";
             newEmail.Value = this.Email;
             cmd.Parameters.Add(newEmail);
@@ -62,7 +62,7 @@ namespace ProjectManagement.Models
         }
         public static List<User> GetAll()
         {
-            List<User allUsers = new List<User>{};
+            List<User> allUsers = new List<User>{};
             MySqlConnection conn = DB.Connection();
             conn.Open();
 
@@ -74,10 +74,10 @@ namespace ProjectManagement.Models
                 int id = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
                 string username = rdr.GetString(2);
-                string password = rdr.GetString(3)
+                string password = rdr.GetString(3);
                 string email = rdr.GetString(4);
                 User newUser = new User(name, username, password, email, id);
-                User.Add(newUser);
+                allUsers.Add(newUser);
             }
 
             conn.Close();
@@ -106,13 +106,13 @@ namespace ProjectManagement.Models
             User foundUser =  new User("","","","",0);
             while(rdr.Read())
             {
-                int id = rdr.GetInt32(0);
+                int actualId = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
                 string username = rdr.GetString(2);
-                string password = rdr.GetString(3)
+                string password = rdr.GetString(3);
                 string email = rdr.GetString(4);
+                foundUser = new User(name, username, password, email, actualId);
             }
-            foundUser = new User(name, username, password, email, id);
 
             conn.Close();
 
@@ -120,7 +120,7 @@ namespace ProjectManagement.Models
             {
                 conn.Dispose();
             }
-            return newUser;
+            return foundUser;
         }
     }
 }
