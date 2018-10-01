@@ -85,4 +85,8 @@ namespace ProjectManagement
             });
         }
     }
+    public static class DBConfiguration
+    {
+        public static string ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=hyewon_cho;Allow User Variables=true";
+    }
 }

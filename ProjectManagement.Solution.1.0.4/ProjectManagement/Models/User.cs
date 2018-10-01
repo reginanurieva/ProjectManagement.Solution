@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MySql.Data.MySqlClient;
 using ProjectManagement;
+using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Models
 {
@@ -59,10 +59,10 @@ namespace ProjectManagement.Models
                 int id = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
                 string username = rdr.GetString(2);
-                string password = rdr.GetString(3)
+                string password = rdr.GetString(3);
                 string email = rdr.GetString(4);
                 User newUser = new User(name, username, password, email, id);
-                User.Add(newUser);
+                allUsers.Add(newUser);
             }
 
             conn.Close();
@@ -88,13 +88,12 @@ namespace ProjectManagement.Models
             User foundUser =  new User("","","","",0);
             while(rdr.Read())
             {
-                int thisid = rdr.GetInt32(0);
+                int actualId = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
                 string username = rdr.GetString(2);
                 string password = rdr.GetString(3);
                 string email = rdr.GetString(4);
-                foundUser = new User(name, username, password, email, id);
-
+                foundUser = new User(name, username, password, email, actualId);
             }
 
             conn.Close();
