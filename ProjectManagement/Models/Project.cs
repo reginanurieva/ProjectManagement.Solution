@@ -1,34 +1,5 @@
-// using System;
-// using System.Collections.Generic;
-// using ProjectManagement;
-//
-// namespace ProjectManagement.Models
-// {
-//   public class Project
-//   {
-//     public int Id;
-//     public string Name;
-//     public string Content;
-//     public DateTime DueDate;
-//     public string Status;
-//
-//     public Project(string name, string content, DateTime duedate, string status, int id = 0)
-//     {
-//       Id = id;
-//       Name = name;
-//       Content = content;
-//       DueDate = duedate;
-//       Status = status;
-//     }
-//   }
-// }
-
-
-
-
 using System.Collections.Generic;
 using ProjectManagment;
-using MySql.Data.MySqlClient;
 using System;
 
 namespace ProjectManagment.Models
@@ -232,26 +203,6 @@ namespace ProjectManagment.Models
       {
         conn.Dispose();
       }
-    }
-
-    public override bool Equals(System.Object otherProject)
-    {
-      if (!(otherProject is Project))
-      {
-        return false;
-      }
-      else
-      {
-
-        Project newProject = (Project) otherProject;
-        bool idEquality = (this.id == newProject.id);
-        bool nameEquality = (this.projectName == newProject.ProjectName);
-        return (nameEquality && idEquality);
-      }
-    }
-    public override int GetHashCode()
-    {
-      return this.projectName.GetHashCode();
     }
   }
 }
