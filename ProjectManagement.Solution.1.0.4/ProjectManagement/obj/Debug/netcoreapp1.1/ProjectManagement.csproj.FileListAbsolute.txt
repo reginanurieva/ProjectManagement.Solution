@@ -1,0 +1,11 @@
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/bin/Debug/netcoreapp1.1/ProjectManagement.db
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/bin/Debug/netcoreapp1.1/ProjectManagement.deps.json
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/bin/Debug/netcoreapp1.1/ProjectManagement.runtimeconfig.json
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/bin/Debug/netcoreapp1.1/ProjectManagement.runtimeconfig.dev.json
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/bin/Debug/netcoreapp1.1/ProjectManagement.dll
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/bin/Debug/netcoreapp1.1/ProjectManagement.pdb
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/obj/Debug/netcoreapp1.1/ProjectManagement.csproj.CoreCompileInputs.cache
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/obj/Debug/netcoreapp1.1/UserSecretsAssemblyInfo.cs
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/obj/Debug/netcoreapp1.1/ProjectManagement.AssemblyInfo.cs
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/obj/Debug/netcoreapp1.1/ProjectManagement.dll
+/Users/epicodus/Desktop/ProjectManagement.Solution/ProjectManagement.Solution.1.0.4/ProjectManagement/obj/Debug/netcoreapp1.1/ProjectManagement.pdb
