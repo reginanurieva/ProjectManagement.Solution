@@ -1,37 +1,8 @@
-// using System;
-// using System.Collections.Generic;
-// using ProjectManagement;
-//
-// namespace ProjectManagement.Models
-// {
-//   public class Project
-//   {
-//     public int Id;
-//     public string Name;
-//     public string Content;
-//     public DateTime DueDate;
-//     public string Status;
-//
-//     public Project(string name, string content, DateTime duedate, string status, int id = 0)
-//     {
-//       Id = id;
-//       Name = name;
-//       Content = content;
-//       DueDate = duedate;
-//       Status = status;
-//     }
-//   }
-// }
-
-
-
-
 using System.Collections.Generic;
-using ProjectManagement;
-using MySql.Data.MySqlClient;
+using ProjectManagment;
 using System;
 
-namespace ProjectManagement.Models
+namespace ProjectManagment.Models
 {
   public class Project
   {
@@ -41,19 +12,13 @@ namespace ProjectManagement.Models
     public string status {get; set;}
     public int id {get; set;}
 
-    public Project(string newName, string newContent, DateTime newDueDate, string newStatus, int id = 0)
+    public Project(string newName, string newContent, DateTime newDueDate, string newStatus, Id = 0)
     {
-      this.name = newName;
-      this.content = newContent;
-      this.dueDate = newDueDate;
-      this.status = status;
-      this.id = id;
-    }
-
-    public Project(string newName, int id = 0)
-    {
-      this.name = newName;
-      this.id = id;
+      name = newName;
+      content = newContent;
+      dueDate = newDueDate;
+      status = status;
+      id = id;
     }
 
 
@@ -67,26 +32,26 @@ namespace ProjectManagement.Models
 
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
-      name.Value = this.name;
+      name.Value = this._name;
       cmd.Parameters.Add(name);
 
       MySqlParameter content = new MySqlParameter();
       content.ParameterName = "@content";
-      content.Value = this.content;
+      content.Value = this._content;
       cmd.Parameters.Add(content);
 
       MySqlParameter dueDate = new MySqlParameter();
       dueDate.ParameterName = "@dueDate";
-      dueDate.Value = this.dueDate;
+      dueDate.Value = this._dueDate;
       cmd.Parameters.Add(dueDate);
 
       MySqlParameter status = new MySqlParameter();
       status.ParameterName = "@status";
-      status.Value = this.status;
+      status.Value = this._status;
       cmd.Parameters.Add(status);
 
       cmd.ExecuteNonQuery();
-      id = (int) cmd.LastInsertedId;
+      _id = (int) cmd.LastInsertedId;
       conn.Close();
       if (conn != null)
       {
@@ -109,7 +74,7 @@ namespace ProjectManagement.Models
         int ProjectId = rdr.GetInt32(0);
         string ProjectName = rdr.GetString(1);
         string ProjectContent = rdr.GetString(2);
-        DateTime ProjectDueDate = rdr.GetDateTime(3);
+        DateTime ProjectDueDate = rdr.GetString(3);
         string ProjectStatus = rdr.GetString(4);
         Project newProject = new Project(ProjectName, ProjectContent,ProjectDueDate,ProjectStatus, ProjectId);
         allProjects.Add(newProject);
@@ -165,10 +130,10 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
-      MySqlCommand cmd = new MySqlCommand("DELETE FROM projects WHERE id = @ProjectId; DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId;DELETE FROM projects_todos WHERE project_id = @ProjectId;DELETE FROM projects_forums WHERE project_id = @ProjectId;");
+      MySqlCommand cmd = new MySqlCommand("DELETE FROM projects WHERE id = @ProjectId; DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId;DELETE FROM projects_todos WHERE project_id = @ProjectId;DELETE FROM projects_forums WHERE project_id = @ProjectId;", conn);
       MySqlParameter projectIdParameter = new MySqlParameter();
       projectIdParameter.ParameterName = "@ProjectId";
-      projectIdParameter.Value = this.id;
+      projectIdParameter.Value = this.GetId();
 
       cmd.Parameters.Add(projectIdParameter);
       cmd.ExecuteNonQuery();
@@ -203,7 +168,7 @@ namespace ProjectManagement.Models
 
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
-      searchId.Value = id;
+      searchId.Value = _id;
       cmd.Parameters.Add(searchId);
 
       MySqlParameter name = new MySqlParameter();
@@ -228,36 +193,16 @@ namespace ProjectManagement.Models
 
 
       cmd.ExecuteNonQuery();
-      this.name = newName;
-      this.content = newContent;
-      this.dueDate = newDueDate;
-      this.status = newStatus;
+      _name = newName;
+      _content = newContent;
+      _dueDate = newDueDate;
+      _status = newStatus;
 
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-    }
-
-    public override bool Equals(System.Object otherProject)
-    {
-      if (!(otherProject is Project))
-      {
-        return false;
-      }
-      else
-      {
-
-        Project newProject = (Project) otherProject;
-        bool idEquality = (this.id == newProject.id);
-        bool nameEquality = (this.name == newProject.name);
-        return (nameEquality && idEquality);
-      }
-    }
-    public override int GetHashCode()
-    {
-      return this.name.GetHashCode();
     }
   }
 }
