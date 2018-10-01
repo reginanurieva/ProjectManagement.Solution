@@ -60,5 +60,67 @@ namespace ProjectManagement.Models
                 conn.Dispose();
             }
         }
+        public static List<User> GetAll()
+        {
+            List<User allUsers = new List<User>{};
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM users;";
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while(rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string name = rdr.GetString(1);
+                string username = rdr.GetString(2);
+                string password = rdr.GetString(3)
+                string email = rdr.GetString(4);
+                User newUser = new User(name, username, password, email, id);
+                User.Add(newUser);
+            }
+
+            conn.Close();
+            if(conn != null)
+            {
+                conn.Dispose();
+            }
+            return allUsers;
+        }
+
+        public static User Find(int id)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM users WHERE id = @searchId;";
+
+            MySqlParameter parameterId = new MySqlParameter();
+            parameterId.ParameterName = "@searchId";
+            parameterId.Value = id;
+            cmd.Parameters.Add(parameterId);
+
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            User foundUser =  new User("","","","",0);
+            while(rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string name = rdr.GetString(1);
+                string username = rdr.GetString(2);
+                string password = rdr.GetString(3)
+                string email = rdr.GetString(4);
+            }
+            foundUser = new User(name, username, password, email, id);
+
+            conn.Close();
+
+            if(conn != null)
+            {
+                conn.Dispose();
+            }
+            return newUser;
+        }
     }
 }
