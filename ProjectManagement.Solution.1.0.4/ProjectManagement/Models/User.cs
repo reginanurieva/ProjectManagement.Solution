@@ -31,25 +31,10 @@ namespace ProjectManagement.Models
             cmd.CommandText = @"INSERT INTO users (name, username, password, email) VALUES (@newName, @newUsername, @newPassword, @newEmail);";
 
 
-            MySqlParameter name = new MySqlParameter();
-            name.ParameterName = "@newName";
-            name.Value = this.Name;
-            cmd.Parameters.Add(name);
-
-            MySqlParameter newUsername = new MySqlParameter();
-            newUsername.ParameterName = "@newUsername";
-            newUsername.Value = this.Username;
-            cmd.Parameters.Add(newUsername);
-
-            MySqlParameter newPassword = new MySqlParameter();
-            newPassword.ParameterName = "@newPassword";
-            newPassword.Value = this.Password;
-            cmd.Parameters.Add(newPassword);
-
-            MySqlParameter newEmail = new MySqlParameter();
-            newEmail.ParameterName = "@newEmail";
-            newEmail.Value = this.Email;
-            cmd.Parameters.Add(newEmail);
+            cmd.Parameters.AddWithValue("@newName", this.Name);
+            cmd.Parameters.AddWithValue("@newUsername", this.Username);
+            cmd.Parameters.AddWithValue("@newPassword", this.Password);
+            cmd.Parameters.AddWithValue("@newEmail", this.Email);
 
             cmd.ExecuteNonQuery();
             this.Id = (int)cmd.LastInsertedId;
@@ -96,10 +81,7 @@ namespace ProjectManagement.Models
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"SELECT * FROM users WHERE id = @searchId;";
 
-            MySqlParameter parameterId = new MySqlParameter();
-            parameterId.ParameterName = "@searchId";
-            parameterId.Value = id;
-            cmd.Parameters.Add(parameterId);
+            cmd.Parameters.AddWithValue("@searchId", id);
 
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
 
@@ -121,6 +103,34 @@ namespace ProjectManagement.Models
                 conn.Dispose();
             }
             return foundUser;
+        }
+
+        public void Update(string newName, string newUsername, string newPassword, string newEmail)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"UPDATE users SET name = @newName, username = @newUsername, password = @newPassword, email= @newEmail WHERE id = @searchId;";
+
+            cmd.Parameters.AddWithValue("@newName", this.Name);
+            cmd.Parameters.AddWithValue("@newUsername", this.Username);
+            cmd.Parameters.AddWithValue("@newPassword", this.Password);
+            cmd.Parameters.AddWithValue("@newEmail", this.Email);
+            cmd.Parameters.AddWithValue("@searchId", this.Id);
+
+            this.Name = newName;
+            this.Username = newUsername;
+            this.Password = newPassword;
+            this.Email = newEmail;
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+
         }
     }
 }
