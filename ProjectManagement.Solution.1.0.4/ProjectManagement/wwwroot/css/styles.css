@@ -1,0 +1,23 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Karla', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#header {
+  position: relative;
+  text-align: center;
+}
+
+#header img {
+  /* width: 100%; */
+}
+
+#header h1 {
+  font-size: 50px;
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
