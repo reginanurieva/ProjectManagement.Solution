@@ -10,16 +10,38 @@ namespace ProjectManagement.Models
         public int Id {get; set;}
         public string Name {get; set;}
         public string Username {get; set;}
-        public string Password {get; set;}
         public string Email {get; set;}
 
-        public User (string newName, string newUsername, string newPassword, string newEmail, int id = 0)
+        public User (string newName, string newUsername, string newEmail, int id = 0)
         {
             Name = newName;
             Username = newUsername;
-            Password = newPassword;
             Email = newEmail;
             Id = id;
+        }
+
+        public override bool Equals(System.Object otherUser)
+        {
+            if(!(otherUser is User))
+            {
+                return false;
+            }
+            else
+            {
+                User newUser = (User) otherUser;
+                bool idEquality = (this.Id == newUser.Id);
+                bool nameEquality = (this.Name == newUser.Name);
+                bool usernameEquality = (this.Username == newUser.Username);
+                bool emailEquality = (this.Email == newUser.Email);
+                return (nameEquality && usernameEquality && emailEquality && idEquality);
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            string allHash = this.Name.ToString() + this.Username.ToString() + this.Email.ToString();
+
+            return allHash.GetHashCode();
         }
 
         public void Save()
@@ -28,12 +50,11 @@ namespace ProjectManagement.Models
             conn.Open();
 
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO users (name, username, password, email) VALUES (@newName, @newUsername, @newPassword, @newEmail);";
+            cmd.CommandText = @"INSERT INTO users (name, username, email) VALUES (@newName, @newUsername, @newEmail);";
 
 
             cmd.Parameters.AddWithValue("@newName", this.Name);
             cmd.Parameters.AddWithValue("@newUsername", this.Username);
-            cmd.Parameters.AddWithValue("@newPassword", this.Password);
             cmd.Parameters.AddWithValue("@newEmail", this.Email);
 
             cmd.ExecuteNonQuery();
@@ -59,9 +80,8 @@ namespace ProjectManagement.Models
                 int id = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
                 string username = rdr.GetString(2);
-                string password = rdr.GetString(3);
-                string email = rdr.GetString(4);
-                User newUser = new User(name, username, password, email, id);
+                string email = rdr.GetString(3);
+                User newUser = new User(name, username, email, id);
                 allUsers.Add(newUser);
             }
 
@@ -85,15 +105,14 @@ namespace ProjectManagement.Models
 
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
 
-            User foundUser =  new User("","","","",0);
+            User foundUser =  new User("","","",0);
             while(rdr.Read())
             {
                 int actualId = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
                 string username = rdr.GetString(2);
-                string password = rdr.GetString(3);
-                string email = rdr.GetString(4);
-                foundUser = new User(name, username, password, email, actualId);
+                string email = rdr.GetString(3);
+                foundUser = new User(name, username, email, actualId);
             }
 
             conn.Close();
@@ -105,23 +124,21 @@ namespace ProjectManagement.Models
             return foundUser;
         }
 
-        public void Update(string newName, string newUsername, string newPassword, string newEmail)
+        public void Update(string newName, string newUsername, string newEmail)
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
 
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"UPDATE users SET name = @newName, username = @newUsername, password = @newPassword, email= @newEmail WHERE id = @searchId;";
+            cmd.CommandText = @"UPDATE users SET name = @newName, username = @newUsername, email= @newEmail WHERE id = @searchId;";
 
             cmd.Parameters.AddWithValue("@newName", this.Name);
             cmd.Parameters.AddWithValue("@newUsername", this.Username);
-            cmd.Parameters.AddWithValue("@newPassword", this.Password);
             cmd.Parameters.AddWithValue("@newEmail", this.Email);
             cmd.Parameters.AddWithValue("@searchId", this.Id);
 
             this.Name = newName;
             this.Username = newUsername;
-            this.Password = newPassword;
             this.Email = newEmail;
             cmd.ExecuteNonQuery();
 
@@ -130,7 +147,41 @@ namespace ProjectManagement.Models
             {
                 conn.Dispose();
             }
+        }
+        public void Delete()
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
 
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"DELETE FROM users WHERE id = @searchid;";
+
+            cmd.Parameters.AddWithValue("@searchid", this.Id);
+
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+
+        public static void DeleteAll()
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"TRUNCATE TABLE users;";
+
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
         }
     }
 }
