@@ -26,9 +26,43 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 100px;
 }
 
-.project-button {
-  background-image: linear-gradient(#89f7fe, #66a6ff);
-  /* margin: 10px; */
-  border-radius: 10px;
-  height: 200px;
+.project-container {
+  background: #eee;
+  height: 300px;
+}
+
+.column {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.column--color-blue {
+  background-color: #007bff;
+}
+
+.column--color-yellow {
+  background-color: #ffc107;
+}
+
+.column--color-red {
+  background-color: #dc3545;
+}
+
+.column--color-green {
+  background-color: #28a745;
+}
+
+.task-category {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  text-align: center;
+  text-decoration: underline;
+  text-transform: uppercase;
+}
+
+.task-card {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
 }
