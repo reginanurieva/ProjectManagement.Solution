@@ -49,9 +49,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .project-details {
-  margin-left: 10px;
+  margin: 0px 20px;
   padding: 5px;
-} 
+  background: #fff;
+  border: 1px solid lightgray;
+}
+
+.status-container {
+  margin: 20px;
+}
 
 .column {
   border-radius: 10px;
@@ -82,7 +88,6 @@ h1, h2, h3, h4, h5, h6 {
   padding: 5px;
   margin: -3px 0px 20px 0px;
   text-align: center;
-  text-decoration: underline;
   border: 1px solid #9d9d9d;
   box-shadow: 2px 2px 3px black;
 }
@@ -95,6 +100,15 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 2px 2px 3px black;
 }
 
+
+.task-card:hover {
+  cursor: grab;
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
 #join{
   float: right;
   margin-right: 20px;
@@ -104,6 +118,7 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #5A5A5A;
   color: white;
 }
+
 .btn:hover{
   background-color:#80ced6;
 }
@@ -118,3 +133,4 @@ footer {
   padding:8px;
   text-align: center;
 }
+
