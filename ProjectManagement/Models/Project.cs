@@ -204,7 +204,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT users.id, users.name, users.username, users.email FROM users JOIN projects_users ON users.id = projects_users.user_id WHERE project_id = @projectId;";
+      cmd.CommandText = @"SELECT users.id, users.name, users.username, users.email FROM users JOIN projects_users ON users.id = projects_users.user_id JOIN users ON projects_users.user_id = users.id WHERE project_id = @projectId;";
       cmd.Parameters.AddWithValue("@projectId", this.Id);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
@@ -233,6 +233,50 @@ namespace ProjectManagement.Models
       cmd.CommandText = @"INSERT INTO projects_users (project_id, user_id) VALUES (@projectId, @userId);";
       cmd.Parameters.AddWithValue("@projectId", this.Id);
       cmd.Parameters.AddWithValue("@userId", newUser.Id);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+    
+    public List<Todo> GetTodos()
+    {
+      List <Todo> allTodos = new List <Todo> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT todos.id, todos.name, todos.status FROM projects JOIN projects_todos ON projects.id = projects_todos.project_id JOIN todos ON projects_todos.todo_id = todos.id WHERE project_id = @projectId;";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        string status = rdr.GetString(2);
+        Todo todo = new Todo(name, status, id);
+        allTodos.Add(todo);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allTodos;
+    }
+
+    public void AddTodo(Todo newTodo)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO projects_todos (project_id, todo_id) VALUES (@projectId, @todoId);";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      cmd.Parameters.AddWithValue("@todoId", newTodo.Id);
 
       cmd.ExecuteNonQuery();
 

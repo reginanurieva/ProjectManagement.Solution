@@ -7,12 +7,12 @@ namespace ProjectManagement.Models
 {
     public class User : ICRUDMethods<User>
     {
-        public int Id {get; set;}
-        public string Name {get; set;}
-        public string Username {get; set;}
-        public string Email {get; set;}
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
 
-        public User (string newName, string newUsername, string newEmail, int id = 0)
+        public User(string newName, string newUsername, string newEmail, int id = 0)
         {
             Name = newName;
             Username = newUsername;
@@ -22,13 +22,13 @@ namespace ProjectManagement.Models
 
         public override bool Equals(System.Object otherUser)
         {
-            if(!(otherUser is User))
+            if (!(otherUser is User))
             {
                 return false;
             }
             else
             {
-                User newUser = (User) otherUser;
+                User newUser = (User)otherUser;
                 bool idEquality = (this.Id == newUser.Id);
                 bool nameEquality = (this.Name == newUser.Name);
                 bool usernameEquality = (this.Username == newUser.Username);
@@ -61,21 +61,21 @@ namespace ProjectManagement.Models
             this.Id = (int)cmd.LastInsertedId;
 
             conn.Close();
-            if(conn != null)
+            if (conn != null)
             {
                 conn.Dispose();
             }
         }
         public static List<User> GetAll()
         {
-            List<User> allUsers = new List<User>{};
+            List<User> allUsers = new List<User> { };
             MySqlConnection conn = DB.Connection();
             conn.Open();
 
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"SELECT * FROM users;";
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
-            while(rdr.Read())
+            while (rdr.Read())
             {
                 int id = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
@@ -86,7 +86,7 @@ namespace ProjectManagement.Models
             }
 
             conn.Close();
-            if(conn != null)
+            if (conn != null)
             {
                 conn.Dispose();
             }
@@ -105,8 +105,8 @@ namespace ProjectManagement.Models
 
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
 
-            User foundUser =  new User("","","",0);
-            while(rdr.Read())
+            User foundUser = new User("", "", "", 0);
+            while (rdr.Read())
             {
                 int actualId = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
@@ -117,14 +117,14 @@ namespace ProjectManagement.Models
 
             conn.Close();
 
-            if(conn != null)
+            if (conn != null)
             {
                 conn.Dispose();
             }
             return foundUser;
         }
 
-        public static User Find(string username) 
+        public static User Find(string username)
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
@@ -136,8 +136,8 @@ namespace ProjectManagement.Models
 
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
 
-            User foundUser =  new User("","","",0);
-            while(rdr.Read())
+            User foundUser = new User("", "", "", 0);
+            while (rdr.Read())
             {
                 int id = rdr.GetInt32(0);
                 string name = rdr.GetString(1);
@@ -147,7 +147,7 @@ namespace ProjectManagement.Models
 
             conn.Close();
 
-            if(conn != null)
+            if (conn != null)
             {
                 conn.Dispose();
             }
@@ -168,7 +168,7 @@ namespace ProjectManagement.Models
             cmd.Parameters.AddWithValue("@searchId", newUser.Id);
 
             cmd.ExecuteNonQuery();
-            
+
             this.Name = newUser.Name;
             this.Username = newUser.Username;
             this.Email = newUser.Email;
@@ -179,7 +179,7 @@ namespace ProjectManagement.Models
                 conn.Dispose();
             }
         }
-        
+
         public void Delete()
         {
             MySqlConnection conn = DB.Connection();
@@ -197,6 +197,55 @@ namespace ProjectManagement.Models
             {
                 conn.Dispose();
             }
+        }
+
+        public void AddProject(Project newProject)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"INSERT INTO projects_users (project_id, user_id) VALUES (@projectId, @userId);";
+
+            cmd.Parameters.AddWithValue("@projectId", newProject.Id);
+            cmd.Parameters.AddWithValue("@userId", this.Id);
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+
+        public List<Project> GetProjects()
+        {
+            List<Project> allProjects = new List<Project> { };
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT projects.* FROM users JOIN projects_users ON (users.id = projects_users.user_id) JOIN projects ON (projects_users.project_id = projects.id) WHERE users.id = @searchId;";
+
+            cmd.Parameters.AddWithValue("@searchId", this.Id);
+
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while (rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string name = rdr.GetString(1);
+                string content = rdr.GetString(2);
+                DateTime duedate = rdr.GetDateTime(3);
+                string status = rdr.GetString(4);
+                Project newProject = new Project(name, content, duedate, status, id);
+                allProjects.Add(newProject);
+            }
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return allProjects;
         }
 
         public static void DeleteAll()
