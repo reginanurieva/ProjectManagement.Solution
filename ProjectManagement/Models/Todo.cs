@@ -13,7 +13,7 @@ namespace ProjectManagement.Models
     public Todo(string name, string status, int id = 0)
     {
       Name = name;
-      Status = status; 
+      Status = status;
       Id = id;
     }
 
@@ -82,7 +82,7 @@ namespace ProjectManagement.Models
       }
       return allTodos;
     }
-    
+
     public static Todo Find(int id)
     {
       MySqlConnection conn = DB.Connection();
@@ -128,6 +128,67 @@ namespace ProjectManagement.Models
         conn.Dispose();
       }
     }
+
+
+    public void AddProject(Project newProject)
+  {
+    MySqlConnection conn = DB.Connection();
+    conn.Open();
+    var cmd = conn.CreateCommand() as MySqlCommand;
+    cmd.CommandText = @"INSERT INTO projects_todos (project_id, todo_id) VALUES (@ProjectId, @TodoId);";
+
+    MySqlParameter project_id = new MySqlParameter();
+    project_id.ParameterName = "@ProjectId";
+    project_id.Value = newProject.Id;
+    cmd.Parameters.Add(project_id);
+
+    MySqlParameter todo_id = new MySqlParameter();
+    todo_id.ParameterName = "@TodoId";
+    todo_id.Value = this.Id;
+    cmd.Parameters.Add(todo_id);
+
+    cmd.ExecuteNonQuery();
+    conn.Close();
+    if (conn != null)
+    {
+      conn.Dispose();
+    }
+  }
+
+
+  public Project GetProject()
+{
+  MySqlConnection conn = DB.Connection();
+  conn.Open();
+  MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+  cmd.CommandText = @"SELECT projects.* FROM todos
+  JOIN projects_todos ON (todos.id = projects_todos.todo_id)
+  JOIN projects ON (projects_todos.project_id = projects.id)
+  WHERE todos.id = @TodoId;";
+
+  MySqlParameter todoIdParameter = new MySqlParameter();
+  todoIdParameter.ParameterName = "@TodoId";
+  todoIdParameter.Value = this.Id;
+  cmd.Parameters.Add(todoIdParameter);
+
+  MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+  Project newProject = new Project("", "", DateTime.Now, "");
+  while(rdr.Read())
+  {
+    newProject.Id = rdr.GetInt32(0);
+    newProject.Name = rdr.GetString(1);
+    newProject.Content = rdr.GetString(2);
+    newProject.DueDate = rdr.GetDateTime(3);
+    newProject.Status = rdr.GetString(4);
+  }
+
+  conn.Close();
+  if (conn != null)
+  {
+    conn.Dispose();
+  }
+  return newProject;
+}
 
     public void Delete()
     {

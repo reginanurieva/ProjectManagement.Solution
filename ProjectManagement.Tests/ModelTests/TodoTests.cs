@@ -13,6 +13,7 @@ namespace ProjectManagement.Tests
     {
       Todo.DeleteAll();
       //User.DeleteAll();
+      Project.DeleteAll();
     }
 
     public TodoTests()
@@ -89,6 +90,27 @@ namespace ProjectManagement.Tests
 
       //Assert
       Assert.AreEqual("Add more files", result);
+    }
+
+
+    [TestMethod]
+    public void Get_TheJointTableInDB_Todo()
+    {
+      //Arrange
+      Todo testTodo = new Todo("Add file", "in progress");
+      testTodo.Save();
+      DateTime newDateTime = new DateTime(11/11/1111);
+      Project testProject = new Project("Planner", "content", newDateTime, "done", 1);
+      testProject.Save();
+
+      testTodo.AddProject(testProject);
+
+      //Act
+      Project actualProject = testTodo.GetProject();
+
+      //Assert
+      Assert.AreEqual(testProject, actualProject);
+
     }
   }
 }
