@@ -13,6 +13,7 @@ namespace ProjectManagement.Tests
     {
       Project.DeleteAll();
       User.DeleteAll();
+      Todo.DeleteAll();
     }
 
     public ProjectTests()
@@ -134,6 +135,49 @@ namespace ProjectManagement.Tests
 
       //Assert
       CollectionAssert.AreEqual(expectedUsers, users);
+    }
+
+    [TestMethod]
+    public void AddTodo_MakeNewTodo()
+    {
+      //Arrange
+      Todo todo1 = new Todo("todo1", "done");
+      todo1.Save();
+      Todo todo2 = new Todo("todo2", "done");
+      todo2.Save();
+      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      currentProject.Save();
+      List <Todo> expectedTodos = new List<Todo>{todo1, todo2};
+
+      //Act
+      currentProject.AddTodo(todo1);
+      currentProject.AddTodo(todo2);
+      List <Todo> todos = currentProject.GetTodos();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTodos, todos);
+    }
+
+    [TestMethod]
+    public void GetTodos_GetAllTodosInProject_List()
+    {
+      //Arrange
+      Todo todo1 = new Todo("todo1", "done");
+      todo1.Save();
+      Todo todo2 = new Todo("todo2", "done");
+      todo2.Save();
+      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      currentProject.Save();
+      List <Todo> expectedTodos = new List<Todo>{todo1, todo2};
+      currentProject.AddTodo(todo1);
+      currentProject.AddTodo(todo2);
+
+      //Act
+      List <Todo> todos = currentProject.GetTodos();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTodos, todos);
+
     }
   }
 }
