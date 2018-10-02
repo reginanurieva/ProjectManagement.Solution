@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Models
 {
-    public class Tag
+    public class Tag : ICRUDMethods<Tag>
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,17 +15,17 @@ namespace ProjectManagement.Models
             Id = id;
         }
 
-        public override bool Equals(System.Object otherUser)
+        public override bool Equals(System.Object otherTag)
         {
-            if (!(otherUser is User))
+            if (!(otherTag is Tag))
             {
                 return false;
             }
             else
             {
-                User newUser = (User)otherUser;
-                bool idEquality = (this.Id == newUser.Id);
-                bool nameEquality = (this.Name == newUser.Name);
+                Tag newTag = (Tag)otherTag;
+                bool idEquality = (this.Id == newTag.Id);
+                bool nameEquality = (this.Name == newTag.Name);
                 return (nameEquality && idEquality);
             }
         }
@@ -109,20 +109,20 @@ namespace ProjectManagement.Models
             return foundTag;
         }
 
-        public void Update(User newUser)
+        public void Update(Tag newTag)
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
 
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"UPDATE tags SET name = @newName, WHERE id = @searchId;";
+            cmd.CommandText = @"UPDATE tags SET name = @newName WHERE id = @searchId;";
 
-            cmd.Parameters.AddWithValue("@newName", newUser.Name);
-            cmd.Parameters.AddWithValue("@searchId", newUser.Id);
+            cmd.Parameters.AddWithValue("@newName", newTag.Name);
+            cmd.Parameters.AddWithValue("@searchId", newTag.Id);
 
             cmd.ExecuteNonQuery();
 
-            this.Name = newUser.Name;
+            this.Name = newTag.Name;
             conn.Close();
             if (conn != null)
             {
