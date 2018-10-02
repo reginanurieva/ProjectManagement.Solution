@@ -10,7 +10,10 @@ function drop(ev, el) {
   ev.preventDefault();
   var data = ev.dataTransfer.getData("text");
   el.appendChild(document.getElementById(data));
-  // <%=UpdateStatus()%>;
+  $.ajax({
+    type: 'POST',
+    url
+  })
 }
 
 $(document).ready(function() {
