@@ -118,15 +118,16 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
-      MySqlCommand cmd = new MySqlCommand("DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId; DELETE FROM projects_todos WHERE project_id = @ProjectId; DELETE FROM projects_forums WHERE project_id = @ProjectId; DELETE FROM projects WHERE id = @ProjectId;");
-
+      MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId; DELETE FROM projects_todos WHERE project_id = @ProjectId; DELETE FROM projects_forums WHERE project_id = @ProjectId; DELETE FROM projects WHERE id = @ProjectId;";
       cmd.Parameters.AddWithValue("@ProjectId", this.Id);
 
       cmd.ExecuteNonQuery();
 
+      conn.Close();
       if (conn != null)
       {
-        conn.Close();
+        conn.Dispose();
       }
     }
 
@@ -135,9 +136,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM projects;";
-      cmd.ExecuteNonQuery();
-      cmd.CommandText = @"DELETE FROM projects_users;";
+      cmd.CommandText = @"DELETE FROM projects_users; DELETE FROM projects_todos; DELETE FROM projects_tags; DELETE FROM projects;";
       cmd.ExecuteNonQuery();
       
       conn.Close();
@@ -204,7 +203,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT users.id, users.name, users.username, users.email FROM users JOIN projects_users ON users.id = projects_users.user_id JOIN users ON projects_users.user_id = users.id WHERE project_id = @projectId;";
+      cmd.CommandText = @"SELECT users.* FROM projects JOIN projects_users ON projects.id = projects_users.project_id JOIN users ON projects_users.user_id = users.id WHERE project_id = @projectId;";
       cmd.Parameters.AddWithValue("@projectId", this.Id);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
@@ -277,6 +276,49 @@ namespace ProjectManagement.Models
       cmd.CommandText = @"INSERT INTO projects_todos (project_id, todo_id) VALUES (@projectId, @todoId);";
       cmd.Parameters.AddWithValue("@projectId", this.Id);
       cmd.Parameters.AddWithValue("@todoId", newTodo.Id);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public List<Tag> GetTags()
+    {
+      List <Tag> allTags = new List <Tag> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT tags.* FROM projects JOIN projects_tags ON projects.id = projects_tags.project_id JOIN tags ON projects_tags.tag_id = tags.id WHERE project_id = @projectId;";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        Tag newTag = new Tag(name, id);
+        allTags.Add(newTag);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allTags; 
+    }
+
+    public void AddTag(Tag newTag)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO projects_tags (project_id, tag_id) VALUES (@projectId, @tagId);";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      cmd.Parameters.AddWithValue("@tagId", newTag.Id);
 
       cmd.ExecuteNonQuery();
 

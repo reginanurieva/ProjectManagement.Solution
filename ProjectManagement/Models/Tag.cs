@@ -136,7 +136,7 @@ namespace ProjectManagement.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM tags WHERE id = @searchid;";
+            cmd.CommandText = @"DELETE FROM projects_tags WHERE tag_id = @searchId; DELETE FROM tags WHERE id = @searchid;";
 
             cmd.Parameters.AddWithValue("@searchid", this.Id);
 
@@ -155,7 +155,55 @@ namespace ProjectManagement.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"TRUNCATE TABLE tags;";
+            cmd.CommandText = @"DELETE FROM projects_tags; DELETE FROM tags;";
+
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+
+        public List<Project> GetProjects()
+        {
+            List<Project> allProjects = new List<Project> { };
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT projects.* FROM projects JOIN projects_tags ON projects.id = projects_tags.project_id JOIN tags ON projects_tags.tag_id = tags.id WHERE projects_tags.tag_id = @tagId;";
+            cmd.Parameters.AddWithValue("@tagId", this.Id);
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+            while (rdr.Read())
+            {
+                int ProjectId = rdr.GetInt32(0);
+                string ProjectName = rdr.GetString(1);
+                string ProjectContent = rdr.GetString(2);
+                DateTime ProjectDueDate = rdr.GetDateTime(3);
+                string ProjectStatus = rdr.GetString(4);
+                Project newProject = new Project(ProjectName, ProjectContent,ProjectDueDate,ProjectStatus, ProjectId);
+                allProjects.Add(newProject);
+            }
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return allProjects;
+        }
+
+        public void AddProject(Project newProject)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"INSERT INTO projects_tags (project_id, tag_id) VALUES (@projectId, @tagId);";
+            cmd.Parameters.AddWithValue("@projectId", newProject.Id);
+            cmd.Parameters.AddWithValue("@tagId", this.Id);
 
             cmd.ExecuteNonQuery();
 
