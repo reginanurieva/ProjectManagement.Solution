@@ -1,0 +1,22 @@
+@using ProjectManagement.Models;
+@using Microsoft.AspNetCore.Identity;
+
+@{
+    ViewData["Title"] = "Projects Page";
+}
+
+<h1 id="explore-header">All available Projects</h1>
+
+@foreach(var project in Model)
+{
+<div class="card">
+  <div class="card-header">
+    <a href="/explore">@project.Name</a>
+  </div>
+  <div class="card-body">
+    
+    <p class="card-text">@project.Content</p>
+    <a href="#" class="btn btn-primary">Join</a>
+  </div>
+</div>
+}
