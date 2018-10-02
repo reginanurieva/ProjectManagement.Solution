@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using ProjectManagement.Models;
 using ProjectManagement.Models.AccountViewModels;
 using ProjectManagement.Services;
+using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Controllers
 {
@@ -66,7 +67,7 @@ namespace ProjectManagement.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
@@ -112,7 +113,7 @@ namespace ProjectManagement.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -123,6 +124,23 @@ namespace ProjectManagement.Controllers
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
+                    
+                    MySqlConnection conn = DB.Connection();
+                    conn.Open();
+
+                    MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+                    cmd.CommandText = @"INSERT INTO users (name, username, email) VALUES (@name, @username, @email);";
+                    cmd.Parameters.AddWithValue("@name", user.FirstName + " " + user.LastName);
+                    cmd.Parameters.AddWithValue("@username", user.UserName);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.ExecuteNonQuery();
+
+                    conn.Close();
+                    if (conn != null)
+                    {
+                        conn.Dispose();
+                    }
+
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
                 }
