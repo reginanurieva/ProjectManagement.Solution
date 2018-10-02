@@ -237,7 +237,7 @@ namespace ProjectManagement.Models
                 string content = rdr.GetString(2);
                 DateTime duedate = rdr.GetDateTime(3);
                 string status = rdr.GetString(4);
-                Project newProject = new Project(name, content, duedate, status, this.Id);
+                Project newProject = new Project(name, content, duedate, status, id);
                 allProjects.Add(newProject);
             }
             conn.Close();

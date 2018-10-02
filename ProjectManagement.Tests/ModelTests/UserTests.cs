@@ -12,6 +12,7 @@ namespace ProjectManagement.Tests
         public void Dispose()
         {
             User.DeleteAll();
+            Project.DeleteAll();
         }
         public UserTests()
         {
@@ -76,6 +77,23 @@ namespace ProjectManagement.Tests
 
             //Assert
             Assert.AreEqual(0, actualCount);
+        }
+        [TestMethod]
+        public void AddProjects_SaveAndGetProject_List()
+        {
+            User newUser = new User("Skye","Skye","skye@gmail.com");
+            newUser.Save();
+            DateTime newDateTime = new DateTime(11/11/1111);
+            Project testProject = new Project("Planner", "content", newDateTime, "done");
+            testProject.Save();
+            List <Project> expectedProjects = new List<Project> {testProject};
+
+            newUser.AddProject(testProject);
+
+            List<Project> actualProjects = newUser.GetProjects();
+
+            CollectionAssert.AreEqual(expectedProjects, actualProjects);
+
         }
     }
 }
