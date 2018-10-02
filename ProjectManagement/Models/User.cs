@@ -124,6 +124,36 @@ namespace ProjectManagement.Models
             return foundUser;
         }
 
+        public static User Find(string username) 
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM users WHERE username = @username;";
+
+            cmd.Parameters.AddWithValue("@username", username);
+
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            User foundUser =  new User("","","",0);
+            while(rdr.Read())
+            {
+                int id = rdr.GetInt32(0);
+                string name = rdr.GetString(1);
+                string email = rdr.GetString(3);
+                foundUser = new User(name, username, email, id);
+            }
+
+            conn.Close();
+
+            if(conn != null)
+            {
+                conn.Dispose();
+            }
+            return foundUser;
+        }
+
         public void Update(User newUser)
         {
             MySqlConnection conn = DB.Connection();
