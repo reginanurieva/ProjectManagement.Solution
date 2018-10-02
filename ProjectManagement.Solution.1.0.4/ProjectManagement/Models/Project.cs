@@ -1,31 +1,3 @@
-// using System;
-// using System.Collections.Generic;
-// using ProjectManagement;
-//
-// namespace ProjectManagement.Models
-// {
-//   public class Project
-//   {
-//     public int Id;
-//     public string Name;
-//     public string Content;
-//     public DateTime DueDate;
-//     public string Status;
-//
-//     public Project(string name, string content, DateTime duedate, string status, int id = 0)
-//     {
-//       Id = id;
-//       Name = name;
-//       Content = content;
-//       DueDate = duedate;
-//       Status = status;
-//     }
-//   }
-// }
-
-
-
-
 using System.Collections.Generic;
 using ProjectManagement;
 using MySql.Data.MySqlClient;
@@ -33,27 +5,27 @@ using System;
 
 namespace ProjectManagement.Models
 {
-  public class Project
+  public class Project : ICRUDMethods<Project>
   {
-    public string name {get; set;}
-    public string content {get; set;}
-    public DateTime dueDate {get; set;}
-    public string status {get; set;}
-    public int id {get; set;}
+    public string Name {get; set;}
+    public string Content {get; set;}
+    public DateTime DueDate {get; set;}
+    public string Status {get; set;}
+    public int Id {get; set;}
 
     public Project(string newName, string newContent, DateTime newDueDate, string newStatus, int id = 0)
     {
-      this.name = newName;
-      this.content = newContent;
-      this.dueDate = newDueDate;
-      this.status = status;
-      this.id = id;
+      this.Name = newName;
+      this.Content = newContent;
+      this.DueDate = newDueDate;
+      this.Status = newStatus;
+      this.Id = id;
     }
 
     public Project(string newName, int id = 0)
     {
-      this.name = newName;
-      this.id = id;
+      this.Name = newName;
+      this.Id = id;
     }
 
 
@@ -65,28 +37,14 @@ namespace ProjectManagement.Models
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"INSERT INTO projects (name, content, dueDate, status) VALUES (@name, @content, @dueDate, @status);";
 
-      MySqlParameter name = new MySqlParameter();
-      name.ParameterName = "@name";
-      name.Value = this.name;
-      cmd.Parameters.Add(name);
-
-      MySqlParameter content = new MySqlParameter();
-      content.ParameterName = "@content";
-      content.Value = this.content;
-      cmd.Parameters.Add(content);
-
-      MySqlParameter dueDate = new MySqlParameter();
-      dueDate.ParameterName = "@dueDate";
-      dueDate.Value = this.dueDate;
-      cmd.Parameters.Add(dueDate);
-
-      MySqlParameter status = new MySqlParameter();
-      status.ParameterName = "@status";
-      status.Value = this.status;
-      cmd.Parameters.Add(status);
+      cmd.Parameters.AddWithValue("@name", this.Name);
+      cmd.Parameters.AddWithValue("@content", this.Content);
+      cmd.Parameters.AddWithValue("@dueDate", this.DueDate);
+      cmd.Parameters.AddWithValue("@status", this.Status);
 
       cmd.ExecuteNonQuery();
-      id = (int) cmd.LastInsertedId;
+      this.Id = (int) cmd.LastInsertedId;
+
       conn.Close();
       if (conn != null)
       {
@@ -128,34 +86,29 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM projects WHERE id = (@searchId);";
+      cmd.CommandText = @"SELECT * FROM projects WHERE id = @searchId;";
 
-      MySqlParameter searchId = new MySqlParameter();
-      searchId.ParameterName = "@searchId";
-      searchId.Value = id;
-      cmd.Parameters.Add(searchId);
+      cmd.Parameters.AddWithValue("@searchId", id);
 
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      int ProjectId = 0;
-      string ProjectName = "";
-      string ProjectContent = "";
-      DateTime ProjectDueDate = DateTime.Now;//??????
-      string ProjectStatus = "";
+
+      Project newProject = new Project("", "", DateTime.Now, "", id);
 
       while(rdr.Read())
       {
-        ProjectId = rdr.GetInt32(0);
-        ProjectName = rdr.GetString(1);
-        ProjectContent = rdr.GetString(2);
-        ProjectDueDate = rdr.GetDateTime(3);
-        ProjectStatus = rdr.GetString(4);
+        newProject.Id = rdr.GetInt32(0);
+        newProject.Name = rdr.GetString(1);
+        newProject.Content = rdr.GetString(2);
+        newProject.DueDate = rdr.GetDateTime(3);
+        newProject.Status = rdr.GetString(4);
       }
-      Project newProject = new Project(ProjectName,ProjectContent,ProjectDueDate, ProjectStatus, ProjectId);
+
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
+
       return newProject;
     }
 
@@ -166,11 +119,9 @@ namespace ProjectManagement.Models
       conn.Open();
 
       MySqlCommand cmd = new MySqlCommand("DELETE FROM projects WHERE id = @ProjectId; DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId;DELETE FROM projects_todos WHERE project_id = @ProjectId;DELETE FROM projects_forums WHERE project_id = @ProjectId;");
-      MySqlParameter projectIdParameter = new MySqlParameter();
-      projectIdParameter.ParameterName = "@ProjectId";
-      projectIdParameter.Value = this.id;
 
-      cmd.Parameters.Add(projectIdParameter);
+      cmd.Parameters.AddWithValue("@ProjectId", this.Id);
+
       cmd.ExecuteNonQuery();
 
       if (conn != null)
@@ -194,44 +145,25 @@ namespace ProjectManagement.Models
     }
 
 
-    public void Update(string newName, string newContent, DateTime newDueDate, string newStatus)
+    public void Update(Project newProject)
     {
+      //string newName, string newContent, DateTime newDueDate, string newStatus
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"UPDATE stylists SET name = @newName WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE projects SET name = @newName, content = @newContent, duedate = @newDueDate, status = @newStatus WHERE id = @searchId;";
 
-      MySqlParameter searchId = new MySqlParameter();
-      searchId.ParameterName = "@searchId";
-      searchId.Value = id;
-      cmd.Parameters.Add(searchId);
-
-      MySqlParameter name = new MySqlParameter();
-      name.ParameterName = "@newName";
-      name.Value = newName;
-      cmd.Parameters.Add(name);
-
-      MySqlParameter content = new MySqlParameter();
-      content.ParameterName = "@newContent";
-      content.Value = newContent;
-      cmd.Parameters.Add(content);
-
-      MySqlParameter dueDate = new MySqlParameter();
-      dueDate.ParameterName = "@newDueDate";
-      dueDate.Value = newDueDate;
-      cmd.Parameters.Add(dueDate);
-
-      MySqlParameter status = new MySqlParameter();
-      status.ParameterName = "@newStatus";
-      status.Value = newStatus;
-      cmd.Parameters.Add(status);
-
+      cmd.Parameters.AddWithValue("@searchId", this.Id);
+      cmd.Parameters.AddWithValue("@newName", newProject.Name);
+      cmd.Parameters.AddWithValue("@newContent", newProject.Content);
+      cmd.Parameters.AddWithValue("@newDueDate", newProject.DueDate);
+      cmd.Parameters.AddWithValue("@newStatus", newProject.Status);
 
       cmd.ExecuteNonQuery();
-      this.name = newName;
-      this.content = newContent;
-      this.dueDate = newDueDate;
-      this.status = newStatus;
+      this.Name = newProject.Name;
+      this.Content = newProject.Content;
+      this.DueDate = newProject.DueDate;
+      this.Status = newProject.Status;
 
       conn.Close();
       if (conn != null)
@@ -250,14 +182,17 @@ namespace ProjectManagement.Models
       {
 
         Project newProject = (Project) otherProject;
-        bool idEquality = (this.id == newProject.id);
-        bool nameEquality = (this.name == newProject.name);
-        return (nameEquality && idEquality);
+        bool idEquality = (this.Id == newProject.Id);
+        bool nameEquality = (this.Name == newProject.Name);
+        bool contentEquality = (this.Content == newProject.Content);
+        bool duedateEquality = (this.DueDate == newProject.DueDate);
+        bool statusEquality = (this.Status == newProject.Status);
+        return (idEquality && nameEquality && contentEquality && duedateEquality && statusEquality);
       }
     }
     public override int GetHashCode()
     {
-      return this.name.GetHashCode();
+      return this.Name.GetHashCode();
     }
   }
 }

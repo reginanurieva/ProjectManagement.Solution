@@ -54,17 +54,18 @@ namespace ProjectManagement.Tests
             //Arrange
             User newUser = new User("Skye","Skye","skye@gmail.com");
             newUser.Save();
+            User expectedUser = new User("Pierre Herme","PH","ph@gmail.com");
             
             //Act
-            newUser.Update("Pierre Herme","PH","ph@gmail.com");
-            User expectedUser = new User("Pierre Herme","PH","ph@gmail.com", newUser.Id);
+            newUser.Update(expectedUser);
+            expectedUser.Id = newUser.Id;
 
             //Assert
             Assert.AreEqual(expectedUser, newUser);
         }
         [TestMethod]
-            public void DeleteClient_DeleteAClient()
-            {
+        public void DeleteClient_DeleteAClient()
+        {
             //Arrange
             User newUser = new User("Skye","Skye","skye@gmail.com");
             newUser.Save();
@@ -75,6 +76,6 @@ namespace ProjectManagement.Tests
 
             //Assert
             Assert.AreEqual(0, actualCount);
-            }
+        }
     }
 }

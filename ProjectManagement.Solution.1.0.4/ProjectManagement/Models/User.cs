@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Models
 {
-    public class User
+    public class User : ICRUDMethods<User>
     {
         public int Id {get; set;}
         public string Name {get; set;}
@@ -124,7 +124,7 @@ namespace ProjectManagement.Models
             return foundUser;
         }
 
-        public void Update(string newName, string newUsername, string newEmail)
+        public void Update(User newUser)
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
@@ -132,15 +132,16 @@ namespace ProjectManagement.Models
             MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"UPDATE users SET name = @newName, username = @newUsername, email= @newEmail WHERE id = @searchId;";
 
-            cmd.Parameters.AddWithValue("@newName", this.Name);
-            cmd.Parameters.AddWithValue("@newUsername", this.Username);
-            cmd.Parameters.AddWithValue("@newEmail", this.Email);
-            cmd.Parameters.AddWithValue("@searchId", this.Id);
+            cmd.Parameters.AddWithValue("@newName", newUser.Name);
+            cmd.Parameters.AddWithValue("@newUsername", newUser.Username);
+            cmd.Parameters.AddWithValue("@newEmail", newUser.Email);
+            cmd.Parameters.AddWithValue("@searchId", newUser.Id);
 
-            this.Name = newName;
-            this.Username = newUsername;
-            this.Email = newEmail;
             cmd.ExecuteNonQuery();
+            
+            this.Name = newUser.Name;
+            this.Username = newUser.Username;
+            this.Email = newUser.Email;
 
             conn.Close();
             if (conn != null)
@@ -148,6 +149,7 @@ namespace ProjectManagement.Models
                 conn.Dispose();
             }
         }
+        
         public void Delete()
         {
             MySqlConnection conn = DB.Connection();

@@ -3,16 +3,9 @@ using System;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using ProjectManagement.Models;
-using Microsoft.AspNetCore.Mvc;
 
-
-namespace ProjectManagment.Tests
+namespace ProjectManagement.Tests
 {
-  public static class DBConfiguration
-  {
-      public static string ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=project_management;Allow User Variables=true";
-  }
-
   [TestClass]
   public class ProjectTests : IDisposable
   {

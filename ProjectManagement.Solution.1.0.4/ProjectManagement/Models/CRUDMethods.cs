@@ -10,6 +10,6 @@ namespace ProjectManagement.Models{
     void Update(T newObject);
 
     // Delete
-    void Delete(T toBeDeleted);
+    void Delete();
   }
 }
