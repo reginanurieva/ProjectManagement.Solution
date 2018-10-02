@@ -11,7 +11,8 @@ namespace ProjectManagement.Tests
   {
     public void Dispose()
     {
-      Project.DeleteAll();
+      Project.DeleteAll(); 
+      User.DeleteAll();
     }
 
     public ProjectTests()
@@ -57,6 +58,48 @@ namespace ProjectManagement.Tests
 
         //Assert
         Assert.AreEqual(testProject, Project.GetAll()[0]);
+      }
+
+      [TestMethod]
+      public void GetUsers_GetAllAssignedUsers_List()
+      {
+        //Arrange
+        User user1 = new User("Hyewon Cho", "jhng2525", "jhng2525@gmail.com");
+        user1.Save();
+        User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
+        user2.Save();
+        List <User> expectedUsers = new List<User>{user1, user2};
+        Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+        currentProject.Save();
+        currentProject.AddUser(user1);
+        currentProject.AddUser(user2);
+
+        //Act
+        List <User> users = currentProject.GetUsers();
+
+        //Assert
+        CollectionAssert.AreEqual(expectedUsers, users);
+      }
+
+      [TestMethod]
+      public void AddUser_AssignUserToProject()
+      {
+        //Arrange
+        User user1 = new User("Hyewon Cho", "jhng2525", "jhng2525@gmail.com");
+        user1.Save();
+        User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
+        user2.Save();
+        List <User> expectedUsers = new List<User>{user1, user2};
+        Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+        currentProject.Save();
+
+        //Act
+        currentProject.AddUser(user1);
+        currentProject.AddUser(user2);
+        List <User> users = currentProject.GetUsers();
+
+        //Assert
+        CollectionAssert.AreEqual(expectedUsers, users);
       }
   }
 }
