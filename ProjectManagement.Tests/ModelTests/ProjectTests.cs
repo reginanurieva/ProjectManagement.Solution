@@ -77,7 +77,7 @@ namespace ProjectManagement.Tests
     }
 
     [TestMethod]
-    public void Edit_UpdatesProjectInDB_String()
+    public void Update_UpdatesProjectInDB_String()
     {
       //Arrange
       DateTime newDateTime = new DateTime(11/11/1111);
