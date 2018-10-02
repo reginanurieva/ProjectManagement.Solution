@@ -14,6 +14,7 @@ namespace ProjectManagement.Tests
       Project.DeleteAll();
       User.DeleteAll();
       Todo.DeleteAll();
+      Tag.DeleteAll();
     }
 
     public ProjectTests()
@@ -37,8 +38,9 @@ namespace ProjectManagement.Tests
     public void Equals_ReturnsTrueIfNamesAreTheSame_Project()
     {
       // Arrange, Act
-      Project firstProject = new Project("Planner", 1);
-      Project secondProject = new Project("Planner", 1);
+      DateTime time = DateTime.Now;
+      Project firstProject = new Project("Planner", "content", time, "done", 1);
+      Project secondProject = new Project("Planner", "content", time, "done", 1);
 
       // Assert
       Assert.AreEqual(firstProject, secondProject);
@@ -51,14 +53,13 @@ namespace ProjectManagement.Tests
       DateTime newDateTime = new DateTime(11/11/1111);
       Project testProject = new Project("Planner", "content", newDateTime, "done", 1);
 
-
       //Act
       testProject.Save();
       List<Project> result = Project.GetAll();
       List<Project> testList = new List<Project>{testProject};
 
       //Assert
-      Assert.AreEqual(testProject, Project.GetAll()[0]);
+      CollectionAssert.AreEqual(testList, result);
     }
 
 
@@ -74,7 +75,7 @@ namespace ProjectManagement.Tests
       Project foundProject = Project.Find(testProject.Id);
 
       //Assert
-      Assert.AreEqual(testProject.Name, foundProject.Name);
+      Assert.AreEqual(testProject, foundProject);
     }
 
     [TestMethod]
@@ -84,15 +85,52 @@ namespace ProjectManagement.Tests
       DateTime newDateTime = new DateTime(11/11/1111);
       Project testProject = new Project("Planner", "content", newDateTime, "done");
       testProject.Save();
-      testProject.Name = "Wedding Planner";
+      Project newProject = new Project("Wedding Planner", "content", newDateTime, "done");
+      newProject.Save();
+      newProject.Id = testProject.Id;
 
       //Act
-      testProject.Update(testProject);
-
-      string result = Project.Find(testProject.Id).Name;
+      testProject.Update(newProject);
 
       //Assert
-      Assert.AreEqual("Wedding Planner", result);
+      Assert.AreEqual(newProject, testProject);
+    }
+
+    [TestMethod]
+    public void Delete_DeleteProjectFromDB()
+    {
+      //Arrange
+      DateTime newDateTime = new DateTime(11/11/1111);
+      Project testProject = new Project("Planner", "content", newDateTime, "done");
+      testProject.Save();
+      Project newProject = new Project("Wedding Planner", "content", newDateTime, "done");
+      newProject.Save();
+      List <Project> expectedProjects = new List <Project> {newProject};
+
+      //Act
+      testProject.Delete();
+      List <Project> actualProjects = Project.GetAll();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedProjects, actualProjects);
+    }
+
+    [TestMethod]
+    public void DeleteAll_DeleteAllProjectsFromDB()
+    {
+      //Arrange
+      Project testProject = new Project("Planner", "content", DateTime.Now, "done");
+      testProject.Save();
+      Project newProject = new Project("Wedding Planner", "content", DateTime.Now, "done");
+      newProject.Save();
+      List <Project> expectedProjects = new List <Project> {};
+
+      //Act
+      Project.DeleteAll();
+      List <Project> actualProjects = Project.GetAll();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedProjects, actualProjects);
     }
     
     [TestMethod]
@@ -145,7 +183,8 @@ namespace ProjectManagement.Tests
       todo1.Save();
       Todo todo2 = new Todo("todo2", "done");
       todo2.Save();
-      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      DateTime newDateTime = new DateTime(11/11/1111);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
       currentProject.Save();
       List <Todo> expectedTodos = new List<Todo>{todo1, todo2};
 
@@ -166,7 +205,8 @@ namespace ProjectManagement.Tests
       todo1.Save();
       Todo todo2 = new Todo("todo2", "done");
       todo2.Save();
-      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      DateTime newDateTime = new DateTime(11/11/1111);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
       currentProject.Save();
       List <Todo> expectedTodos = new List<Todo>{todo1, todo2};
       currentProject.AddTodo(todo1);
@@ -177,7 +217,50 @@ namespace ProjectManagement.Tests
 
       //Assert
       CollectionAssert.AreEqual(expectedTodos, todos);
+    }
 
+    [TestMethod]
+    public void GetTags_GetAllTagsOfProject_List()
+    {
+      //Arrange
+      Tag tag1 = new Tag("Hyewon");
+      tag1.Save();
+      Tag tag2 = new Tag("Cho");
+      tag2.Save();
+      DateTime newDateTime = new DateTime(11/11/1111);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
+      currentProject.Save();
+      currentProject.AddTag(tag1);
+      currentProject.AddTag(tag2);
+      List <Tag> expectedTags = new List <Tag> {tag1, tag2};
+
+      //Act
+      List<Tag> tags = currentProject.GetTags();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTags, tags);
+    }
+
+    [TestMethod]
+    public void AddTag_AddNewTag()
+    {
+      //Arrange
+      Tag tag1 = new Tag("Hyewon");
+      tag1.Save();
+      Tag tag2 = new Tag("Cho");
+      tag2.Save();
+      DateTime newDateTime = new DateTime(11/11/1111);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
+      currentProject.Save();
+      List <Tag> expectedTags = new List <Tag> {tag1, tag2};
+
+      //Act
+      currentProject.AddTag(tag1);
+      currentProject.AddTag(tag2);
+      List<Tag> tags = currentProject.GetTags();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTags, tags);
     }
   }
 }
