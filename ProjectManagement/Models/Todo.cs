@@ -10,7 +10,7 @@ namespace ProjectManagement.Models
     public string Name {get; set; }
     public string Status {get; set;}
 
-    public Todo(string name, string status, int id = 0)
+    public Todo(string name, string status = "Todo", int id = 0)
     {
       Name = name;
       Status = status;

@@ -12,29 +12,40 @@
 @foreach(Project project in Project.GetAll())
 {
   <div class="project-container">
-    <h3 class="project-header">@project.Name</h3>
+    <h2 class="project-header">@project.Name</h2>
     <div class="project-details">
       <p><strong>About This Project</strong>: @project.Content</p>
       <p><strong>Due</strong>: @project.DueDate</p>
       <p><strong>Status</strong>: @project.Status</p>
     </div>
-    <div class="container">
+    <div class="status-container">
       <div class="row">
         <div class="col-sm-3">
           <div class="column column--color-blue">
-            <h4 class="task-category">Todo</h4>
+            <h3 class="task-category">Todo</h3>
+            <p>
+              <form id="new-todo" action="/projects/newTodo" method="post">
+                <input name="projectId" type="hidden" value="@project.Id" />
+                <div class="input-group">
+                  <input class="form-control" name="todoName" type="text" placeholder="Add New Todo" />
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="submit">+</button>
+                  </span>
+                </div>
+              </form>
+            </p>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Todo")
               {
-                <p class="task-card">@task.Name</p>
+                <p class="task-card" draggable="true">@task.Name</p>
               }
             }
           </div>
         </div>
         <div class="col-sm-3">
           <div class="column column--color-yellow">
-            <h4 class="task-category">In Progress</h4>
+            <h3 class="task-category">In Progress</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "In Progress")
@@ -46,7 +57,7 @@
         </div>
         <div class="col-sm-3">
           <div class="column column--color-red">
-            <h4 class="task-category">Stuck</h4>
+            <h3 class="task-category">Stuck</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Stuck")
@@ -58,7 +69,7 @@
         </div>
         <div class="col-sm-3">
           <div class="column column--color-green">
-            <h4 class="task-category">Done</h4>
+            <h3 class="task-category">Done</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Done")
