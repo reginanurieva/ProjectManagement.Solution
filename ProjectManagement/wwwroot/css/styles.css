@@ -28,12 +28,26 @@ h1, h2, h3, h4, h5, h6 {
 
 .project-container {
   background: #eee;
-  height: 300px;
+  border-bottom: 1px solid #888;
+  padding-bottom: 30px;
+}
+
+.project-header {
+  background: #101010;
+  color: #9d9d9d;
+  text-align: center;
+  padding: 5px;
+}
+
+.project-details {
+  margin-left: 10px;
 }
 
 .column {
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 10px;
+  margin: 0px -5px;
+  box-shadow: 2px 2px 3px black;
 }
 
 .column--color-blue {
@@ -56,13 +70,17 @@ h1, h2, h3, h4, h5, h6 {
   background-color: white;
   border-radius: 5px;
   padding: 5px;
+  margin: -3px 0px 20px 0px;
   text-align: center;
   text-decoration: underline;
-  text-transform: uppercase;
+  border: 1px solid #9d9d9d;
+  box-shadow: 2px 2px 3px black;
 }
 
 .task-card {
   background-color: white;
   border-radius: 5px;
   padding: 5px;
+  border: 1px solid #9d9d9d;
+  box-shadow: 2px 2px 3px black;
 }

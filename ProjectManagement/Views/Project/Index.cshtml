@@ -13,8 +13,11 @@
 {
   <div class="project-container">
     <h3 class="project-header">@project.Name</h3>
-    <p>@project.Content</p>
-    <h4>Due: @project.DueDate</h4>
+    <div class="project-details">
+      <p><strong>About This Project</strong>: @project.Content</p>
+      <p><strong>Due</strong>: @project.DueDate</p>
+      <p><strong>Status</strong>: @project.Status</p>
+    </div>
     <div class="container">
       <div class="row">
         <div class="col-sm-3">
@@ -24,7 +27,7 @@
             {
               @if(task.Status == "Todo")
               {
-                <h5 class="task-card">@task.Name</h5>
+                <p class="task-card">@task.Name</p>
               }
             }
           </div>
@@ -36,7 +39,7 @@
             {
               @if(task.Status == "In Progress")
               {
-                <h5 class="task-card">@task.Name</h5>
+                <p class="task-card">@task.Name</p>
               }
             }
           </div>
@@ -48,7 +51,7 @@
             {
               @if(task.Status == "Stuck")
               {
-                <h5 class="task-card">@task.Name</h5>
+                <p class="task-card">@task.Name</p>
               }
             }
           </div>
@@ -60,7 +63,7 @@
             {
               @if(task.Status == "Done")
               {
-                <h5 class="task-card">@task.Name</h5>
+                <p class="task-card">@task.Name</p>
               }
             }
           </div>
