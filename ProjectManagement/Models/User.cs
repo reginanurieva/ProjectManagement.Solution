@@ -254,7 +254,7 @@ namespace ProjectManagement.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"TRUNCATE TABLE users;";
+            cmd.CommandText = @"DELETE FROM projects_users; DELETE FROM users;";
 
             cmd.ExecuteNonQuery();
 
