@@ -22,7 +22,7 @@
       <div class="row">
         <div class="col-sm-3">
           <div class="column column--color-blue">
-            <h3 class="task-category">Todo</h3>
+            <h3 id="todo" class="task-category">Todo</h3>
             <p>
               <form id="new-todo" action="/projects/newTodo" method="post">
                 <input name="projectId" type="hidden" value="@project.Id" />
@@ -38,14 +38,14 @@
             {
               @if(task.Status == "Todo")
               {
-                <p class="task-card" draggable="true">@task.Name</p>
+                <p id="@task.Status" class="task-card" draggable="true" ondragstart="drag(event)">@task.Name</p>
               }
             }
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="column column--color-yellow">
-            <h3 class="task-category">In Progress</h3>
+          <div class="column column--color-yellow" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+            <h3 id="in-progress" class="task-category">In Progress</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "In Progress")
@@ -57,7 +57,7 @@
         </div>
         <div class="col-sm-3">
           <div class="column column--color-red">
-            <h3 class="task-category">Stuck</h3>
+            <h3 id="stuck" class="task-category">Stuck</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Stuck")

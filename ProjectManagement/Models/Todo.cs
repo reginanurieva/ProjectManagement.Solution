@@ -129,6 +129,27 @@ namespace ProjectManagement.Models
       }
     }
 
+    public void UpdateStatus(string newStatus)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE todos SET status = @newStatus WHERE id = @searchId;";
+      
+      cmd.Parameters.AddWithValue("@searchId", this.Id);
+      cmd.Parameters.AddWithValue("@newStatus", newStatus);
+
+      cmd.ExecuteNonQuery();
+      this.Status = newStatus;
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+
 
     public void AddProject(Project newProject)
   {
