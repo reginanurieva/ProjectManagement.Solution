@@ -55,7 +55,7 @@ namespace ProjectManagement.Tests
             User newUser = new User("Skye","Skye","skye@gmail.com");
             newUser.Save();
             User expectedUser = new User("Pierre Herme","PH","ph@gmail.com");
-            
+
             //Act
             newUser.Update(expectedUser);
             expectedUser.Id = newUser.Id;
@@ -69,7 +69,7 @@ namespace ProjectManagement.Tests
             //Arrange
             User newUser = new User("Skye","Skye","skye@gmail.com");
             newUser.Save();
-        
+
             //Act
             newUser.Delete();
             int actualCount = User.GetAll().Count;

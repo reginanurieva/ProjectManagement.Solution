@@ -118,7 +118,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
 
-      MySqlCommand cmd = new MySqlCommand("DELETE FROM projects WHERE id = @ProjectId; DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId;DELETE FROM projects_todos WHERE project_id = @ProjectId;DELETE FROM projects_forums WHERE project_id = @ProjectId;");
+      MySqlCommand cmd = new MySqlCommand("DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId; DELETE FROM projects_todos WHERE project_id = @ProjectId; DELETE FROM projects_forums WHERE project_id = @ProjectId; DELETE FROM projects WHERE id = @ProjectId;");
 
       cmd.Parameters.AddWithValue("@ProjectId", this.Id);
 
