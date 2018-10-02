@@ -137,6 +137,9 @@ namespace ProjectManagement.Models
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"DELETE FROM projects;";
       cmd.ExecuteNonQuery();
+      cmd.CommandText = @"DELETE FROM projects_users;";
+      cmd.ExecuteNonQuery();
+      
       conn.Close();
       if (conn != null)
       {
@@ -193,6 +196,51 @@ namespace ProjectManagement.Models
     public override int GetHashCode()
     {
       return this.Name.GetHashCode();
+    }
+
+    public List <User> GetUsers() 
+    {
+      List <User> allUsers = new List <User> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT users.id, users.name, users.username, users.email FROM users JOIN projects_users ON users.id = projects_users.user_id WHERE project_id = @projectId;";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string name = rdr.GetString(1);
+        string username = rdr.GetString(2);
+        string email = rdr.GetString(3);
+        User foundUser = new User(name, username, email, id);
+        allUsers.Add(foundUser);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allUsers;
+    }
+
+    public void AddUser(User newUser)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO projects_users (project_id, user_id) VALUES (@projectId, @userId);";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      cmd.Parameters.AddWithValue("@userId", newUser.Id);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
     }
   }
 }
