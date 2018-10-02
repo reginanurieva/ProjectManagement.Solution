@@ -8,7 +8,7 @@ namespace ProjectManagement.Controllers
 {
     public class ProjectController : Controller
     {
-        [HttpGet("/project")]
+        [HttpGet("/projects")]
         public IActionResult Index()
         {
             return View();

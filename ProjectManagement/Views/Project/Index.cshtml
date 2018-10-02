@@ -1,5 +1,74 @@
+@using ProjectManagement.Models;
+@using Microsoft.AspNetCore.Identity;
+
 @{
     ViewData["Title"] = "Projects Page";
 }
 
-<h1 style="margin-top: 100px;">All Projects</h1>
+
+
+<h1 id="page-header">My Projects</h1>
+        @* Replace Project.GetAll() with thisUser.GetProjects() whenever the method has been created. *@
+@foreach(Project project in Project.GetAll())
+{
+  <div class="project-container">
+    <h3 class="project-header">@project.Name</h3>
+    <div class="project-details">
+      <p><strong>About This Project</strong>: @project.Content</p>
+      <p><strong>Due</strong>: @project.DueDate</p>
+      <p><strong>Status</strong>: @project.Status</p>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="column column--color-blue">
+            <h4 class="task-category">Todo</h4>
+            @foreach(Todo task in Todo.GetAll())
+            {
+              @if(task.Status == "Todo")
+              {
+                <p class="task-card">@task.Name</p>
+              }
+            }
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="column column--color-yellow">
+            <h4 class="task-category">In Progress</h4>
+            @foreach(Todo task in Todo.GetAll())
+            {
+              @if(task.Status == "In Progress")
+              {
+                <p class="task-card">@task.Name</p>
+              }
+            }
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="column column--color-red">
+            <h4 class="task-category">Stuck</h4>
+            @foreach(Todo task in Todo.GetAll())
+            {
+              @if(task.Status == "Stuck")
+              {
+                <p class="task-card">@task.Name</p>
+              }
+            }
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="column column--color-green">
+            <h4 class="task-category">Done</h4>
+            @foreach(Todo task in Todo.GetAll())
+            {
+              @if(task.Status == "Done")
+              {
+                <p class="task-card">@task.Name</p>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
