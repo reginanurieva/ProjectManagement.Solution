@@ -46,7 +46,7 @@ namespace ProjectManagement
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Default Password settings.
@@ -70,16 +70,16 @@ namespace ProjectManagement
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            app.UseDeveloperExceptionPage();
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDatabaseErrorPage();
+            //     app.UseBrowserLink();
+            // }
+            // else
+            // {
+            //     app.UseExceptionHandler("/Home/Error");
+            // }
 
             app.UseStaticFiles();
 

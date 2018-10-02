@@ -1,7 +1,7 @@
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Karla', sans-serif;
   font-weight: bold;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 #header {
@@ -20,4 +20,15 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+#page-header {
+  margin-top: 100px;
+}
+
+.project-button {
+  background-image: linear-gradient(#89f7fe, #66a6ff);
+  /* margin: 10px; */
+  border-radius: 10px;
+  height: 200px;
 }

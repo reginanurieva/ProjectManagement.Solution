@@ -1,5 +1,15 @@
+@using ProjectManagement.Models;
+@using Microsoft.AspNetCore.Identity;
+
 @{
     ViewData["Title"] = "Projects Page";
 }
 
-<h1 style="margin-top: 100px;">All Projects</h1>
+<h1 id="page-header">All Projects</h1>
+@foreach(Project project in Project.GetAll())
+{
+  <div class="col-sm-6 project-button project-color">
+    <h3>@project.Name</h3>
+    <p>@project.Content</p>
+  </div>
+}
