@@ -9,7 +9,7 @@
       <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
       asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
       asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-      <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Karla" rel="stylesheet" runat="server">
       <link rel="stylesheet" href="~/css/styles.css" />
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="~/js/scripts.js"></script>
@@ -31,6 +31,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Project" asp-action="Index">All Projects</a></li>
+                    <li><a asp-area="" asp-controller="Explore" asp-action="Index">Explore</a></li>
                     <!-- <li><a asp-area="" asp-controller="Home" asp-action="About">Users</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li> -->
                 </ul>
@@ -38,8 +39,10 @@
             </div>
         </div>
     </nav>
+    <div class = "container">
     <div class="body-content">
         @RenderBody()
+        </div>
         <hr />
         <footer>
             <p>&copy; 2018 - ProjectManagement</p>

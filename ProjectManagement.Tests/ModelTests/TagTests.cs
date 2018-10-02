@@ -11,9 +11,8 @@ namespace ProjectManagement.Tests
     {
         public void Dispose()
         {
-            Tag.DeleteAll();
             Project.DeleteAll();
-
+            Tag.DeleteAll();
         }
         public TagTests()
         {
@@ -79,6 +78,50 @@ namespace ProjectManagement.Tests
 
             //Assert
             Assert.AreEqual(0, actualCount);
+        }
+
+        [TestMethod]
+        public void GetProjects_GetAllProjects_List()
+        {
+            //Arrange
+            Tag newTag = new Tag("Skye");
+            newTag.Save();
+            DateTime newDateTime = new DateTime(11/11/1111);
+            Project firstProject = new Project("Planner", "content", newDateTime, "done", 1);
+            firstProject.Save();
+            Project secondProject = new Project("Wedding", "content", newDateTime, "done", 1);
+            secondProject.Save();
+            newTag.AddProject(firstProject);
+            newTag.AddProject(secondProject);
+            List <Project> allProjects = new List<Project> {firstProject, secondProject};
+
+            //Act
+            List<Project> projects = newTag.GetProjects();
+
+            //Assert
+            CollectionAssert.AreEqual(allProjects, projects);
+        }
+        
+        [TestMethod]
+        public void AddProject_AddNewProjectToTag()
+        {            
+            //Arrange
+            Tag newTag = new Tag("Skye");
+            newTag.Save();
+            DateTime newDateTime = new DateTime(11/11/1111);
+            Project firstProject = new Project("Planner", "content", newDateTime, "done", 1);
+            firstProject.Save();
+            Project secondProject = new Project("Wedding", "content", newDateTime, "done", 1);
+            secondProject.Save();
+            List <Project> allProjects = new List<Project> {firstProject, secondProject};
+
+            //Act
+            newTag.AddProject(firstProject);
+            newTag.AddProject(secondProject);
+            List<Project> projects = newTag.GetProjects();
+
+            //Assert
+            CollectionAssert.AreEqual(allProjects, projects);
         }
     }
 }
