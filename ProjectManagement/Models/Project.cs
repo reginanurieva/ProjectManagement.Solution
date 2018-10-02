@@ -22,11 +22,11 @@ namespace ProjectManagement.Models
       this.Id = id;
     }
 
-    public Project(string newName, int id = 0)
-    {
-      this.Name = newName;
-      this.Id = id;
-    }
+    // public Project(string newName, int id = 0)
+    // {
+    //   this.Name = newName;
+    //   this.Id = id;
+    // }
 
 
     public void Save()

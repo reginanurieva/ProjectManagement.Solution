@@ -1,9 +1,22 @@
 @using ProjectManagement.Models;
 @using Microsoft.AspNetCore.Identity;
 
+
+@{
+  Layout = "_Layout";
+}
+
+
 @{
     ViewData["Title"] = "Projects Page";
 }
+
+<br><br><br>
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
+  <li role="presentation"><a href="~/explore">Explore</a></li>
+  <li role="presentation"><a href="~/myprofile">My Profile</a></li>
+</ul>
 
 
 
