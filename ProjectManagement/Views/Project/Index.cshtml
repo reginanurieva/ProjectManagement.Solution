@@ -1,20 +1,35 @@
 @using ProjectManagement.Models;
 @using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Html;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Projects Page";
 }
 
+@{
+  var user = await @UserManager.GetUserAsync(User);
+  var UserName = @user.UserName;
 
+  if (!ProjectManagement.Models.User.Exist(@user.UserName))
+  {
+      ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(@user.FirstName + " " + @user.LastName, @user.UserName, @user.Email);
+      newUser.Save();
+  }
+  ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
+}
 
 <h1 id="page-header">My Projects</h1>
         @* Replace Project.GetAll() with thisUser.GetProjects() whenever the method has been created. *@
-@foreach(Project project in Project.GetAll())
+@foreach(Project project in thisUser.GetProjects())
 {
+  HtmlString content = new HtmlString(@project.Content);
   <div class="project-container">
     <h2 class="project-header">@project.Name</h2>
     <div class="project-details">
-      <p><strong>About This Project</strong>: @project.Content</p>
+      <p><strong>About This Project</strong>: @content</p>
       <p><strong>Due</strong>: @project.DueDate</p>
       <p><strong>Status</strong>: @project.Status</p>
     </div>

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectManagement.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         [HttpGet("/projects")]
