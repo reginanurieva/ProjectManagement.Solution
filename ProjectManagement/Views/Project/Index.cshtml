@@ -33,12 +33,22 @@
   HtmlString content = new HtmlString(@project.Content);
   <div class="project-container" id="@project.Name">
     <h2 class="project-header">@project.Name</h2>
-    <div class="project-details">
-      <h4><a href="/projects/@project.Id">Project Details</a></h4>
-      <h4>About This Project</h4>
-      <p>@content</p>
-      <p><strong>Due</strong>: @project.DueDate.Date.ToString("d")</p>
-      <p><strong>Status</strong>: @project.Status</p>
+    <div class="row project-details">
+      <div class="col-md-7">
+        <h4><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; About This Project</h4>
+        <p>@content</p>
+      </div>
+      <div class="col-md-5">
+        <h4>
+          <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+          <a href="/projects/@project.Id">Project Details</a></h4>
+        <h4>
+          <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+          <strong>Due</strong>: @project.DueDate.Date.ToString("d")</h4>
+        <h4>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
+          <strong>Status</strong>: @project.Status</h4>
+      </div>
     </div>
     <div class="status-container">
       <div class="row">
