@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 02, 2018 at 09:56 PM
+-- Generation Time: Oct 03, 2018 at 06:38 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -46,15 +46,8 @@ CREATE TABLE `projects` (
   `name` varchar(255) NOT NULL,
   `content` varchar(255) NOT NULL,
   `duedate` datetime NOT NULL,
-  `status` varchar(255) NOT NULL
+  `status` varchar(255) NOT NULL DEFAULT 'Undone'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `projects`
---
-
-INSERT INTO `projects` (`id`, `name`, `content`, `duedate`, `status`) VALUES
-(1, 'name', 'content', '2018-10-11 00:00:00', 'done');
 
 -- --------------------------------------------------------
 
@@ -104,13 +97,6 @@ CREATE TABLE `projects_users` (
   `user_id` int(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `projects_users`
---
-
-INSERT INTO `projects_users` (`id`, `project_id`, `user_id`) VALUES
-(1, 1, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -146,13 +132,6 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `username`, `email`) VALUES
-(1, 'Hyewon Cho', 'jhng2525', 'jhng2525@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -231,7 +210,7 @@ ALTER TABLE `forums`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=375;
 --
 -- AUTO_INCREMENT for table `projects_forums`
 --
@@ -251,7 +230,7 @@ ALTER TABLE `projects_todos`
 -- AUTO_INCREMENT for table `projects_users`
 --
 ALTER TABLE `projects_users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 --
 -- AUTO_INCREMENT for table `tags`
 --
@@ -266,7 +245,7 @@ ALTER TABLE `todos`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 --
 -- Constraints for dumped tables
 --
