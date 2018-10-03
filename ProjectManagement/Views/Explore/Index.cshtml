@@ -33,12 +33,12 @@
     <div class="col-md-6">
         <div class="explore-container">
             <div class="project-header">
-                @project.Name
+                <h4>@project.Name</h4>
             </div>
             <div class="explore-details">
                 <h4>Content</h4>
                 <p class="card-text">@content</p>
-                <p class="card-text">Due-Date: @project.DueDate</p>
+                <p class="card-text">Due-Date: @project.DueDate </p>
                 @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                 {
                     <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
