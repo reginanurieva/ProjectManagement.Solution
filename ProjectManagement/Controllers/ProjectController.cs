@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectManagement.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class ProjectController : Controller
     {
         [HttpGet("/projects")]

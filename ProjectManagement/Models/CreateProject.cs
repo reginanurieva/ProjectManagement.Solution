@@ -8,18 +8,16 @@ namespace ProjectManagement.Models
   public class CreateProject
   {
     public int Id { get; set; }
-    public int NumberUser { get; set; }
     public string ProjectName { get; set; }
     public string UserName { get; set; }
     public string Tags { get; set; }
 
 
-    public CreateProject(string projectName, string userName, string tags, int numberUser, int id = 0)
+    public CreateProject(string projectName, string userName, string tags, int id = 0)
     {
       ProjectName = projectName;
       UserName = userName;
       Tags = tags;
-      NumberUser = numberUser;
       Id = id;
     }
 
@@ -33,10 +31,10 @@ namespace ProjectManagement.Models
       {
         CreateProject newCreate = (CreateProject) otherCreateProject;
         bool idEquality = this.Id == newCreate.Id;
-        bool numberEquality = this.NumberUser == newCreate.NumberUser;
         bool nameOneEquality = this.ProjectName == newCreate.ProjectName;
         bool nameTwoEquality = this.UserName == newCreate.UserName;
-        return (idEquality && numberEquality && nameOneEquality && nameTwoEquality);
+        bool tagsEquality = this.Tags == newCreate.Tags;
+        return (idEquality && nameOneEquality && nameTwoEquality && tagsEquality);
       }
     }
     public override int GetHashCode()
@@ -51,11 +49,10 @@ namespace ProjectManagement.Models
       conn.Open();
 
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO createproject (projectName, userName, numberUser, tags) VALUES (@projectName, @userName, @numberUser, @tags;";
+      cmd.CommandText = @"INSERT INTO createprojects (projectName, userName, tags) VALUES (@projectName, @userName, @tags;";
 
       cmd.Parameters.AddWithValue("@projectName", this.ProjectName);
       cmd.Parameters.AddWithValue("@userName", this.UserName);
-      cmd.Parameters.AddWithValue("@numberUser", this.NumberUser);
       cmd.Parameters.AddWithValue("@tags", this.Tags);
 
       cmd.ExecuteNonQuery();
@@ -66,6 +63,31 @@ namespace ProjectManagement.Models
       {
         conn.Dispose();
       }
+    }
+    
+    public static List<CreateProject> GetAll()
+    {
+      List<CreateProject> allCreateProjects = new List<CreateProject> {};
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM createprojects;";
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        int id = rdr.GetInt32(0);
+        string projectName = rdr.GetString(1);
+        string userName = rdr.GetString(2);
+        string tags = rdr.GetString(3);
+        CreateProject newCreateProject = new CreateProject(projectName, userName, tags);
+        allStylists.Add(newCreateProject);
+      }
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allStylists;
     }
   }
 }
