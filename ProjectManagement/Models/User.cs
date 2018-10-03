@@ -292,5 +292,25 @@ namespace ProjectManagement.Models
             }
             return false;
         }
+
+        public void DeleteProject(Project project)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"DELETE FROM projects_users WHERE user_id = @searchId AND project_id = @projectId;";
+
+            cmd.Parameters.AddWithValue("@searchId", this.Id);
+            cmd.Parameters.AddWithValue("@projectId", project.Id);
+
+            cmd.ExecuteNonQuery();
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
     }
 }

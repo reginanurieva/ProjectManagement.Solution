@@ -1,0 +1,50 @@
+@using ProjectManagement.Models;
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Html;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Project Detail Page";
+}
+
+@{
+  var user = await @UserManager.GetUserAsync(User);
+  var UserName = @user.UserName;
+
+  if (!ProjectManagement.Models.User.Exist(@user.UserName))
+  {
+      ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(@user.FirstName + " " + @user.LastName, @user.UserName, @user.Email);
+      newUser.Save();
+  }
+  ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
+}
+@{
+  HtmlString content = new HtmlString(@Model.Content);
+}
+<h1 id="page-header">@Model.Name - @Model.Status</h1>
+<p>@content</p>
+<h3>Due date</h3>
+<p>@Model.DueDate.Date.ToString("d")</p>
+<h3>Contributors</h3>
+<ul>
+  @foreach (var person in @Model.GetUsers())
+  {
+    <li>@person.Name</li>
+  }
+</ul>
+<h3>Todos</h3>
+<ul>
+  @foreach(var todo in @Model.GetTodos())
+  {
+    <li>@todo.Name - @todo.Status</li>
+  }
+</ul>
+
+<a href="/projects/update/@Model.Id">Edit project information</a>
+<form asp-controller="Project" asp-action="LeaveProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+  <input type="hidden" name="projectId" value="@Model.Id">
+  <input type="hidden" name="userId" value="@thisUser.Id">
+  <button type="submit">Leave this project</button>
+</form>
