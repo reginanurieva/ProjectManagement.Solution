@@ -55,7 +55,7 @@
             <h3 id="todo" class="task-category">Todo</h3>
             <form id="todo-update" action="/projects/updateStatus" method="post">
               <div id="todo-col" ondrop="drop(event, this)" ondragover="allowDrop(event)">
-                @foreach(Todo task in Todo.GetAll())
+                @foreach(Todo task in @project.GetTodos())
                 {
                   @if(task.Status == "Todo")
                   {
@@ -85,7 +85,7 @@
           <form id="in-progress-update" action="/projects/updateStatus" method="post">
             <div class="column column--color-yellow"  id="in-progress-col" ondrop="drop(event, this)" ondragover="allowDrop(event)">
               <h3 id="in-progress" class="task-category">In Progress</h3>
-              @foreach(Todo task in Todo.GetAll())
+              @foreach(Todo task in @project.GetTodos())
               {
                 @if(task.Status == "In Progress")
                 {
@@ -103,7 +103,7 @@
           <form id="stuck-update" action="/projects/updateStatus" method="post">
             <div class="column column--color-red" id="stuck-col" ondrop="drop(event, this)" ondragover="allowDrop(event)">
               <h3 id="stuck" class="task-category">Stuck</h3>
-              @foreach(Todo task in Todo.GetAll())
+              @foreach(Todo task in @project.GetTodos())
               {
                 @if(task.Status == "Stuck")
                 {
@@ -121,7 +121,7 @@
           <form id="done-update" action="/projects/updateStatus" method="post">
             <div class="column column--color-green" id="done-col" ondrop="drop(event, this)" ondragover="allowDrop(event)">
               <h3 class="task-category">Done</h3>
-              @foreach(Todo task in Todo.GetAll())
+              @foreach(Todo task in @project.GetTodos())
               {
                 @if(task.Status == "Done")
                 {

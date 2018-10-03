@@ -67,26 +67,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column {
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
   margin: 0px -5px;
   box-shadow: 2px 2px 3px black;
 }
 
 .column--color-blue {
-  background-color: #007bff;
+  background-color: #004d99;
 }
 
 .column--color-yellow {
-  background-color: #ffc107;
+  background-color: #ffcc00;
 }
 
 .column--color-red {
-  background-color: #dc3545;
+  background-color: #ff8000;
 }
 
 .column--color-green {
-  background-color: #28a745;
+  background-color: #008060;
 }
 
 .task-category {
@@ -140,19 +140,19 @@ footer {
 }
 
 .panel-default > .panel-heading-custom {
-  background: #ff8000; color: #fff; 
+  background: #ff8000; color: #fff;
 }
 
   .panel-default > .panel-heading-custom1 {
-  background: #004d99; color: #fff; 
+  background: #004d99; color: #fff;
 }
 
   .panel-default > .panel-heading-custom2 {
-  background: #ffcc00; color: #fff; 
+  background: #ffcc00; color: #fff;
 }
 
   .panel-default > .panel-heading-custom3 {
-    background: #008060; color: #fff; 
+    background: #008060; color: #fff;
   }
 
   body{
