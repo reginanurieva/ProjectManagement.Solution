@@ -15,19 +15,9 @@
     ViewData["Title"] = "My Projects Page";
 }
 
-<<<<<<< HEAD
-<br><br><br>
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
-  <li role="presentation"><a href="~/explore">Explore</a></li>
-  <li role="presentation"><a href="~/myprofile">My Profile</a></li>
-</ul>
-
-=======
 @{
   var user = await @UserManager.GetUserAsync(User);
   var UserName = @user.UserName;
->>>>>>> ddb23189f4c2676060e1efa16a4d9985d3623b61
 
   if (!ProjectManagement.Models.User.Exist(@user.UserName))
   {
@@ -36,6 +26,14 @@
   }
   ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
 }
+
+<br><br><br>
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
+  <li role="presentation"><a href="~/explore">Explore</a></li>
+  <li role="presentation"><a href="~/myprofile">My Profile</a></li>
+</ul>
+
 
 <h1 id="page-header">My Projects</h1>
 @foreach(Project project in thisUser.GetProjects())
