@@ -67,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column {
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 10px;
   margin: 0px -5px;
   box-shadow: 2px 2px 3px black;
@@ -111,7 +111,6 @@ p.form-control {
   color: black;
   height: auto;
 }
-
 
 #join{
   float: right;

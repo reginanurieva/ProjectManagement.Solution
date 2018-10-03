@@ -18,8 +18,16 @@ function drop(event, element) {
   //Adds the card id as the value to hiddent input "todoId"
   $('#' + columnName + '-input').attr('value', todoId);
   //Submits the form that the column is nested inside.
-  $(element).parent('form').submit();
+  $(element).parent().submit();
 }
 
-$(document).ready(function() {
+$(document).scroll(function(){
+    localStorage['scrollTarget'] = document.URL;
+    localStorage['scrollTop'] = $(document).scrollTop();
+});
+
+$(document).ready(function(){
+    if (localStorage['scrollTarget'] == document.URL) {
+        $(document).scrollTop(localStorage['scrollTop']);
+    }
 });
