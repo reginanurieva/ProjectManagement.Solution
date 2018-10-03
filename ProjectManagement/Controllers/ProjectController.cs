@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ProjectManagement.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class ProjectController : Controller
     {
         [HttpGet("/projects")]
