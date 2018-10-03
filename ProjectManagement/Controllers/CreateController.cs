@@ -14,8 +14,16 @@ using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Controllers
 {
+  [Authorize]
   public class CreateController : Controller
   {
+    private UserManager<ApplicationUser> _userManager;
+
+    public CreateController(UserManager<ApplicationUser> userManager)
+    {
+        _userManager = userManager;
+    }
+
     [HttpGet]
     public ActionResult Index()
     {
@@ -23,14 +31,18 @@ namespace ProjectManagement.Controllers
     }
     
     [HttpPost]
-    public ActionResult CreateProject(string returnUrl = null, string Name, string Content, DateTime DueDate)
+    public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string returnUrl = null)
     {
+      // string Content = Request.Form["Content"];
+      Console.WriteLine(Content);
       var user = await GetCurrentUserAsync();
 
       if (user == null)
       {
           return View("Error");
       }
+
+      
 
       Project newProject = new Project(Name, Content, DueDate, "Undone");
       newProject.Save();

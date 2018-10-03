@@ -17,7 +17,7 @@
   <div id="editor" style="height: 400px; margin-bottom: 20px;">
     <p></p>
   </div>
-  <textarea id="Content" name="Content" id="hiddenText" style="display: none;"></textarea>
+  <textarea id="Content" name="Content" style="display: none;"></textarea>
   <input type="date" id="DueDate" name="DueDate">
   <br><button type="submit" class="btn" style="margin-top: 20px;">Create</button>
 </form>
@@ -33,6 +33,6 @@
   });
 
   quill.on('text-change', function(delta, oldDelta, source) {
-    $("#hiddenText").val(quill.root.innerHTML);
+    $("#Content").val(quill.root.innerHTML);
   });
 </script>
