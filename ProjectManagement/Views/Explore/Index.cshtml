@@ -26,7 +26,9 @@
 }
 
 <h1 id="explore-header">All available Projects</h1>
-<div class="row"></div>
+<div class="container">
+
+<div class="row">
 @{
     int count = 0;
 }
@@ -34,36 +36,41 @@
 {
     count = @count + 1;
     HtmlString content = new HtmlString(@project.Content);
-    <div class="col-md-6">
-        <div class="explore-container">
+        <div class="col-md-12">
+        <div class="panel panel-default">
             @if (count % 4 == 0)
             {
-                <div class="project-header" style="background-color:  #ff8000; color: white;">
-                    <h4>@project.Name</h4>
+                <div class="panel-heading" style="background-color:  #ff8000; color: white;">
+                    <div class="panel-title">
+                        <h4>@project.Name</h4>
+                    </div>
                 </div>
             }
             else if (count % 4 == 1)
             {
-                <div class="project-header" style="background-color: #004d99; color: white;">
-                    <h4>@project.Name</h4>
+                <div class="panel-heading" style="background-color: #004d99; color: white;">
+                    <div class="panel-title">
+                        <h4>@project.Name</h4>
+                    </div>
                 </div>
             }
             else if (count % 4 == 2)
             {
-                <div class="project-header" style="background-color: #008060; color: white;">
-                    <h4>@project.Name</h4>
+                <div class="panel-heading" style="background-color: #008060; color: white;">
+                    <div class="panel-title">
+                        <h4>@project.Name</h4>
+                    </div>
                 </div>
             }
             else
             {
-                <div class="project-header" style="background-color: #ffcc00; color: white;">
-                    <h4>@project.Name</h4>
+                <div class="panel-heading" style="background-color: #ffcc00; color: white;">
+                    <div class="panel-title">
+                        <h4>@project.Name</h4>
+                    </div>
                 </div>
             }
-            <!-- <div class="project-header">
-                <h4>@project.Name</h4>
-            </div> -->
-            <div class="explore-details">
+            <div class="panel-body">
                 <h4>Description:</h4>
                 <p class="card-text">@content</p>
                 <h4>Due Date:</h4>
@@ -75,5 +82,7 @@
             </div>
         </div>
     </div>
+
 }
+</div>
 </div>
