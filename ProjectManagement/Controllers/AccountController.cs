@@ -124,21 +124,11 @@ namespace ProjectManagement.Controllers
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    
-                    MySqlConnection conn = DB.Connection();
-                    conn.Open();
 
-                    MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-                    cmd.CommandText = @"INSERT INTO users (name, username, email) VALUES (@name, @username, @email);";
-                    cmd.Parameters.AddWithValue("@name", user.FirstName + " " + user.LastName);
-                    cmd.Parameters.AddWithValue("@username", user.UserName);
-                    cmd.Parameters.AddWithValue("@email", user.Email);
-                    cmd.ExecuteNonQuery();
-
-                    conn.Close();
-                    if (conn != null)
+                    if (!ProjectManagement.Models.User.Exist(user.UserName))
                     {
-                        conn.Dispose();
+                        ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(user.FirstName + " " + user.LastName, user.UserName, user.Email);
+                        newUser.Save();
                     }
 
                     _logger.LogInformation(3, "User created a new account with password.");
