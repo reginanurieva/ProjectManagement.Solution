@@ -12,7 +12,7 @@
     ProjectManagement.Models.User thisUser = new ProjectManagement.Models.User("", "", "");
 }
 
-@if (SignInManager.IsSignedIn(User)) 
+@if (SignInManager.IsSignedIn(User))
 {
     var user = await @UserManager.GetUserAsync(User);
     var UserName = @user.UserName;
@@ -67,7 +67,7 @@
                 <h4>Description:</h4>
                 <p class="card-text">@content</p>
                 <h4>Due Date:</h4>
-                <p class="card-text">@project.DueDate </p>
+                <p class="card-text">@project.DueDate.Date.ToString("d") </p>
                 @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                 {
                     <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>

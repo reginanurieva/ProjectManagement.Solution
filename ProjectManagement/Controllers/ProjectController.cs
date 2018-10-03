@@ -28,6 +28,15 @@ namespace ProjectManagement.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("/projects/deleteTodo/{todoId}")]
+        public IActionResult DeleteTask(int todoId)
+        {
+            Todo foundTodo = Todo.Find(todoId);
+            foundTodo.Delete();
+            return RedirectToAction("Index");
+        }
+
+
         [HttpPost("/projects/updateStatus")]
         public IActionResult UpdateStatus(string newStatus, string todoId)
         {
