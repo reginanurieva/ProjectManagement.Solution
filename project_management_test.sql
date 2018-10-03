@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 03, 2018 at 10:02 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.15
+-- Generation Time: Oct 03, 2018 at 10:22 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -42,7 +44,7 @@ CREATE TABLE `forums` (
 CREATE TABLE `projects` (
   `id` int(32) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `content` text NOT NULL,
+  `content` varchar(255) NOT NULL,
   `duedate` datetime NOT NULL,
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -57,6 +59,18 @@ CREATE TABLE `projects_forums` (
   `id` int(32) NOT NULL,
   `project_id` int(32) NOT NULL,
   `forum_id` int(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projects_owners`
+--
+
+CREATE TABLE `projects_owners` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -154,6 +168,14 @@ ALTER TABLE `projects_forums`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `projects_owners`
+--
+ALTER TABLE `projects_owners`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `projects_owners project_id foreign key` (`project_id`),
+  ADD KEY `projects_owners user_id foreign key` (`user_id`);
+
+--
 -- Indexes for table `projects_tags`
 --
 ALTER TABLE `projects_tags`
@@ -208,42 +230,47 @@ ALTER TABLE `forums`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT for table `projects_forums`
 --
 ALTER TABLE `projects_forums`
   MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `projects_owners`
+--
+ALTER TABLE `projects_owners`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
 -- AUTO_INCREMENT for table `projects_tags`
 --
 ALTER TABLE `projects_tags`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT for table `projects_todos`
 --
 ALTER TABLE `projects_todos`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `projects_users`
 --
 ALTER TABLE `projects_users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `tags`
 --
 ALTER TABLE `tags`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT for table `todos`
 --
 ALTER TABLE `todos`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 --
 -- Constraints for dumped tables
 --
@@ -268,6 +295,7 @@ ALTER TABLE `projects_todos`
 ALTER TABLE `projects_users`
   ADD CONSTRAINT `project_users project_id foreign key` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
   ADD CONSTRAINT `project_users user_id foreign key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

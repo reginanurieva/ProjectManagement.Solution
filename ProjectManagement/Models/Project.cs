@@ -119,7 +119,7 @@ namespace ProjectManagement.Models
       conn.Open();
 
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId; DELETE FROM projects_todos WHERE project_id = @ProjectId; DELETE FROM projects_forums WHERE project_id = @ProjectId; DELETE FROM projects WHERE id = @ProjectId;";
+      cmd.CommandText = @"DELETE FROM projects_users WHERE project_id = @ProjectId; DELETE FROM projects_tags WHERE project_id = @ProjectId; DELETE FROM projects_todos WHERE project_id = @ProjectId; DELETE FROM projects_forums WHERE project_id = @ProjectId; DELETE FROM projects_owners WHERE project_id = @ProjectId; DELETE FROM projects WHERE id = @ProjectId;";
       cmd.Parameters.AddWithValue("@ProjectId", this.Id);
 
       cmd.ExecuteNonQuery();
@@ -136,7 +136,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM projects_users; DELETE FROM projects_todos; DELETE FROM projects_tags; DELETE FROM projects;";
+      cmd.CommandText = @"DELETE FROM projects_users; DELETE FROM projects_todos; DELETE FROM projects_tags; DELETE FROM projects_owners; DELETE FROM projects;";
       cmd.ExecuteNonQuery();
       
       conn.Close();
@@ -327,6 +327,52 @@ namespace ProjectManagement.Models
       {
         conn.Dispose();
       }
+    }
+
+    public void AssignOwner(User user)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO projects_owners (project_id, user_id) VALUES (@projectId, @userId);";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      cmd.Parameters.AddWithValue("@userId", user.Id);
+
+      cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public User GetOwner()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT users.* FROM projects JOIN projects_owners ON projects.id = projects_owners.project_id JOIN users ON projects_owners.user_id = users.id WHERE project_id = @projectId;";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+      User foundUser = new User("", "", "", 0);
+      while (rdr.Read())
+      {
+          int actualId = rdr.GetInt32(0);
+          string name = rdr.GetString(1);
+          string username = rdr.GetString(2);
+          string email = rdr.GetString(3);
+          foundUser = new User(name, username, email, actualId);
+      }
+      
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return foundUser; 
     }
   }
 }
