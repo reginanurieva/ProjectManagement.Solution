@@ -27,19 +27,11 @@
   ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
 }
 
-<br><br><br>
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
-  <li role="presentation"><a href="~/explore">Explore</a></li>
-  <li role="presentation"><a href="~/myprofile">My Profile</a></li>
-</ul>
-
-
 <h1 id="page-header">My Projects</h1>
 @foreach(Project project in thisUser.GetProjects())
 {
   HtmlString content = new HtmlString(@project.Content);
-  <div class="project-container">
+  <div class="project-container" id="@project.Name">
     <h2 class="project-header">@project.Name</h2>
     <div class="project-details">
       <h4><a href="/projects/@project.Id">Project Details</a></h4>
@@ -83,7 +75,9 @@
                 <div class="input-group">
                   <input class="form-control" name="todoName" type="text" placeholder="Add New Todo" />
                   <span class="input-group-btn">
-                    <button class="btn btn-success" type="submit">+</button>
+                    <button class="btn btn-success" type="submit">
+                      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
                   </span>
                 </div>
               </form>
@@ -135,7 +129,6 @@
                     </span>
                   </div>
                   <br>
-
                 }
               }
               <input type="hidden" name="newStatus" value="Stuck" />
