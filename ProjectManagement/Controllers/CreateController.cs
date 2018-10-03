@@ -29,7 +29,7 @@ namespace ProjectManagement.Controllers
     {
       return View();
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string returnUrl = null)
     {
