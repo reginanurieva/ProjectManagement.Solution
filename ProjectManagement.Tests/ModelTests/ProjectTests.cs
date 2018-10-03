@@ -132,7 +132,7 @@ namespace ProjectManagement.Tests
       //Assert
       CollectionAssert.AreEqual(expectedProjects, actualProjects);
     }
-    
+
     [TestMethod]
     public void GetUsers_GetAllAssignedUsers_List()
     {

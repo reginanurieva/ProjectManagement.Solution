@@ -71,7 +71,7 @@ namespace ProjectManagement.Tests
             //Arrange
             Tag newTag = new Tag("Skye");
             newTag.Save();
-        
+
             //Act
             newTag.Delete();
             int actualCount = User.GetAll().Count;
@@ -101,7 +101,7 @@ namespace ProjectManagement.Tests
             //Assert
             CollectionAssert.AreEqual(allProjects, projects);
         }
-        
+
         [TestMethod]
         public void AddProject_AddNewProjectToTag()
         {            
