@@ -11,25 +11,25 @@ namespace ProjectManagement.Controllers
   [Authorize]
   public class CreateProjectController : Controller
   {
-    [HttpGet("/createprojects")]
-    public IActionResult Index()
-    {
-        return View();
-    }
+    // [HttpGet("/createprojects")]
+    // public IActionResult Index()
+    // {
+    //     return View();
+    // }
     
     [HttpGet ("/createprojects/new")]
-    public ActionResult CreateForm() 
+    public ActionResult Index() 
     {
       return View();
     }
 
     [HttpPost ("/createprojects")]
-    public ActionResult CreateProject (string projectName) 
+    public ActionResult Create (string projectName, string userName, string tags) 
     {
-      CreateProject newCreateProject = new CreateProject(projectName);
-      newCreateProject.Save();
-      List<CreateProject> allCreateProjects = CreateProject.GetAll();
-      return RedirectToAction("Index", allCreateProjects);
+    CreateProject newCreateProject = new CreateProject(projectName, userName, tags);
+    newCreateProject.Save();
+    List<CreateProject> allCreateProjects = CreateProject.GetAll();
+    return RedirectToAction("Index", allCreateProjects);
     }
   }
 }

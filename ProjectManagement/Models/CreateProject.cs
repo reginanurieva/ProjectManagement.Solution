@@ -80,14 +80,14 @@ namespace ProjectManagement.Models
         string userName = rdr.GetString(2);
         string tags = rdr.GetString(3);
         CreateProject newCreateProject = new CreateProject(projectName, userName, tags);
-        allStylists.Add(newCreateProject);
+        allCreateProjects.Add(newCreateProject);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allStylists;
+      return allCreateProjects;
     }
   }
 }
