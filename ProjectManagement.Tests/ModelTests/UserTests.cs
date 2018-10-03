@@ -81,6 +81,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void AddProjects_SaveAndGetProject_List()
         {
+            //Arrange
             User newUser = new User("Skye","Skye","skye@gmail.com");
             newUser.Save();
             DateTime newDateTime = new DateTime(11/11/1111);
@@ -88,12 +89,58 @@ namespace ProjectManagement.Tests
             testProject.Save();
             List <Project> expectedProjects = new List<Project> {testProject};
 
+            //Act
             newUser.AddProject(testProject);
-
             List<Project> actualProjects = newUser.GetProjects();
 
+            //Assert
             CollectionAssert.AreEqual(expectedProjects, actualProjects);
+        }
 
+        [TestMethod]
+        public void SetOwner_SetUserAsOwnerOfProject()
+        {
+            //Arrange
+            User newUser1 = new User("Skye","Skye","skye@gmail.com");
+            newUser1.Save();
+            
+            DateTime newDateTime = new DateTime(11/11/1111);
+            Project testProject1 = new Project("Planner1", "content", newDateTime, "done");
+            testProject1.Save();
+            Project testProject2 = new Project("Planner2", "content", newDateTime, "done");
+            testProject2.Save();
+            List <Project> expectedProjects = new List<Project> {testProject1, testProject2};
+
+            //Act
+            newUser1.SetOwner(testProject1);
+            newUser1.SetOwner(testProject2);
+            List<Project> projects = newUser1.GetOwnerProjects();
+
+            //Assert
+            CollectionAssert.AreEqual(expectedProjects, projects);
+        }
+
+        [TestMethod]
+        public void GetOwnerProjects_GetProjectsWhereUserIsOwner_List()
+        {
+            //Arrange
+            User newUser1 = new User("Skye","Skye","skye@gmail.com");
+            newUser1.Save();
+            
+            DateTime newDateTime = new DateTime(11/11/1111);
+            Project testProject1 = new Project("Planner1", "content", newDateTime, "done");
+            testProject1.Save();
+            Project testProject2 = new Project("Planner2", "content", newDateTime, "done");
+            testProject2.Save();
+            newUser1.SetOwner(testProject1);
+            newUser1.SetOwner(testProject2);
+            List <Project> expectedProjects = new List<Project> {testProject1, testProject2};
+
+            //Act
+            List<Project> projects = newUser1.GetOwnerProjects();
+
+            //Assert
+            CollectionAssert.AreEqual(expectedProjects, projects);
         }
     }
 }

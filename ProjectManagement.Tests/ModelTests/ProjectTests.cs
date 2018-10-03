@@ -262,5 +262,49 @@ namespace ProjectManagement.Tests
       //Assert
       CollectionAssert.AreEqual(expectedTags, tags);
     }
+
+    [TestMethod]
+    public void AssignOwner_SetOwnerOfProject()
+    {
+      //Arrange
+      User user1 = new User("Hyewon Cho", "jhng2525", "jhng2525@gmail.com");
+      user1.Save();
+      User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
+      user2.Save();
+      List <User> expectedUsers = new List<User>{user1, user2};
+      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      currentProject.Save();
+      currentProject.AddUser(user1);
+      currentProject.AddUser(user2);
+
+      //Act
+      currentProject.AssignOwner(user1);
+      User user = currentProject.GetOwner();
+
+      //Assert
+      Assert.AreEqual(user1, user);
+    }
+
+    [TestMethod]
+    public void GetOwner_GetOwnerOfProject_User()
+    {
+      //Arrange
+      User user1 = new User("Hyewon Cho", "jhng2525", "jhng2525@gmail.com");
+      user1.Save();
+      User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
+      user2.Save();
+      List <User> expectedUsers = new List<User>{user1, user2};
+      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      currentProject.Save();
+      currentProject.AddUser(user1);
+      currentProject.AddUser(user2);
+      currentProject.AssignOwner(user1);
+
+      //Act
+      User user = currentProject.GetOwner();
+
+      //Assert
+      Assert.AreEqual(user1, user);
+    }
   }
 }
