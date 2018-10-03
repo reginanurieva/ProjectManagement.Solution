@@ -157,3 +157,11 @@ footer {
   .panel-default > .panel-heading-custom3 {
     background: #008060; color: #fff; 
   }
+
+  body{
+    font-family: 'Libre Baskerville', serif;
+  }
+
+  .panel{
+    box-shadow: 5px 5px 10px #CAC6C5;
+  }
