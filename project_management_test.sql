@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 03, 2018 at 06:38 AM
--- Server version: 5.6.34-log
--- PHP Version: 7.2.1
+-- Generation Time: Oct 03, 2018 at 10:02 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -44,7 +42,7 @@ CREATE TABLE `forums` (
 CREATE TABLE `projects` (
   `id` int(32) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` text NOT NULL,
   `duedate` datetime NOT NULL,
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -270,7 +268,6 @@ ALTER TABLE `projects_todos`
 ALTER TABLE `projects_users`
   ADD CONSTRAINT `project_users project_id foreign key` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
   ADD CONSTRAINT `project_users user_id foreign key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
