@@ -141,3 +141,19 @@ footer {
   text-align: center;
   z-index: 2;
 }
+
+.panel-default > .panel-heading-custom {
+  background: #ff8000; color: #fff; 
+}
+
+  .panel-default > .panel-heading-custom1 {
+  background: #004d99; color: #fff; 
+}
+
+  .panel-default > .panel-heading-custom2 {
+  background: #ffcc00; color: #fff; 
+}
+
+  .panel-default > .panel-heading-custom3 {
+    background: #008060; color: #fff; 
+  }
