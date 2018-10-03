@@ -29,7 +29,7 @@ namespace ProjectManagement.Controllers
     {
       return View();
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string returnUrl = null)
     {
@@ -40,7 +40,7 @@ namespace ProjectManagement.Controllers
           return View("Error");
       }
 
-      Project newProject = new Project(Name, Content, DueDate, "Undone");
+      Project newProject = new Project(Name, Content, DueDate, "In Progress");
       newProject.Save();
       ProjectManagement.Models.User currentUser = ProjectManagement.Models.User.Find(user.UserName);
       newProject.AddUser(currentUser);

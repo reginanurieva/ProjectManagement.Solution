@@ -27,19 +27,49 @@
 
 <h1 id="explore-header">All available Projects</h1>
 <div class="row"></div>
+@{
+    int count = 0;
+}
 @foreach(var project in Model)
 {
+    count = @count + 1;
     HtmlString content = new HtmlString(@project.Content);
     <div class="col-md-6">
         <div class="explore-container">
-            <div class="project-header">
-                @project.Name
-            </div>
-            <div class="project-details">
+            @if (count % 4 == 0)
+            {
+                <div class="project-header" style="background-color: pink;">
+                    <h4>@project.Name</h4>
+                </div>
+            }
+            else if (count % 4 == 1)
+            {
+                <div class="project-header" style="background-color: orange;">
+                    <h4>@project.Name</h4>
+                </div>
+            }
+            else if (count % 4 == 2)
+            {
+                <div class="project-header" style="background-color: yellow;">
+                    <h4>@project.Name</h4>
+                </div>
+            }
+            else
+            {
+                <div class="project-header" style="background-color: green;">
+                    <h4>@project.Name</h4>
+                </div>
+            }
+            <!-- <div class="project-header">
+                <h4>@project.Name</h4>
+            </div> -->
+            <div class="explore-details">
+                <h4>Content</h4>
                 <p class="card-text">@content</p>
-                @if (SignInManager.IsSignedIn(User))
+                <p class="card-text">Due-Date: @project.DueDate </p>
+                @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                 {
-                    <form action="/explore/join/project/@project.Id/user/@thisUser.Id" method="post"><button type="submit" id="join" class="btn">Join</button></form>
+                    <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
                 }
             </div>
         </div>
