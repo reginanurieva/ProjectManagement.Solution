@@ -1,22 +1,33 @@
 @using ProjectManagement.Models;
 @using Microsoft.AspNetCore.Identity;
 
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "Projects Page";
 }
 
 <h1 id="explore-header">All available Projects</h1>
-
+<div class="row"></div>
 @foreach(var project in Model)
 {
-<div class="card">
-  <div class="card-header">
-    <a href="/explore">@project.Name</a>
-  </div>
-  <div class="card-body">
-    
-    <p class="card-text">@project.Content</p>
-    <a href="#" class="btn btn-primary">Join</a>
-  </div>
-</div>
+    <div class="col-md-6">
+        <div class="explore-container">
+            <div class="project-header">
+                @project.Name
+            </div>
+            <div class="project-details">
+                <p class="card-text">@project.Content</p>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await @UserManager.GetUserAsync(User);
+                    var username = @user.UserName;
+                    var mySqlUser = ProjectManagement.Models.User.Find(username);
+                    <form action="/explore/join/project/@project.Id/user/@mySqlUser.Id" method="post"><button type="submit" id="join" class="btn">Join</button></form>
+                }
+            </div>
+        </div>
+    </div>
 }
+</div>
