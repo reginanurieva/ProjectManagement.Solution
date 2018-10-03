@@ -22,8 +22,17 @@ namespace ProjectManagement.Controllers
         {
             Todo newTodo = new Todo(todoName);
             newTodo.Save();
-            // Project foundProject = Project.Find(int.Parse(projectId));
-            // foundProject.AddTodo(newTodo.Id);
+            Project foundProject = Project.Find(int.Parse(projectId));
+            foundProject.AddTodo(newTodo);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("/projects/updateStatus")]
+        public IActionResult UpdateStatus(string newStatus, string todoId)
+        {
+            Todo foundTodo = Todo.Find(int.Parse(todoId));
+            Todo newTodo = new Todo(foundTodo.Name, newStatus);
+            foundTodo.Update(newTodo);
             return RedirectToAction("Index");
         }
     }
