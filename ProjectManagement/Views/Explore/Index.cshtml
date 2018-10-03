@@ -8,17 +8,21 @@
 @{
     ViewData["Title"] = "Explore Projects Page";
 }
-
 @{
-  var user = await @UserManager.GetUserAsync(User);
-  var UserName = @user.UserName;
+    ProjectManagement.Models.User thisUser = new ProjectManagement.Models.User("", "", "");
+}
 
-  if (!ProjectManagement.Models.User.Exist(@user.UserName))
-  {
-      ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(@user.FirstName + " " + @user.LastName, @user.UserName, @user.Email);
-      newUser.Save();
-  }
-  ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
+@if (SignInManager.IsSignedIn(User)) 
+{
+    var user = await @UserManager.GetUserAsync(User);
+    var UserName = @user.UserName;
+
+    if (!ProjectManagement.Models.User.Exist(@user.UserName))
+    {
+        ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(@user.FirstName + " " + @user.LastName, @user.UserName, @user.Email);
+        newUser.Save();
+    }
+    thisUser = ProjectManagement.Models.User.Find(UserName);
 }
 
 <h1 id="explore-header">All available Projects</h1>
