@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 03, 2018 at 06:38 AM
--- Server version: 5.6.34-log
--- PHP Version: 7.2.1
+-- Generation Time: Oct 03, 2018 at 10:01 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -44,10 +42,21 @@ CREATE TABLE `forums` (
 CREATE TABLE `projects` (
   `id` int(32) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
+  `content` text NOT NULL,
   `duedate` datetime NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'Undone'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`id`, `name`, `content`, `duedate`, `status`) VALUES
+(375, 'Project name', '<p>Something special</p>', '2018-10-06 00:00:00', 'Undone'),
+(376, 'Planner', '<p>I am a planner</p>', '2018-11-24 00:00:00', 'Undone'),
+(377, 'My cool project', '<p>All that stuff</p>', '2018-10-04 00:00:00', 'Undone'),
+(378, 'One more', '<p>You going to like it</p>', '0001-01-01 00:00:00', 'Undone'),
+(379, 'cool guy', '<p>I\'m a cool guy, I love being cool. ', '2018-10-12 00:00:00', 'Undone');
 
 -- --------------------------------------------------------
 
@@ -97,6 +106,19 @@ CREATE TABLE `projects_users` (
   `user_id` int(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `projects_users`
+--
+
+INSERT INTO `projects_users` (`id`, `project_id`, `user_id`) VALUES
+(108, 375, 191),
+(111, 375, 192),
+(112, 376, 192),
+(113, 375, 193),
+(114, 377, 193),
+(115, 378, 193),
+(116, 379, 193);
+
 -- --------------------------------------------------------
 
 --
@@ -132,6 +154,15 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `username`, `email`) VALUES
+(191, 'Hyewon Cho', 'jhng2525', 'jhng2525@gmail.com'),
+(192, 'Meria Thomas', 'MeriaT', 'josemeria93@gmail.com'),
+(193, 'Regina Nurieva', 'ReggiN', 'reggiwolf123@gmail.com');
 
 --
 -- Indexes for dumped tables
@@ -210,7 +241,7 @@ ALTER TABLE `forums`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=375;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=380;
 --
 -- AUTO_INCREMENT for table `projects_forums`
 --
@@ -230,7 +261,7 @@ ALTER TABLE `projects_todos`
 -- AUTO_INCREMENT for table `projects_users`
 --
 ALTER TABLE `projects_users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 --
 -- AUTO_INCREMENT for table `tags`
 --
@@ -245,7 +276,7 @@ ALTER TABLE `todos`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
 --
 -- Constraints for dumped tables
 --
@@ -270,7 +301,6 @@ ALTER TABLE `projects_todos`
 ALTER TABLE `projects_users`
   ADD CONSTRAINT `project_users project_id foreign key` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
   ADD CONSTRAINT `project_users user_id foreign key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
