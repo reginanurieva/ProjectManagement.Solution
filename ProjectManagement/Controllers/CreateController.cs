@@ -33,16 +33,12 @@ namespace ProjectManagement.Controllers
     [HttpPost]
     public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string returnUrl = null)
     {
-      // string Content = Request.Form["Content"];
-      Console.WriteLine(Content);
       var user = await GetCurrentUserAsync();
 
       if (user == null)
       {
           return View("Error");
       }
-
-      
 
       Project newProject = new Project(Name, Content, DueDate, "Undone");
       newProject.Save();

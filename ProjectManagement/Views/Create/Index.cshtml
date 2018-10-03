@@ -27,11 +27,13 @@
 
 <!-- Initialize Quill editor -->
 <script>
+  // quill configuration
   var quill = new Quill('#editor', {
     theme: 'snow',
     placeholder: 'Project content',
   });
 
+  // if quill textarea has changed, change the innertext of textarea with updated content.
   quill.on('text-change', function(delta, oldDelta, source) {
     $("#Content").val(quill.root.innerHTML);
   });
