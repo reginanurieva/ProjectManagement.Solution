@@ -5,6 +5,12 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
+@{
+  Layout = "_Layout";
+}
+
+
 @{
     ViewData["Title"] = "My Projects Page";
 }
@@ -20,6 +26,14 @@
   }
   ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
 }
+
+<br><br><br>
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
+  <li role="presentation"><a href="~/explore">Explore</a></li>
+  <li role="presentation"><a href="~/myprofile">My Profile</a></li>
+</ul>
+
 
 <h1 id="page-header">My Projects</h1>
 @foreach(Project project in thisUser.GetProjects())
