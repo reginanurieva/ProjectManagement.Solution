@@ -47,6 +47,8 @@
       <p>@content</p>
       <p><strong>Due</strong>: @project.DueDate.Date.ToString("d")</p>
       <p><strong>Status</strong>: @project.Status</p>
+      <!-- before using this line, import mysql db file -->
+      <!-- <p><strong>Owner</strong>: @project.GetOwner().Name</p> -->
     </div>
     <div class="status-container">
       <div class="row">

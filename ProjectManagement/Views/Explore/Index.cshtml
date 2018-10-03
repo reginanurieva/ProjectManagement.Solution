@@ -68,6 +68,8 @@
                 <p class="card-text">@content</p>
                 <h4>Due Date:</h4>
                 <p class="card-text">@project.DueDate.Date.ToString("d") </p>
+                <!-- before using this line, import mysql db file -->
+                <!-- <p class="card-text">@project.GetOwner().Name </p> -->
                 @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                 {
                     <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>

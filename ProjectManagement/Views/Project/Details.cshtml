@@ -30,6 +30,8 @@
     <p><strong>About This Project</strong>: @content</p>
     <p><strong>Due</strong>: @Model.DueDate.Date.ToString("d")</p>
     <p><strong>Status</strong>: @Model.Status</p>
+    <!-- before using this line, import mysql db file -->
+    <!-- <p><strong>Owner</strong>: @Model.GetOwner().Name</p> -->
     <p><strong>Contributors</strong>: 
       <ul>
         @foreach (var person in @Model.GetUsers())
@@ -46,11 +48,22 @@
         }
       </ul>
     </p>
-    <form asp-controller="Project" asp-action="LeaveProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-      <input type="hidden" name="projectId" value="@Model.Id">
-      <input type="hidden" name="userId" value="@thisUser.Id">
-      <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
-      <button type="submit" class="btn btn-danger">Leave this project</button>
-    </form>
+    @if (@Model.GetUsers().Count > 1)
+    {
+      <form asp-controller="Project" asp-action="LeaveProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+        <input type="hidden" name="projectId" value="@Model.Id">
+        <input type="hidden" name="userId" value="@thisUser.Id">
+        <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
+        <button type="submit" class="btn btn-danger">Leave this project</button>
+      </form>
+    }
+    else
+    {
+      <form asp-controller="Project" asp-action="DeleteProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+        <input type="hidden" name="projectId" value="@Model.Id">
+        <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
+        <button type="submit" class="btn btn-danger">Delete this project</button>
+      </form>
+    }
   </div>
 </div>
