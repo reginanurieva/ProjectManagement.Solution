@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 02, 2018 at 05:27 AM
+-- Generation Time: Oct 03, 2018 at 06:38 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -159,19 +159,25 @@ ALTER TABLE `projects_forums`
 -- Indexes for table `projects_tags`
 --
 ALTER TABLE `projects_tags`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `projects_tags project_id foreign key` (`project_id`),
+  ADD KEY `projects_tags tag_id foreign key` (`tag_id`);
 
 --
 -- Indexes for table `projects_todos`
 --
 ALTER TABLE `projects_todos`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `projects_todos project_id foreign key` (`project_id`),
+  ADD KEY `projects_todos todo_id` (`todo_id`);
 
 --
 -- Indexes for table `projects_users`
 --
 ALTER TABLE `projects_users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_users project_id foreign key` (`project_id`),
+  ADD KEY `project_users user_id foreign key` (`user_id`);
 
 --
 -- Indexes for table `tags`
@@ -204,7 +210,7 @@ ALTER TABLE `forums`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `projects_forums`
 --
@@ -239,7 +245,32 @@ ALTER TABLE `todos`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;COMMIT;
+  MODIFY `id` int(32) NOT NULL AUTO_INCREMENT;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `projects_tags`
+--
+ALTER TABLE `projects_tags`
+  ADD CONSTRAINT `projects_tags project_id foreign key` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
+  ADD CONSTRAINT `projects_tags tag_id foreign key` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`);
+
+--
+-- Constraints for table `projects_todos`
+--
+ALTER TABLE `projects_todos`
+  ADD CONSTRAINT `projects_todos project_id foreign key` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
+  ADD CONSTRAINT `projects_todos todo_id` FOREIGN KEY (`todo_id`) REFERENCES `todos` (`id`);
+
+--
+-- Constraints for table `projects_users`
+--
+ALTER TABLE `projects_users`
+  ADD CONSTRAINT `project_users project_id foreign key` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`),
+  ADD CONSTRAINT `project_users user_id foreign key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

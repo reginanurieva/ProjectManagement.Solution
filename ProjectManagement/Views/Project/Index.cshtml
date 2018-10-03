@@ -1,5 +1,9 @@
 @using ProjectManagement.Models;
 @using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Html;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 
 @{
@@ -8,9 +12,10 @@
 
 
 @{
-    ViewData["Title"] = "Projects Page";
+    ViewData["Title"] = "My Projects Page";
 }
 
+<<<<<<< HEAD
 <br><br><br>
 <ul class="nav nav-tabs">
   <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
@@ -18,36 +23,60 @@
   <li role="presentation"><a href="~/myprofile">My Profile</a></li>
 </ul>
 
+=======
+@{
+  var user = await @UserManager.GetUserAsync(User);
+  var UserName = @user.UserName;
+>>>>>>> ddb23189f4c2676060e1efa16a4d9985d3623b61
 
+  if (!ProjectManagement.Models.User.Exist(@user.UserName))
+  {
+      ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(@user.FirstName + " " + @user.LastName, @user.UserName, @user.Email);
+      newUser.Save();
+  }
+  ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
+}
 
 <h1 id="page-header">My Projects</h1>
         @* Replace Project.GetAll() with thisUser.GetProjects() whenever the method has been created. *@
-@foreach(Project project in Project.GetAll())
+@foreach(Project project in thisUser.GetProjects())
 {
+  HtmlString content = new HtmlString(@project.Content);
   <div class="project-container">
-    <h3 class="project-header">@project.Name</h3>
+    <h2 class="project-header">@project.Name</h2>
     <div class="project-details">
-      <p><strong>About This Project</strong>: @project.Content</p>
+      <p><strong>About This Project</strong>: @content</p>
       <p><strong>Due</strong>: @project.DueDate</p>
       <p><strong>Status</strong>: @project.Status</p>
     </div>
-    <div class="container">
+    <div class="status-container">
       <div class="row">
         <div class="col-sm-3">
           <div class="column column--color-blue">
-            <h4 class="task-category">Todo</h4>
+            <h3 id="todo" class="task-category">Todo</h3>
+            <p>
+              <form id="new-todo" action="/projects/newTodo" method="post">
+                <input name="projectId" type="hidden" value="@project.Id" />
+                <div class="input-group">
+                  <input class="form-control" name="todoName" type="text" placeholder="Add New Todo" />
+                  <span class="input-group-btn">
+                    <button class="btn btn-success" type="submit">+</button>
+                  </span>
+                </div>
+              </form>
+            </p>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Todo")
               {
-                <p class="task-card">@task.Name</p>
+                <p id="@task.Status" class="task-card" draggable="true" ondragstart="drag(event)">@task.Name</p>
               }
             }
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="column column--color-yellow">
-            <h4 class="task-category">In Progress</h4>
+          <div class="column column--color-yellow" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+            <h3 id="in-progress" class="task-category">In Progress</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "In Progress")
@@ -59,7 +88,7 @@
         </div>
         <div class="col-sm-3">
           <div class="column column--color-red">
-            <h4 class="task-category">Stuck</h4>
+            <h3 id="stuck" class="task-category">Stuck</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Stuck")
@@ -71,7 +100,7 @@
         </div>
         <div class="col-sm-3">
           <div class="column column--color-green">
-            <h4 class="task-category">Done</h4>
+            <h3 class="task-category">Done</h3>
             @foreach(Todo task in Todo.GetAll())
             {
               @if(task.Status == "Done")

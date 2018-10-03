@@ -12,9 +12,13 @@ namespace ProjectManagement.Models.ManageViewModels
 
         public IList<UserLoginInfo> Logins { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string UserName { get; set; }
 
-        public bool TwoFactor { get; set; }
+        public string Email {get; set;}
+
+        public string FirstName {get; set;}
+
+        public string LastName {get; set;}
 
         public bool BrowserRemembered { get; set; }
     }

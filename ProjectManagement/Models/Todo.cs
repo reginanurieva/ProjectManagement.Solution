@@ -10,7 +10,7 @@ namespace ProjectManagement.Models
     public string Name {get; set; }
     public string Status {get; set;}
 
-    public Todo(string name, string status, int id = 0)
+    public Todo(string name, string status = "Todo", int id = 0)
     {
       Name = name;
       Status = status;
@@ -195,7 +195,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM todos WHERE id = @todoId;";
+      cmd.CommandText = @"DELETE FROM projects_todos WHERE todo_id = @todoId; DELETE FROM todos WHERE id = @todoId;";
       cmd.Parameters.AddWithValue("@todoId", this.Id);
 
       cmd.ExecuteNonQuery();
@@ -210,7 +210,7 @@ namespace ProjectManagement.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM todos;";
+      cmd.CommandText = @"DELETE FROM projects_todos; DELETE FROM todos;";
 
       cmd.ExecuteNonQuery();
       conn.Close();

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using ProjectManagement.Models;
 using ProjectManagement.Models.ManageViewModels;
 using ProjectManagement.Services;
+using MySql.Data.MySqlClient;
 
 namespace ProjectManagement.Controllers
 {
@@ -58,12 +59,15 @@ namespace ProjectManagement.Controllers
             {
                 return View("Error");
             }
+
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
+                Email = await _userManager.GetEmailAsync(user),
+                UserName = await _userManager.GetUserNameAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
             };
             return View(model);
@@ -366,6 +370,91 @@ namespace ProjectManagement.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
+        }
+
+        // GET Edit User Info page
+        [HttpGet]
+        public async Task<IActionResult> EditUserInfo(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var model = new EditUserInfoViewModel
+            {
+                Email = await _userManager.GetEmailAsync(user),
+                UserName = await _userManager.GetUserNameAsync(user),
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUserInfo(EditUserInfoViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = await GetCurrentUserAsync();
+                if (user == null)
+                {
+                    return View("Error");
+                }
+
+                int mysqlUserId = ProjectManagement.Models.User.Find(user.UserName).Id;
+                
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    MySqlConnection conn = DB.Connection();
+                    conn.Open();
+
+                    MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+                    cmd.CommandText = @"UPDATE users SET name = @name, username = @username, email = @email WHERE id = @id;";
+                    cmd.Parameters.AddWithValue("@name", user.FirstName + " " + user.LastName);
+                    cmd.Parameters.AddWithValue("@username", user.UserName);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.Parameters.AddWithValue("@id", mysqlUserId);
+                    cmd.ExecuteNonQuery();
+
+                    conn.Close();
+                    if (conn != null)
+                    {
+                        conn.Dispose();
+                    }
+
+                    _logger.LogInformation(3, "User updated information.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
         }
 
         #endregion

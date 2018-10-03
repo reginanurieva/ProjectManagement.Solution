@@ -254,7 +254,7 @@ namespace ProjectManagement.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"TRUNCATE TABLE users;";
+            cmd.CommandText = @"DELETE FROM projects_users; DELETE FROM users;";
 
             cmd.ExecuteNonQuery();
 
@@ -263,6 +263,34 @@ namespace ProjectManagement.Models
             {
                 conn.Dispose();
             }
+        }
+
+        public static bool Exist(string username)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM users WHERE username = @username;";
+            cmd.Parameters.AddWithValue("@username", username);
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            if (rdr.Read())
+            {
+                conn.Close();
+                if (conn != null)
+                {
+                    conn.Dispose();
+                }
+                return true;
+            }
+            
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return false;
         }
     }
 }
