@@ -15,7 +15,7 @@ _Project Management is a multitasking and job management database, created with 
 
 
 ### Known bugs
-* _There are no known bugs in this version._
+* When editing the date in the project edit page, an exception is thrown.
 
 
 ### Directions for Installation
