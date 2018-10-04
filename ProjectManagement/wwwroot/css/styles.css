@@ -159,3 +159,7 @@ footer {
   .panel{
     box-shadow: 5px 5px 10px #CAC6C5;
   }
+
+  .tag {
+    background-color: #fff8d1;
+  }
