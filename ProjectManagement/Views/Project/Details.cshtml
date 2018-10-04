@@ -1,0 +1,69 @@
+@using ProjectManagement.Models;
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Html;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Project Detail Page";
+}
+
+@{
+  var user = await @UserManager.GetUserAsync(User);
+  var UserName = @user.UserName;
+
+  if (!ProjectManagement.Models.User.Exist(@user.UserName))
+  {
+      ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(@user.FirstName + " " + @user.LastName, @user.UserName, @user.Email);
+      newUser.Save();
+  }
+  ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
+}
+@{
+  HtmlString content = new HtmlString(@Model.Content);
+}
+<h1 id="page-header">@Model.Name</h1>
+<div class="project-container">
+  <h2 class="project-header">@Model.Name</h2>
+  <div class="project-details">
+    <p><strong>About This Project</strong>: @content</p>
+    <p><strong>Due</strong>: @Model.DueDate.Date.ToString("d")</p>
+    <p><strong>Status</strong>: @Model.Status</p>
+    <!-- before using this line, import mysql db file -->
+    <!-- <p><strong>Owner</strong>: @Model.GetOwner().Name</p> -->
+    <p><strong>Contributors</strong>: 
+      <ul>
+        @foreach (var person in @Model.GetUsers())
+        {
+          <li>@person.Name</li>
+        }
+      </ul>
+    </p>
+    <p><strong>Todos</strong>:
+      <ul>
+        @foreach(var todo in @Model.GetTodos())
+        {
+          <li>@todo.Name - @todo.Status</li>
+        }
+      </ul>
+    </p>
+    @if (@Model.GetUsers().Count > 1)
+    {
+      <form asp-controller="Project" asp-action="LeaveProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+        <input type="hidden" name="projectId" value="@Model.Id">
+        <input type="hidden" name="userId" value="@thisUser.Id">
+        <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
+        <button type="submit" class="btn btn-danger">Leave this project</button>
+      </form>
+    }
+    else
+    {
+      <form asp-controller="Project" asp-action="DeleteProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+        <input type="hidden" name="projectId" value="@Model.Id">
+        <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
+        <button type="submit" class="btn btn-danger">Delete this project</button>
+      </form>
+    }
+  </div>
+</div>
