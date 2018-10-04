@@ -75,6 +75,16 @@ namespace ProjectManagement.Controllers
             Project foundProject = Project.Find(projectId);
             ProjectManagement.Models.User foundUser = ProjectManagement.Models.User.Find(userId);
             foundUser.DeleteProject(foundProject);
+            ProjectManagement.Models.User nextOwnerUser = foundProject.GetUsers()[0];
+            foundProject.AssignOwner(nextOwnerUser);
+            return RedirectToAction(nameof(ProjectController.Index));
+        }
+
+        [HttpPost("/projects/delete")]
+        public ActionResult DeleteProject(int projectId)
+        {
+            Project foundProject = Project.Find(projectId);
+            foundProject.Delete();
             return RedirectToAction(nameof(ProjectController.Index));
         }
     }

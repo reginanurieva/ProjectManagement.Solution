@@ -44,7 +44,9 @@ namespace ProjectManagement.Controllers
       newProject.Save();
       ProjectManagement.Models.User currentUser = ProjectManagement.Models.User.Find(user.UserName);
       newProject.AddUser(currentUser);
-      return RedirectToAction(nameof(HomeController.Index), "Home");
+      newProject.AssignOwner(currentUser);
+
+      return RedirectToAction(nameof(ProjectController.Index), "Project");
     }
 
     private Task<ApplicationUser> GetCurrentUserAsync()
