@@ -25,51 +25,52 @@
     thisUser = ProjectManagement.Models.User.Find(UserName);
 }
 
-<h1 id="explore-header">All available Projects</h1>
-<div class="container">
-  <div class="row">
-  @{
-      int count = 0;
-  }
-  @foreach(var project in Model)
-  {
-      count = @count + 1;
-      HtmlString content = new HtmlString(@project.Content);
-          <div class="col-md-12">
-          <div class="panel panel-default">
-              @if (count % 4 == 0)
-              {
-                  <div class="panel-heading" style="background-color:  #ff8000; color: white;">
-                      <div class="panel-title">
-                          <h4>@project.Name</h4>
-                      </div>
-                  </div>
-              }
-              else if (count % 4 == 1)
-              {
-                  <div class="panel-heading" style="background-color: #004d99; color: white;">
-                      <div class="panel-title">
-                          <h4>@project.Name</h4>
-                      </div>
-                  </div>
-              }
-              else if (count % 4 == 2)
-              {
-                  <div class="panel-heading" style="background-color: #008060; color: white;">
-                      <div class="panel-title">
-                          <h4>@project.Name</h4>
-                      </div>
-                  </div>
-              }
-              else
-              {
-                  <div class="panel-heading" style="background-color: #ffcc00; color: white;">
-                      <div class="panel-title">
-                          <h4>@project.Name</h4>
-                      </div>
-                  </div>
-              }
-              <div class="panel-body">
+<h1 id="explore-header">All Available Projects</h1><br/>
+
+
+<div class="row">
+@{
+    int count = 0;
+}
+@foreach(var project in Model)
+{
+    count = @count + 1;
+    HtmlString content = new HtmlString(@project.Content);
+        <div class="col-md-12">
+        <div class="panel panel-default">
+            @if (count % 4 == 0)
+            {
+                <div class="panel-heading" style="background-color:  #ff8000; color: white;">
+                    <div class="panel-title">
+                        <h4><i class="fa fa-code" aria-hidden="true"></i>&nbsp;@project.Name</h4>
+                    </div>
+                </div>
+            }
+            else if (count % 4 == 1)
+            {
+                <div class="panel-heading" style="background-color: #004d99; color: white;">
+                    <div class="panel-title">
+                        <h4><i class="fa fa-database" aria-hidden="true"></i>&nbsp;@project.Name</h4>
+                    </div>
+                </div>
+            }
+            else if (count % 4 == 2)
+            {
+                <div class="panel-heading" style="background-color: #008060; color: white;">
+                    <div class="panel-title">
+                        <h4><i class="fa fa-code-fork" aria-hidden="true"></i>&nbsp;@project.Name</h4>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="panel-heading" style="background-color: #ffcc00; color: white;">
+                    <div class="panel-title">
+                        <h4><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;@project.Name</h4>
+                    </div>
+                </div>
+            }
+            <div class="panel-body">
                   <h4>
                     <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;
                     Description:
@@ -86,15 +87,15 @@
                   <h4>
                     <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
                     <strong>Owner</strong>: @project.GetOwner().Name
-                  </h4>
-                  @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
-                  {
-                      <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
-                  }
-              </div>
-          </div>
-      </div>
+                  </h4>                
+                @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
+                {
+                    <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
+                }
+            </div>
+        </div>
+    </div>
 
-  }
-  </div>
+}
 </div>
+
