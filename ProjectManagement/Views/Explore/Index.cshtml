@@ -40,7 +40,7 @@
         <div class="panel panel-default">
             @if (count % 4 == 0)
             {
-                <div class="panel-heading" style="background-color:  #ff8000; color: white;">
+                <div class="panel-heading" style="background-color:  #ff791f; color: white;">
                     <div class="panel-title">
                         <h4><i class="fa fa-code" aria-hidden="true"></i>&nbsp;@project.Name</h4>
                     </div>
@@ -87,7 +87,7 @@
                   <h4>
                     <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
                     <strong>Owner</strong>: @project.GetOwner().Name
-                  </h4>                
+                  </h4>
                 @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                 {
                     <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
@@ -98,4 +98,3 @@
 
 }
 </div>
-
