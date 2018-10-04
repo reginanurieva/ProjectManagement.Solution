@@ -138,7 +138,7 @@ namespace ProjectManagement.Models
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"DELETE FROM projects_users; DELETE FROM projects_todos; DELETE FROM projects_tags; DELETE FROM projects_owners; DELETE FROM projects;";
       cmd.ExecuteNonQuery();
-      
+
       conn.Close();
       if (conn != null)
       {
@@ -197,7 +197,7 @@ namespace ProjectManagement.Models
       return this.Name.GetHashCode();
     }
 
-    public List <User> GetUsers() 
+    public List <User> GetUsers()
     {
       List <User> allUsers = new List <User> {};
       MySqlConnection conn = DB.Connection();
@@ -241,7 +241,7 @@ namespace ProjectManagement.Models
         conn.Dispose();
       }
     }
-    
+
     public List<Todo> GetTodos()
     {
       List <Todo> allTodos = new List <Todo> {};
@@ -307,7 +307,7 @@ namespace ProjectManagement.Models
       {
         conn.Dispose();
       }
-      return allTags; 
+      return allTags;
     }
 
     public void AddTag(Tag newTag)
@@ -321,6 +321,32 @@ namespace ProjectManagement.Models
       cmd.Parameters.AddWithValue("@tagId", newTag.Id);
 
       cmd.ExecuteNonQuery();
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void UpdateTags(List<Tag> newTags)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM projects_tags WHERE project_id = @projectId;";
+      cmd.Parameters.AddWithValue("@projectId", this.Id);
+      cmd.ExecuteNonQuery();
+
+      foreach (var tag in newTags)
+      {
+        cmd.CommandText = @"INSERT INTO projects_tags (project_id, tag_id) VALUES (@projectId, @tagId);";
+        cmd.Parameters.AddWithValue("@projectId", this.Id);
+        cmd.Parameters.AddWithValue("@tagId", tag.Id);
+
+        cmd.ExecuteNonQuery();
+      }
 
       conn.Close();
       if (conn != null)
@@ -366,13 +392,13 @@ namespace ProjectManagement.Models
           string email = rdr.GetString(3);
           foundUser = new User(name, username, email, actualId);
       }
-      
+
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return foundUser; 
+      return foundUser;
     }
   }
 }
