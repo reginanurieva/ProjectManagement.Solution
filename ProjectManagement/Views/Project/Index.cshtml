@@ -63,11 +63,11 @@
           <h4>
             <i class="fa fa-tags" aria-hidden="true"></i>&nbsp;
             <strong>Tags</strong>:
-            @foreach(Tag tag in @project.GetTags())
-            {
-              <p>@tag.Name</p>
-            }
           </h4>
+          @foreach(Tag tag in @project.GetTags())
+          {
+            <p>@tag.Name</p>
+          }
         </div>
       </div>
     </div>
