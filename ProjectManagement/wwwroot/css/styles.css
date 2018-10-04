@@ -67,7 +67,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column {
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 10px;
   margin: 0px -5px;
   box-shadow: 2px 2px 3px black;
@@ -111,7 +111,6 @@ p.form-control {
   color: black;
   height: auto;
 }
-
 
 #join{
   float: right;
@@ -159,3 +158,21 @@ footer {
   .panel{
     box-shadow: 5px 5px 10px #CAC6C5;
   }
+  /* .flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  } */
+
+  /* .equal{  
+       display: -webkit-box;
+       display: -moz-box;
+       display: -ms-flexbox;
+       display: -webkit-flex;
+       display: flex;
+   }
+ div[class*='col-md-6']{
+   flex:1 1 auto;
+   display: flex;
+ }
+ */ 

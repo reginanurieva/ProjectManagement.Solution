@@ -27,28 +27,28 @@
   ProjectManagement.Models.User thisUser = ProjectManagement.Models.User.Find(UserName);
 }
 
-<br><br><br>
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="~/projects">Projects</a></li>
-  <li role="presentation"><a href="~/explore">Explore</a></li>
-  <li role="presentation"><a href="~/myprofile">My Profile</a></li>
-</ul>
-
-
 <h1 id="page-header">My Projects</h1>
 @foreach(Project project in thisUser.GetProjects())
 {
   HtmlString content = new HtmlString(@project.Content);
-  <div class="project-container">
+  <div class="project-container" id="@project.Name">
     <h2 class="project-header">@project.Name</h2>
-    <div class="project-details">
-      <h4><a href="/projects/@project.Id">Project Details</a></h4>
-      <h4>About This Project</h4>
-      <p>@content</p>
-      <p><strong>Due</strong>: @project.DueDate.Date.ToString("d")</p>
-      <p><strong>Status</strong>: @project.Status</p>
-      <!-- before using this line, import mysql db file -->
-      <!-- <p><strong>Owner</strong>: @project.GetOwner().Name</p> -->
+    <div class="row project-details">
+      <div class="col-md-7">
+        <h4><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; About This Project</h4>
+        <p>@content</p>
+      </div>
+      <div class="col-md-5">
+        <h4>
+          <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+          <a href="/projects/@project.Id">Project Details</a></h4>
+        <h4>
+          <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+          <strong>Due</strong>: @project.DueDate.Date.ToString("d")</h4>
+        <h4>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
+          <strong>Status</strong>: @project.Status</h4>
+      </div>
     </div>
     <div class="status-container">
       <div class="row">
@@ -85,7 +85,9 @@
                 <div class="input-group">
                   <input class="form-control" name="todoName" type="text" placeholder="Add New Todo" />
                   <span class="input-group-btn">
-                    <button class="btn btn-success" type="submit">+</button>
+                    <button class="btn btn-success" type="submit">
+                      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
                   </span>
                 </div>
               </form>
@@ -137,7 +139,6 @@
                     </span>
                   </div>
                   <br>
-
                 }
               }
               <input type="hidden" name="newStatus" value="Stuck" />
