@@ -31,30 +31,36 @@
 @foreach(Project project in thisUser.GetProjects())
 {
   HtmlString content = new HtmlString(@project.Content);
-  <div class="project-container" id="@project.Name">
-    <h2 class="project-header">@project.Name</h2>
-    <div class="row project-details">
-      <div class="col-md-7">
-        <h4><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; About This Project</h4>
-        <p>@content</p>
+  <div class="project-container panel" id="@project.Name">
+    <div class="panel-heading project-header">
+      <div class="panel-title">
+        <h3>@project.Name</h3>
       </div>
-      <div class="col-md-5">
-        <h4>
-          <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
-          <a href="/projects/@project.Id">Project Details</a>
-        </h4>
-        <h4>
-          <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
-          <strong>Due</strong>: @project.DueDate.Date.ToString("d")
-        </h4>
-        <h4>
-          <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
-          <strong>Status</strong>: @project.Status
-        </h4>
-        <h4>
-          <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
-          <strong>Owner</strong>: @project.GetOwner().Name
-        </h4>
+    </div>
+    <div class="panel-body">
+      <div class="row project-details">
+        <div class="col-md-7">
+          <h4><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; About This Project</h4>
+          <p>@content</p>
+        </div>
+        <div class="col-md-5">
+          <h4>
+            <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+            <a href="/projects/@project.Id">Project Details</a>
+          </h4>
+          <h4>
+            <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+            <strong>Due</strong>: @project.DueDate.Date.ToString("d")
+          </h4>
+          <h4>
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
+            <strong>Status</strong>: @project.Status
+          </h4>
+          <h4>
+            <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
+            <strong>Owner</strong>: @project.GetOwner().Name
+          </h4>
+        </div>
       </div>
     </div>
     <div class="status-container">
