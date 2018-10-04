@@ -48,6 +48,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .project-details {
   margin: 0px 20px;
+  padding: 10px;
   background: #fff;
   border: 1px solid lightgray;
 }
@@ -120,16 +121,16 @@ p.form-control {
 .btn#create{
   font-family: 'Karla', sans-serif;
   background-color:#008060;
-  color: lightgray;
+  color: white;
 }
 .btn#edit{
   font-family: 'Karla', sans-serif;
   background-color: #004d99;
-  color: lightgray;
+  color: white;
 }
 .btn#delete{
   font-family: 'Karla', sans-serif;
-  color: lightgray;
+  color: white;
 }
 
 #join:hover{
@@ -184,7 +185,7 @@ footer {
   .tag {
     background-color: #fff8d1;
   }
-  
+
   .row{
     margin-bottom: 40px;
   }
