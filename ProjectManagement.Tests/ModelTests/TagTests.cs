@@ -66,7 +66,7 @@ namespace ProjectManagement.Tests
             Assert.AreEqual(newTag, editTag);
         }
         [TestMethod]
-        public void DeleteClient_DeleteAClient()
+        public void Delete_DeleteATag()
         {
             //Arrange
             Tag newTag = new Tag("Skye");
@@ -74,7 +74,7 @@ namespace ProjectManagement.Tests
 
             //Act
             newTag.Delete();
-            int actualCount = User.GetAll().Count;
+            int actualCount = Tag.GetAll().Count;
 
             //Assert
             Assert.AreEqual(0, actualCount);
@@ -123,5 +123,36 @@ namespace ProjectManagement.Tests
             //Assert
             CollectionAssert.AreEqual(allProjects, projects);
         }
+
+        [TestMethod]
+        public void Find_FindTagWithName_Tag()
+        {
+            //Arrange
+            Tag newTag = new Tag("Skye");
+            newTag.Save();
+
+            //Act
+            Tag foundTag = Tag.Find(newTag.Name);
+
+            //Assert
+            Assert.AreEqual(newTag, foundTag);
+        }
+
+        [TestMethod]
+        public void Exist_TagExist()
+        {
+            //Arrange
+            Tag newTag = new Tag("Skye");
+            newTag.Save();
+
+            //Act
+            bool resultTrue = Tag.Exist(newTag.Name);
+            bool resultFalse = Tag.Exist("something");
+
+            //Assert
+            Assert.AreEqual(true, resultTrue);
+            Assert.AreEqual(false, resultFalse);
+        }
+
     }
 }
