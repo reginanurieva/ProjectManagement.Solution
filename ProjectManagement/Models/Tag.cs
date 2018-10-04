@@ -109,6 +109,35 @@ namespace ProjectManagement.Models
             return foundTag;
         }
 
+        public static Tag Find(string tag)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM tags WHERE name = @searchName;";
+
+            cmd.Parameters.AddWithValue("@searchName", tag);
+
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            Tag foundTag = new Tag("", 0);
+            while (rdr.Read())
+            {
+                int actualId = rdr.GetInt32(0);
+                string name = rdr.GetString(1);
+                foundTag = new Tag(name, actualId);
+            }
+
+            conn.Close();
+
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+            return foundTag;         
+        }
+
         public void Update(Tag newTag)
         {
             MySqlConnection conn = DB.Connection();
@@ -136,9 +165,9 @@ namespace ProjectManagement.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM projects_tags WHERE tag_id = @searchId; DELETE FROM tags WHERE id = @searchid;";
+            cmd.CommandText = @"DELETE FROM projects_tags WHERE tag_id = @searchId; DELETE FROM tags WHERE id = @searchId;";
 
-            cmd.Parameters.AddWithValue("@searchid", this.Id);
+            cmd.Parameters.AddWithValue("@searchId", this.Id);
 
             cmd.ExecuteNonQuery();
 
@@ -211,6 +240,40 @@ namespace ProjectManagement.Models
             if (conn != null)
             {
                 conn.Dispose();
+            }
+        }
+
+        public static bool Exist(string tag)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+
+            MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT * FROM tags WHERE name = @searchName;";
+
+            cmd.Parameters.AddWithValue("@searchName", tag);
+
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            Tag foundTag = new Tag("", 0);
+
+            if (rdr.HasRows)
+            {
+                conn.Close();
+                if (conn != null)
+                {
+                    conn.Dispose();
+                }
+                return true;
+            }
+            else
+            {
+                conn.Close();
+                if (conn != null)
+                {
+                    conn.Dispose();
+                }
+                return false;
             }
         }
 

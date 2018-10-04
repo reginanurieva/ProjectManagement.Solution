@@ -275,7 +275,7 @@ namespace ProjectManagement.Models
             cmd.Parameters.AddWithValue("@username", username);
             MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
 
-            if (rdr.Read())
+            if (rdr.HasRows)
             {
                 conn.Close();
                 if (conn != null)

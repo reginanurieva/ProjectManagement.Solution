@@ -31,7 +31,7 @@ namespace ProjectManagement.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string returnUrl = null)
+    public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string Tags = "", string returnUrl = null)
     {
       var user = await GetCurrentUserAsync();
 
@@ -45,6 +45,25 @@ namespace ProjectManagement.Controllers
       ProjectManagement.Models.User currentUser = ProjectManagement.Models.User.Find(user.UserName);
       newProject.AddUser(currentUser);
       newProject.AssignOwner(currentUser);
+
+      if (Tags != "")
+      {
+        Tags = Tags.Trim();
+        string [] tags = Tags.Split(' ');
+        foreach (string tag in tags)
+        {
+          Tag foundTag;
+          if (!Tag.Exist(tag))
+          {
+            foundTag = new Tag(tag);
+            foundTag.Save();
+          }
+          else {
+            foundTag = Tag.Find(tag);
+          }
+          newProject.AddTag(foundTag);
+        }
+      }
 
       return RedirectToAction(nameof(ProjectController.Index), "Project");
     }
