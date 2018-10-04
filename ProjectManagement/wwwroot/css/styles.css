@@ -158,3 +158,21 @@ footer {
   .panel{
     box-shadow: 5px 5px 10px #CAC6C5;
   }
+  /* .flex-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  } */
+
+  /* .equal{  
+       display: -webkit-box;
+       display: -moz-box;
+       display: -ms-flexbox;
+       display: -webkit-flex;
+       display: flex;
+   }
+ div[class*='col-md-6']{
+   flex:1 1 auto;
+   display: flex;
+ }
+ */ 
