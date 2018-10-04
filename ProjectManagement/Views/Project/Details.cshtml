@@ -24,37 +24,66 @@
   HtmlString content = new HtmlString(@Model.Content);
 }
 <h1 id="page-header">@Model.Name</h1>
-<div class="project-container">
-  <h2 class="project-header">@Model.Name</h2>
-  <div class="project-details">
-    <p><strong>About This Project</strong>: @content</p>
-    <p><strong>Due</strong>: @Model.DueDate.Date.ToString("d")</p>
-    <p><strong>Status</strong>: @Model.Status</p>
-    <!-- before using this line, import mysql db file -->
-    <!-- <p><strong>Owner</strong>: @Model.GetOwner().Name</p> -->
-    <p><strong>Contributors</strong>: 
-      <ul>
-        @foreach (var person in @Model.GetUsers())
-        {
-          <li>@person.Name</li>
-        }
-      </ul>
-    </p>
-    <p><strong>Todos</strong>:
-      <ul>
-        @foreach(var todo in @Model.GetTodos())
-        {
-          <li>@todo.Name - @todo.Status</li>
-        }
-      </ul>
-    </p>
+<br />
+<div class="project-container panel">
+  <div class="panel-heading project-header">
+    <div class="panel-title">
+      <h3 class="project-header">@Model.Name</h3>
+    </div>
+  </div>
+  <div class="project-details panel-body">
+    <div class="row">
+      <div class="col-md-12">
+        <h4><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; About This Project</h4>
+        <p>@content</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h4>
+          <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+          <strong>Due</strong>: @Model.DueDate.Date.ToString("d")
+        </h4>
+        <h4>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
+          <strong>Status</strong>: @Model.Status
+        </h4>
+        <!-- before using this line, import mysql db file -->
+        <!-- <p><strong>Owner</strong>: @Model.GetOwner().Name</p> -->
+        <br />
+        <h4>
+          <i class="fa fa-users" aria-hidden="true"></i>&nbsp;
+          <strong>Contributors</strong>:
+        </h4>
+        <ul>
+          @foreach (var person in @Model.GetUsers())
+          {
+            <li>@person.Name</li>
+          }
+        </ul>
+        <br />
+      </div>
+      <div class="col-md-6">
+        <h4>
+          <i class="fa fa-columns" aria-hidden="true"></i>&nbsp;
+          <strong>Todo Items</strong>:
+        </h4>
+        <ul>
+          @foreach(var todo in @Model.GetTodos())
+          {
+            <li>@todo.Name - @todo.Status</li>
+          }
+        </ul>
+        <br />
+      </div>
+    </div>
     @if (@Model.GetUsers().Count > 1)
     {
       <form asp-controller="Project" asp-action="LeaveProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
         <input type="hidden" name="projectId" value="@Model.Id">
         <input type="hidden" name="userId" value="@thisUser.Id">
-        <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
-        <button type="submit" class="btn btn-danger">Leave this project</button>
+        <a href="/projects/update/@Model.Id" class="btn" id="edit">Edit</a>
+        <button type="submit" class="btn btn-danger" id="delete">Leave</button>
       </form>
     }
     else
@@ -65,5 +94,6 @@
         <button type="submit" class="btn btn-danger" id="delete">Delete</button>
       </form>
     }
+    <br />
   </div>
 </div>
