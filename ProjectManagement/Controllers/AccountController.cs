@@ -125,10 +125,17 @@ namespace ProjectManagement.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
+                    // If there isn't user record in MySql DB                    
                     if (!ProjectManagement.Models.User.Exist(user.UserName))
                     {
                         ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(user.FirstName + " " + user.LastName, user.UserName, user.Email);
                         newUser.Save();
+                    }
+                    // If there is a user record, update information.
+                    else
+                    {
+                        ProjectManagement.Models.User foundUser = ProjectManagement.Models.User.Find(user.UserName);
+                        foundUser.Update(new ProjectManagement.Models.User(user.FirstName + " " + user.LastName, user.UserName, user.Email));
                     }
 
                     _logger.LogInformation(3, "User created a new account with password.");
