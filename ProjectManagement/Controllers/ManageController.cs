@@ -406,8 +406,6 @@ namespace ProjectManagement.Controllers
                 {
                     return View("Error");
                 }
-
-                int mysqlUserId = ProjectManagement.Models.User.Find(user.UserName).Id;
                 
                 user.UserName = model.UserName;
                 user.Email = model.Email;
@@ -418,22 +416,10 @@ namespace ProjectManagement.Controllers
 
                 if (result.Succeeded)
                 {
-                    MySqlConnection conn = DB.Connection();
-                    conn.Open();
-
-                    MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-                    cmd.CommandText = @"UPDATE users SET name = @name, username = @username, email = @email WHERE id = @id;";
-                    cmd.Parameters.AddWithValue("@name", user.FirstName + " " + user.LastName);
-                    cmd.Parameters.AddWithValue("@username", user.UserName);
-                    cmd.Parameters.AddWithValue("@email", user.Email);
-                    cmd.Parameters.AddWithValue("@id", mysqlUserId);
-                    cmd.ExecuteNonQuery();
-
-                    conn.Close();
-                    if (conn != null)
-                    {
-                        conn.Dispose();
-                    }
+                    //update user information with new information
+                    ProjectManagement.Models.User currentUser = ProjectManagement.Models.User.Find(user.UserName);
+                    ProjectManagement.Models.User newUser = new ProjectManagement.Models.User(user.FirstName + " " + user.LastName, user.UserName, user.Email);
+                    currentUser.Update(newUser);
 
                     _logger.LogInformation(3, "User updated information.");
                     return RedirectToLocal(returnUrl);

@@ -165,7 +165,7 @@ namespace ProjectManagement.Models
             cmd.Parameters.AddWithValue("@newName", newUser.Name);
             cmd.Parameters.AddWithValue("@newUsername", newUser.Username);
             cmd.Parameters.AddWithValue("@newEmail", newUser.Email);
-            cmd.Parameters.AddWithValue("@searchId", newUser.Id);
+            cmd.Parameters.AddWithValue("@searchId", this.Id);
 
             cmd.ExecuteNonQuery();
 
