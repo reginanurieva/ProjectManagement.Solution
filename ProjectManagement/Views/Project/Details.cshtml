@@ -61,8 +61,8 @@
     {
       <form asp-controller="Project" asp-action="DeleteProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
         <input type="hidden" name="projectId" value="@Model.Id">
-        <a href="/projects/update/@Model.Id" class="btn btn-info">Edit project information</a>
-        <button type="submit" class="btn btn-danger">Delete this project</button>
+        <a href="/projects/update/@Model.Id" id="edit" class="btn btn-default">Edit</a>
+        <button type="submit" class="btn btn-danger" id="delete">Delete</button>
       </form>
     }
   </div>

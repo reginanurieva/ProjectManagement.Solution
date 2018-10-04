@@ -18,9 +18,11 @@
     <p></p>
   </div>
   <textarea id="Content" name="Content" style="display: none;"></textarea>
-  <input type="date" id="DueDate" name="DueDate">
+
+  <label for="DueDate"><h4>Due Date :</h4></label><br><input type="date" id="DueDate" name="DueDate">
   <br><input type="hidden" name="Tags" id="Tags"><input type="text" style="margin-top: 20px; margin-right: 10px;" maxlength="50" id="potentialTag"><button id="AddTagBtn">Add a tag</button><span id="writtenTags" name="writtenTags"></span>
-  <br><button type="submit" class="btn" style="margin-top: 20px;">Create</button>
+  <br><button type="submit" id="create" class="btn btn-default" style="margin-top: 20px;">Create</button>
+
 </form>
 
 <!-- Include the Hashtag library -->
