@@ -6,7 +6,7 @@ _by Hyewon Cho, Chris Crow, Meria Thomas, Regina Nurieva, and David Mortkowitz_
 _Project Management is a multitasking and job management database, created with a focus in collaboration and productivity._
 
 
-## Project Management Specifications and Expected Behaviors
+### Project Management Specifications and Expected Behaviors
 
 * _The user may browse the website and available projects without joining._
 * _The user must register an account with Project Management in order to create a new project or join an existing one._
@@ -14,16 +14,16 @@ _Project Management is a multitasking and job management database, created with 
 * _Created projects may be organized with tags, to organize your own projects and find other like-minded creators._
 
 
-## Known bugs
+### Known bugs
 * _There are no known bugs in this version._
 
 
-## Directions for Installation
-#### *Note*: This application was built using a Mac running OS X 10.11. If you are running Windows or a significantly earlier version of OS X, these instructions may vary based on your operating system.
+### Directions for Installation
+#### *Note*: This application was built using a Mac running OS X 10.11. If you are running Windows or a different version of OS X, these instructions may vary based on your operating system.
 
-* _To launch this application, please have MAMP and MySql installed and configured on your Mac._
+* _To launch this application, please have MAMP, .NET core version 1.0.4, and MySql installed and configured on your Mac._
 * _Clone or download code from the Git Rep, located at:_
-* https://github.com/dmortkowitz/HairSalon.git* 
+* https://github.com/hyewon92cho/ProjectManagement.Solution.git
 * _Use a Database software such as MAMP, and turn on your server using your username and password._ 
 * _Open Terminal, and launch MySql._
 * _Once in MySql, run the following commands to create your database:_
@@ -55,6 +55,7 @@ _Project Management is a multitasking and job management database, created with 
   CREATE TABLE tags (id serial PRIMARY KEY, name VARCHAR(255));  
   CREATE TABLE todos (id serial PRIMARY KEY, name VARCHAR(255), status VARCHAR(255));
   CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(255), username VARCHAR(255), email VARCHAR (255));
+```
 * _In terminal, navigate to the project folder, and run:_
 * dotnet restore
 * _Then in terminal, run:_
@@ -63,7 +64,7 @@ _Project Management is a multitasking and job management database, created with 
 * Localhost:5000 
 * _in your browser of choice (Chrome is recommended) and navigate the Project  database._
 
-## Technologies used
+### Technologies used
 * C# 
 * .NET Core App 1.0.4
 * Mono
