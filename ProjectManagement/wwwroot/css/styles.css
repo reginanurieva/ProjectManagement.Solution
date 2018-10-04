@@ -9,7 +9,6 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-
 #header h1 {
   font-size: 50px;
   position: absolute;
@@ -82,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column--color-red {
-  background-color: #ff8000;
+  background-color: #ff791f;
 }
 
 .column--color-green {
@@ -136,7 +135,7 @@ footer {
 }
 
 .panel-default > .panel-heading-custom {
-  background: #ff8000; color: #fff;
+  background: #ff791f; color: #fff;
 }
 
   .panel-default > .panel-heading-custom1 {
@@ -164,7 +163,7 @@ footer {
     min-height: 100vh;
   } */
 
-  /* .equal{  
+  /* .equal{
        display: -webkit-box;
        display: -moz-box;
        display: -ms-flexbox;
@@ -175,7 +174,7 @@ footer {
    flex:1 1 auto;
    display: flex;
  }
- */ 
+ */
 
   .body-content {
     margin-bottom: 50px;
