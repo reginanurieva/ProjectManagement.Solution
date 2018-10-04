@@ -57,12 +57,18 @@ _Project Management is a multitasking and job management database, created with 
   CREATE TABLE users (id serial PRIMARY KEY, name VARCHAR(255), username VARCHAR(255), email VARCHAR (255));
 ```
 * _In terminal, navigate to the project folder, and run:_
-* dotnet restore
+
+```
+dotnet restore
+```
 * _Then in terminal, run:_
-* dotnet run
+
+```
+dotnet run
+```
 * _Once the file is running, signaled by the notification in Terminal, you may locate the site at:_
 * Localhost:5000 
-* _in your browser of choice (Chrome is recommended) and navigate the Project  database._
+* _In your browser of choice (Chrome is recommended) and navigate the Project  database._
 
 ### Technologies used
 * C# 
