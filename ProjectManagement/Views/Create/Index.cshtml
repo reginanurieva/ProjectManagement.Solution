@@ -18,11 +18,23 @@
     <p></p>
   </div>
   <textarea id="Content" name="Content" style="display: none;"></textarea>
-
-  <label for="DueDate"><h4>Due Date :</h4></label><br><input type="date" id="DueDate" name="DueDate">
-  <br><input type="hidden" name="Tags" id="Tags"><input type="text" style="margin-top: 20px; margin-right: 10px;" maxlength="50" id="potentialTag"><button id="AddTagBtn">Add a tag</button><span id="writtenTags" name="writtenTags"></span>
-  <br><button type="submit" id="create" class="btn btn-default" style="margin-top: 20px;">Create</button>
-
+  <div class="col-md-6">
+    <label for="DueDate"><h4>Due Date :</h4></label>
+    <br>
+    <input type="date" id="DueDate" name="DueDate" class="form-control">
+    <br>
+    <label for="Tags"><h4>Tags :</h4></label>
+    <input type="hidden" name="Tags" id="Tags">
+    <div class="input-group">
+      <input type="text" class="form-control" maxlength="50" id="potentialTag">
+      <span class="input-group-btn">
+        <button class="btn btn-default create" id="AddTagBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+      </span>
+    </div>
+    <span id="writtenTags" name="writtenTags"></span>
+    <br>
+    <button type="submit" class="create btn btn-default" style="margin-top: 20px;">Create</button>
+  </div>
 </form>
 
 <!-- Include the Hashtag library -->

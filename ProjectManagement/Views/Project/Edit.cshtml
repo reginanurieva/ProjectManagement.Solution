@@ -22,22 +22,49 @@
     @content
   </div>
   <textarea id="Content" name="Content" style="display: none;">@content</textarea>
-  <label for="DueDate">Due date:</label><input type="date" id="DueDate" name="DueDate" value='@Model.DueDate.ToString("yyyy-MM-dd")' style="margin-left: 10px;">
-  <br><label for="Status">Status: </label><select id="Status" name="Status" style="margin-top: 10px; margin-left: 10px;">
-    @if (@Model.Status == "In Progress")
-    {
-      <option value="In Progress" selected>In progress</option>
-      <option value="Done">Done</option>
-    }
-    else 
-    {
-      <option value="In Progress">In Progress</option>
-      <option value="Done" selected>Done</option>
-    }
+  <div class="col-md-6">
+    <label for="DueDate"><h4>Due Date :</h4></label>
+    <br>
+    <input type="date" id="DueDate" name="DueDate" value='@Model.DueDate.ToString("yyyy-MM-dd")' class="form-control">
+    <br>
+    <label for="Status"><h4>Status: </h4></label>
+    <select class="form-control" id="Status" name="Status">
+      @if (@Model.Status == "In Progress")
+      {
+        <option value="In Progress" selected>In progress</option>
+        <option value="Done">Done</option>
+      }
+      else
+      {
+        <option value="In Progress">In Progress</option>
+        <option value="Done" selected>Done</option>
+      }
 
-  </select>
-  <br><button type="submit" class="btn" style="margin-top: 20px;">Update</button>
+    </select>
+    <br>
+    <label for="Tags"><h4>Tags :</h4></label>
+    <input type="hidden" name="Tags" id="Tags">
+    <div class="input-group">
+      <input type="text" class="form-control" maxlength="50" id="potentialTag">
+      <span class="input-group-btn">
+        <button class="btn btn-default create" id="AddTagBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+      </span>
+    </div>
+    <span id="writtenTags" name="writtenTags">
+      @if (@Model.GetTags().Count > 0)
+      {
+        foreach (var tag in @Model.GetTags())
+        {
+          #@tag.Name
+        }
+      }
+    </span>
+    <br><button type="submit" class="btn btn-default" id="edit">Update</button>
+  </div>
 </form>
+
+<!-- Include the Hashtag library -->
+<script src="js/hashtag.js"></script>
 
 <!-- Include the Quill library -->
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -53,5 +80,15 @@
   // if quill textarea has changed, change the innertext of textarea with updated content.
   quill.on('text-change', function(delta, oldDelta, source) {
     $("#Content").val(quill.root.innerHTML);
+  });
+
+  $("#AddTagBtn").click(function(event){
+    event.preventDefault();
+    if (!$("#writtenTags").text().includes($("#potentialTag").val())) {
+      $("#writtenTags").text($("#writtenTags").text()+" #"+$("#potentialTag").val().replace(/\s+/g, ''));
+      $("#potentialTag").val("");
+      Hashtag.replaceTags('#writtenTags');
+      $("#Tags").val($("#writtenTags").text());
+    }
   });
 </script>
