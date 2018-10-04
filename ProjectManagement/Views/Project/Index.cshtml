@@ -41,13 +41,20 @@
       <div class="col-md-5">
         <h4>
           <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
-          <a href="/projects/@project.Id">Project Details</a></h4>
+          <a href="/projects/@project.Id">Project Details</a>
+        </h4>
         <h4>
           <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
-          <strong>Due</strong>: @project.DueDate.Date.ToString("d")</h4>
+          <strong>Due</strong>: @project.DueDate.Date.ToString("d")
+        </h4>
         <h4>
           <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
-          <strong>Status</strong>: @project.Status</h4>
+          <strong>Status</strong>: @project.Status
+        </h4>
+        <h4>
+          <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
+          <strong>Owner</strong>: @project.GetOwner().Name
+        </h4>
       </div>
     </div>
     <div class="status-container">

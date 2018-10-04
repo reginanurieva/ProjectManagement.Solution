@@ -70,10 +70,23 @@
                   </div>
               }
               <div class="panel-body">
-                  <h4>Description:</h4>
+                  <h4>
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;
+                    Description:
+                  </h4>
                   <p class="card-text">@content</p>
-                  <h4>Due Date:</h4>
-                  <p class="card-text">@project.DueDate.Date.ToString("d") </p>
+                  <h4>
+                    <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+                    <strong>Due</strong>: @project.DueDate.Date.ToString("d")
+                  </h4>
+                  <h4>
+                    <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
+                    <strong>Status</strong>: @project.Status
+                  </h4>
+                  <h4>
+                    <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
+                    <strong>Owner</strong>: @project.GetOwner().Name
+                  </h4>
                   @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                   {
                       <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
