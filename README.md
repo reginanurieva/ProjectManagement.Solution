@@ -31,7 +31,7 @@ _Project Management is a multitasking and job management database, created with 
   CREATE DATABASE project_management;
   USE project_management;
   CREATE TABLE forums (id serial PRIMARY KEY, name VARCHAR(255));
-  CREATE TABLE projects (id serial PRIMARY KEY, name VARCHAR(255), content VARCHAR(255), duedate DATETIME, status VARCHAR(255));
+  CREATE TABLE projects (id serial PRIMARY KEY, name VARCHAR(255), content TEXT, duedate DATETIME, status VARCHAR(255));
   CREATE TABLE projects_forums (id serial PRIMARY KEY, project_id INT(11), forum_id INT(11));
   CREATE TABLE projects_owners (id serial PRIMARY KEY, project_id INT(11), user_id INT(11));
   CREATE TABLE projects_tags (id serial PRIMARY KEY, project_id INT(11), tag_id INT(11));
@@ -46,7 +46,7 @@ _Project Management is a multitasking and job management database, created with 
   CREATE DATABASE project_management_test;
   USE project_management_test;
   CREATE TABLE forums (id serial PRIMARY KEY, name VARCHAR(255));
-  CREATE TABLE projects (id serial PRIMARY KEY, name VARCHAR(255), content VARCHAR(255), duedate DATETIME, status VARCHAR(255));
+  CREATE TABLE projects (id serial PRIMARY KEY, name VARCHAR(255), content TEXT, duedate DATETIME, status VARCHAR(255));
   CREATE TABLE projects_forums (id serial PRIMARY KEY, project_id INT(11), forum_id INT(11));
   CREATE TABLE projects_owners (id serial PRIMARY KEY, project_id INT(11), user_id INT(11));
   CREATE TABLE projects_tags (id serial PRIMARY KEY, project_id INT(11), tag_id INT(11));
