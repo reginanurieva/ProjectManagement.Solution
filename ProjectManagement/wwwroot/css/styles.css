@@ -9,7 +9,6 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-
 #header h1 {
   font-size: 50px;
   position: absolute;
@@ -67,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column {
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 10px;
   margin: 0px -5px;
   box-shadow: 2px 2px 3px black;
@@ -82,7 +81,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .column--color-red {
-  background-color: #ff8000;
+  background-color: #ff791f;
 }
 
 .column--color-green {
@@ -112,12 +111,12 @@ p.form-control {
   height: auto;
 }
 
-
 #join{
   float: right;
   margin-top: 8px;
-  background-color: #5A5A5A;
-  color: white;
+  background-color: #101010;
+  color: lightgray;
+  font-family: 'Karla', sans-serif;
 }
 
 #join:hover{
@@ -137,7 +136,7 @@ footer {
 }
 
 .panel-default > .panel-heading-custom {
-  background: #ff8000; color: #fff;
+  background: #ff791f; color: #fff;
 }
 
   .panel-default > .panel-heading-custom1 {
@@ -162,4 +161,12 @@ footer {
 
   .tag {
     background-color: #fff8d1;
+  }
+  
+  .row{
+    margin-bottom: 40px;
+  }
+
+  .body-content {
+    margin-bottom: 50px;
   }
