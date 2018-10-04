@@ -5,6 +5,12 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
+@{
+  Layout = "_Layout";
+}
+
+
 @{
     ViewData["Title"] = "My Projects Page";
 }
@@ -22,77 +28,149 @@
 }
 
 <h1 id="page-header">My Projects</h1>
-        @* Replace Project.GetAll() with thisUser.GetProjects() whenever the method has been created. *@
 @foreach(Project project in thisUser.GetProjects())
 {
   HtmlString content = new HtmlString(@project.Content);
-  <div class="project-container">
+  <div class="project-container" id="@project.Name">
     <h2 class="project-header">@project.Name</h2>
-    <div class="project-details">
-      <p><strong>About This Project</strong>: @content</p>
-      <p><strong>Due</strong>: @project.DueDate</p>
-      <p><strong>Status</strong>: @project.Status</p>
+    <div class="row project-details">
+      <div class="col-md-7">
+        <h4><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp; About This Project</h4>
+        <p>@content</p>
+      </div>
+      <div class="col-md-5">
+        <h4>
+          <i class="fa fa-pencil" aria-hidden="true"></i>&nbsp;
+          <a href="/projects/@project.Id">Project Details</a></h4>
+        <h4>
+          <i class="fa fa-calendar" aria-hidden="true"></i>&nbsp;
+          <strong>Due</strong>: @project.DueDate.Date.ToString("d")</h4>
+        <h4>
+          <i class="fa fa-check-square-o" aria-hidden="true"></i>&nbsp;
+          <strong>Status</strong>: @project.Status</h4>
+      </div>
     </div>
     <div class="status-container">
       <div class="row">
+
+        @* Todo Column *@
         <div class="col-sm-3">
           <div class="column column--color-blue">
-            <h3 id="todo" class="task-category">Todo</h3>
+            <h3 class="task-category">Todo</h3>
+            <form id="todo-update" action="/projects/updateStatus" method="post">
+              <div id="todo-@project.Id" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                @foreach(Todo task in @project.GetTodos())
+                {
+                  @if(task.Status == "Todo")
+                  {
+                    <div class="input-group task-card" draggable="true" ondragstart="drag(event)" id="@task.Id">
+                      <p class="form-control">@task.Name</p>
+                      <span class="input-group-btn">
+                        <a href="/projects/deleteTodo/@task.Id" class="btn btn-default" type="button">
+                          <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                      </span>
+                    </div>
+                    <br>
+                  }
+                }
+                <input type="hidden" name="newStatus" value="Todo" />
+                <input id="todo-@project.Id-input" type="hidden" name="todoId">
+                <br><br>
+              </div>
+            </form>
             <p>
               <form id="new-todo" action="/projects/newTodo" method="post">
                 <input name="projectId" type="hidden" value="@project.Id" />
                 <div class="input-group">
                   <input class="form-control" name="todoName" type="text" placeholder="Add New Todo" />
                   <span class="input-group-btn">
-                    <button class="btn btn-success" type="submit">+</button>
+                    <button class="btn btn-success" type="submit">
+                      <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    </button>
                   </span>
                 </div>
               </form>
             </p>
-            @foreach(Todo task in Todo.GetAll())
-            {
-              @if(task.Status == "Todo")
-              {
-                <p id="@task.Status" class="task-card" draggable="true" ondragstart="drag(event)">@task.Name</p>
-              }
-            }
           </div>
         </div>
+
+        @* In Progress Column *@
         <div class="col-sm-3">
-          <div class="column column--color-yellow" ondrop="drop(event, this)" ondragover="allowDrop(event)">
-            <h3 id="in-progress" class="task-category">In Progress</h3>
-            @foreach(Todo task in Todo.GetAll())
-            {
-              @if(task.Status == "In Progress")
+          <form id="in-progress-update" action="/projects/updateStatus" method="post">
+            <div class="column column--color-yellow"  id="in-progress-@project.Id" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+              <h3 id="in-progress" class="task-category">In Progress</h3>
+              @foreach(Todo task in @project.GetTodos())
               {
-                <p class="task-card">@task.Name</p>
+                @if(task.Status == "In Progress")
+                {
+                  <div class="input-group task-card" draggable="true" ondragstart="drag(event)" id="@task.Id">
+                    <p class="form-control">@task.Name</p>
+                    <span class="input-group-btn">
+                      <a href="/projects/deleteTodo/@task.Id" class="btn btn-default" type="button">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                  <br>
+                }
               }
-            }
-          </div>
+              <input type="hidden" name="newStatus" value="In Progress" />
+              <input id="in-progress-@project.Id-input" type="hidden" name="todoId">
+            </div>
+          </form>
         </div>
+
+        @* Stuck Column *@
         <div class="col-sm-3">
-          <div class="column column--color-red">
-            <h3 id="stuck" class="task-category">Stuck</h3>
-            @foreach(Todo task in Todo.GetAll())
-            {
-              @if(task.Status == "Stuck")
+          <form id="stuck-update" action="/projects/updateStatus" method="post">
+            <div class="column column--color-red" id="stuck-@project.Id" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+              <h3 id="stuck" class="task-category">Stuck</h3>
+              @foreach(Todo task in @project.GetTodos())
               {
-                <p class="task-card">@task.Name</p>
+                @if(task.Status == "Stuck")
+                {
+                  <div class="input-group task-card" draggable="true" ondragstart="drag(event)" id="@task.Id">
+                    <p class="form-control">@task.Name</p>
+                    <span class="input-group-btn">
+                      <a href="/projects/deleteTodo/@task.Id" class="btn btn-default" type="button">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                  <br>
+                }
               }
-            }
-          </div>
+              <input type="hidden" name="newStatus" value="Stuck" />
+              <input id="stuck-@project.Id-input" type="hidden" name="todoId">
+            </div>
+          </form>
         </div>
+
+        @* Done Column *@
         <div class="col-sm-3">
-          <div class="column column--color-green">
-            <h3 class="task-category">Done</h3>
-            @foreach(Todo task in Todo.GetAll())
-            {
-              @if(task.Status == "Done")
+          <form id="done-update" action="/projects/updateStatus" method="post">
+            <div class="column column--color-green" id="done-@project.Id" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+              <h3 class="task-category">Done</h3>
+              @foreach(Todo task in @project.GetTodos())
               {
-                <p class="task-card">@task.Name</p>
+                @if(task.Status == "Done")
+                {
+                  <div class="input-group task-card" draggable="true" ondragstart="drag(event)" id="@task.Id">
+                    <p class="form-control">@task.Name</p>
+                    <span class="input-group-btn">
+                      <a href="/projects/deleteTodo/@task.Id" class="btn btn-default" type="button">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </a>
+                    </span>
+                  </div>
+                  <br>
+                }
               }
-            }
-          </div>
+              <input type="hidden" name="newStatus" value="Done" />
+              <input id="done-@project.Id-input" type="hidden" name="todoId">
+            </div>
+          </form>
         </div>
       </div>
     </div>

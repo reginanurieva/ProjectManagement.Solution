@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProjectManagement.Controllers
 {
@@ -22,9 +23,59 @@ namespace ProjectManagement.Controllers
         {
             Todo newTodo = new Todo(todoName);
             newTodo.Save();
-            // Project foundProject = Project.Find(int.Parse(projectId));
-            // foundProject.AddTodo(newTodo.Id);
+            Project foundProject = Project.Find(int.Parse(projectId));
+            foundProject.AddTodo(newTodo);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet("/projects/deleteTodo/{todoId}")]
+        public IActionResult DeleteTask(int todoId)
+        {
+            Todo foundTodo = Todo.Find(todoId);
+            foundTodo.Delete();
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost("/projects/updateStatus")]
+        public IActionResult UpdateStatus(string newStatus, string todoId)
+        {
+            Todo foundTodo = Todo.Find(int.Parse(todoId));
+            Todo newTodo = new Todo(foundTodo.Name, newStatus);
+            foundTodo.Update(newTodo);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("/projects/{projectId}")]
+        public ActionResult Details(int projectId)
+        {
+            Project foundProject = Project.Find(projectId);
+            return View(foundProject);
+        }
+
+        [HttpGet("/projects/update/{projectId}")]
+        public ActionResult Edit(int projectId)
+        {
+            Project foundProject = Project.Find(projectId);
+            return View(foundProject);
+        }
+
+        [HttpPost("/projects/update/{projectId}")]
+        public ActionResult EditProject(int projectId, string Name, string Content, DateTime DueDate, string Status, string returnUrl = null)
+        {
+            Project foundProject = Project.Find(projectId);
+            Project newProject = new Project(Name, Content, DueDate, Status);
+            foundProject.Update(newProject);
+            return RedirectToAction(nameof(ProjectController.Details), projectId);
+        }
+
+        [HttpPost("/projects/leave")]
+        public ActionResult LeaveProject(int projectId, int userId)
+        {
+            Project foundProject = Project.Find(projectId);
+            ProjectManagement.Models.User foundUser = ProjectManagement.Models.User.Find(userId);
+            foundUser.DeleteProject(foundProject);
+            return RedirectToAction(nameof(ProjectController.Index));
         }
     }
 }

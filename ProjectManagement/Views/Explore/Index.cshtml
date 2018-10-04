@@ -12,7 +12,7 @@
     ProjectManagement.Models.User thisUser = new ProjectManagement.Models.User("", "", "");
 }
 
-@if (SignInManager.IsSignedIn(User)) 
+@if (SignInManager.IsSignedIn(User))
 {
     var user = await @UserManager.GetUserAsync(User);
     var UserName = @user.UserName;
@@ -27,62 +27,61 @@
 
 <h1 id="explore-header">All available Projects</h1>
 <div class="container">
+  <div class="row">
+  @{
+      int count = 0;
+  }
+  @foreach(var project in Model)
+  {
+      count = @count + 1;
+      HtmlString content = new HtmlString(@project.Content);
+          <div class="col-md-12">
+          <div class="panel panel-default">
+              @if (count % 4 == 0)
+              {
+                  <div class="panel-heading" style="background-color:  #ff8000; color: white;">
+                      <div class="panel-title">
+                          <h4>@project.Name</h4>
+                      </div>
+                  </div>
+              }
+              else if (count % 4 == 1)
+              {
+                  <div class="panel-heading" style="background-color: #004d99; color: white;">
+                      <div class="panel-title">
+                          <h4>@project.Name</h4>
+                      </div>
+                  </div>
+              }
+              else if (count % 4 == 2)
+              {
+                  <div class="panel-heading" style="background-color: #008060; color: white;">
+                      <div class="panel-title">
+                          <h4>@project.Name</h4>
+                      </div>
+                  </div>
+              }
+              else
+              {
+                  <div class="panel-heading" style="background-color: #ffcc00; color: white;">
+                      <div class="panel-title">
+                          <h4>@project.Name</h4>
+                      </div>
+                  </div>
+              }
+              <div class="panel-body">
+                  <h4>Description:</h4>
+                  <p class="card-text">@content</p>
+                  <h4>Due Date:</h4>
+                  <p class="card-text">@project.DueDate.Date.ToString("d") </p>
+                  @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
+                  {
+                      <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
+                  }
+              </div>
+          </div>
+      </div>
 
-<div class="row">
-@{
-    int count = 0;
-}
-@foreach(var project in Model)
-{
-    count = @count + 1;
-    HtmlString content = new HtmlString(@project.Content);
-        <div class="col-md-12">
-        <div class="panel panel-default">
-            @if (count % 4 == 0)
-            {
-                <div class="panel-heading" style="background-color:  #ff8000; color: white;">
-                    <div class="panel-title">
-                        <h4>@project.Name</h4>
-                    </div>
-                </div>
-            }
-            else if (count % 4 == 1)
-            {
-                <div class="panel-heading" style="background-color: #004d99; color: white;">
-                    <div class="panel-title">
-                        <h4>@project.Name</h4>
-                    </div>
-                </div>
-            }
-            else if (count % 4 == 2)
-            {
-                <div class="panel-heading" style="background-color: #008060; color: white;">
-                    <div class="panel-title">
-                        <h4>@project.Name</h4>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="panel-heading" style="background-color: #ffcc00; color: white;">
-                    <div class="panel-title">
-                        <h4>@project.Name</h4>
-                    </div>
-                </div>
-            }
-            <div class="panel-body">
-                <h4>Description:</h4>
-                <p class="card-text">@content</p>
-                <h4>Due Date:</h4>
-                <p class="card-text">@project.DueDate </p>
-                @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
-                {
-                    <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
-                }
-            </div>
-        </div>
-    </div>
-
-}
-</div>
+  }
+  </div>
 </div>
