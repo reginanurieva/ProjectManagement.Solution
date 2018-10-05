@@ -33,6 +33,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .project-container {
   background: #eee;
+  margin-top: 20px;
   padding-bottom: 30px;
 }
 
@@ -133,6 +134,7 @@ p.form-control {
   font-family: 'Karla', sans-serif;
   background-color: #004d99;
   color: white;
+  margin-top: 10px;
 }
 .btn#delete{
   font-family: 'Karla', sans-serif;
@@ -222,4 +224,8 @@ footer {
 
   #addedTag {
     display: none;
+  }
+
+  #registerBtn {
+    margin-left: 5px;
   }
