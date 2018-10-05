@@ -88,6 +88,15 @@
                     <i class="fa fa-user" aria-hidden="true"></i>&nbsp;
                     <strong>Owner</strong>: @project.GetOwner().Name
                   </h4>
+                    <h4>
+                        <i class="fa fa-tags" aria-hidden="true"></i>&nbsp;
+                        <strong>Tags</strong>:
+                        
+                        @foreach(Tag tag in @project.GetTags())
+                        {
+                            <span class="tag">@tag.Name</span><text> </text>
+                        }
+                    </h4>
                 @if (SignInManager.IsSignedIn(User) && !thisUser.GetProjects().Contains(@project))
                 {
                     <form action="/explore/projects/@project.Id/users/@thisUser.Id/join" method="post"><button type="submit" id="join" class="btn">Join</button></form>
