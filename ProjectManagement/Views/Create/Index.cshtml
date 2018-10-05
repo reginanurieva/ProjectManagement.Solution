@@ -34,7 +34,7 @@
 </form>
 
 <!-- Include the Hashtag library -->
-<script src="js/hashtag.js"></script>
+<script src="~/js/hashtag.js"></script>
 
 <!-- Include the Quill library -->
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
@@ -79,5 +79,6 @@
   // if click event is binded on existing parent element, we can bind event handler to dynamically added elements.
   $("#writtenTags").on("dblclick", ".tag", function(){
     $(this).remove();
+    $("#Tags").val($("#writtenTags").text());
   });
 </script>

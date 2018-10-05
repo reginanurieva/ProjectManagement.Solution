@@ -11,22 +11,21 @@
 @{
   HtmlString content = new HtmlString(@Model.Content);
 }
-<form asp-controller="Project" asp-action="EditProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+<form asp-controller="Project" asp-action="EditProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" id="editProjectForm">
   <div class="form-group">
     <div class="col-md-12" style="margin-top: 20px;">
-      <input id="Name" name="Name" type="text" class="form-control" placeholder="Project Name" value="@Model.Name"/>
+      <input id="Name" name="Name" type="text" class="form-control" placeholder="Project Name" value="@Model.Name" required/>
     </div>
   </div>
   <!-- Create the editor container -->
-  <div id="editor" style="height: 400px; margin-bottom: 20px;">
+  <div id="editor">
     @content
   </div>
+  <div id="contentErrorMsg"></div>
   <textarea id="Content" name="Content" style="display: none;">@content</textarea>
-  <div class="col-md-6">
+  <div class="col-md-6" id="dueDateAndTags">
     <label for="DueDate"><h4>Due Date :</h4></label>
-    <br>
-    <input type="date" id="DueDate" name="DueDate" value='@Model.DueDate.ToString("yyyy-MM-dd")' class="form-control">
-    <br>
+    <input type="date" id="DueDate" name="DueDate" value='@Model.DueDate.ToString("yyyy-MM-dd")' class="form-control" required>
     <label for="Status"><h4>Status: </h4></label>
     <select class="form-control" id="Status" name="Status">
       @if (@Model.Status == "In Progress")
@@ -39,26 +38,28 @@
         <option value="In Progress">In Progress</option>
         <option value="Done" selected>Done</option>
       }
-
     </select>
-    <br>
-    <label for="Tags"><h4>Tags :</h4></label>
+    <label for="Tags">
+      <h4><text>Tags : </text>
+        <span id="writtenTags" name="writtenTags">
+          @if (@Model.GetTags().Count > 0)
+          {
+            foreach (var tag in @Model.GetTags())
+            {
+              @tag.Name<text> </text>
+            }
+          }
+        </span>
+        <span id="addedTag"></span>
+      </h4>
+    </label>
     <input type="hidden" name="Tags" id="Tags">
     <div class="input-group">
-      <input type="text" class="form-control" maxlength="50" id="potentialTag">
+      <input type="text" class="form-control" maxlength="50" id="potentialTag" placeholder="Add a tag without '#'. You can remove written tags by double click.">
       <span class="input-group-btn">
         <button class="btn btn-default create" id="AddTagBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
       </span>
     </div>
-    <span id="writtenTags" name="writtenTags">
-      @if (@Model.GetTags().Count > 0)
-      {
-        foreach (var tag in @Model.GetTags())
-        {
-          @tag.Name<text> </text>
-        }
-      }
-    </span>
     <br><button type="submit" class="btn btn-default" id="edit">Update</button>
   </div>
 </form>
@@ -82,12 +83,37 @@
     $("#Content").val(quill.root.innerHTML);
   });
 
+  Hashtag.replaceTags('#writtenTags');
+
   $("#AddTagBtn").click(function(event){
     event.preventDefault();
     if (!$("#writtenTags").text().includes($("#potentialTag").val())) {
-      $("#writtenTags").text($("#writtenTags").text().trim()+" #"+$("#potentialTag").val().replace(/\s+/g, ''));
-      Hashtag.replaceTags('#writtenTags');
+      $("#addedTag").text("#"+$("#potentialTag").val().replace(/\s+/g, ''));
+      Hashtag.replaceTags('#addedTag');
+      $("#writtenTags").html($("#writtenTags").html()+$("#addedTag").html());
+      $("#potentialTag").val("");
+      $("#addedTag").html("");
       $("#Tags").val($("#writtenTags").text());
     }
+  });
+
+  $("#edit").click(function(event) {
+    event.preventDefault();
+    if (quill.getText().trim() == "\n" || quill.getText().trim() == "") {
+      $("#contentErrorMsg").text("Content is required.");
+    }
+    else {
+      $("#contentErrorMsg").text("");
+      if ($("#writtenTags").text().trim() == "") {
+        $("#Tags").val("emptyTag");
+      }
+      $("#editProjectForm").submit();
+    }
+  });
+  
+  // if click event is binded on existing parent element, we can bind event handler to dynamically added elements.
+  $("#writtenTags").on("dblclick", ".tag", function(){
+    $(this).remove();
+    $("#Tags").val($("#writtenTags").text());
   });
 </script>

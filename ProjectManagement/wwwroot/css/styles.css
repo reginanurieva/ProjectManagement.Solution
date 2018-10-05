@@ -133,7 +133,6 @@ p.form-control {
   font-family: 'Karla', sans-serif;
   background-color: #004d99;
   color: white;
-  margin-top: 10px;
 }
 .btn#delete{
   font-family: 'Karla', sans-serif;
@@ -219,4 +218,8 @@ footer {
 
   #AddTagBtn {
     margin-top: 0px;
+  }
+
+  #addedTag {
+    display: none;
   }

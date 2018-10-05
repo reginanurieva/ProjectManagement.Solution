@@ -61,13 +61,13 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpPost("/projects/update/{projectId}")]
-        public ActionResult EditProject(int projectId, string Name, string Content, DateTime DueDate, string Status, string Tags = "", string returnUrl = null)
+        public ActionResult EditProject(int projectId, string Name, string Content, DateTime DueDate, string Status, string Tags, string returnUrl = null)
         {
             Project foundProject = Project.Find(projectId);
             Project newProject = new Project(Name, Content, DueDate, Status);
             foundProject.Update(newProject);
             List <Tag> newTags = new List<Tag> {};
-            if (Tags != "")
+            if (Tags != "emptyTag")
             {
               Tags = Tags.Trim();
               string [] tags = Tags.Split(' ');
