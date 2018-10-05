@@ -7,22 +7,20 @@
 <h1 id="page-header">@ViewData["Title"]</h2>
 
 
-<form asp-controller="Create" asp-action="CreateProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+<form asp-controller="Create" asp-action="CreateProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" id="createProjectForm">
   <div class="form-group">
     <div class="col-md-12" style="margin-top: 20px;">
       <input id="Name" name="Name" type="text" class="form-control" placeholder="Project Name" required/>
     </div>
   </div>
   <!-- Create the editor container -->
-  <div id="editor" style="height: 400px; margin-bottom: 20px;">
-    <p></p>
+  <div id="editor">
   </div>
-  <textarea id="Content" name="Content" style="display: none;" required></textarea>
-  <div class="col-md-6">
+  <div id="contentErrorMsg"></div>
+  <textarea id="Content" name="Content" style="display: none;"></textarea>
+  <div class="col-md-6" id="dueDateAndTags">
     <label for="DueDate"><h4>Due Date :</h4></label>
-    <br>
     <input type="date" id="DueDate" name="DueDate" class="form-control" required>
-    <br>
     <label for="Tags"><h4>Tags :</h4></label>
     <input type="hidden" name="Tags" id="Tags">
     <div class="input-group">
@@ -32,8 +30,7 @@
       </span>
     </div>
     <span id="writtenTags" name="writtenTags"></span>
-    <br>
-    <button type="submit" class="create btn btn-default" style="margin-top: 20px;">Create</button>
+    <button type="submit" class="create btn btn-default" id="createProjectBtn">Create</button>
   </div>
 </form>
 
@@ -63,6 +60,20 @@
       $("#potentialTag").val("");
       Hashtag.replaceTags('#writtenTags');
       $("#Tags").val($("#writtenTags").text());
+    }
+  });
+
+  $("#createProjectBtn").click(function(event) {
+    event.preventDefault();
+    if (quill.getText().trim() == "\n" || quill.getText().trim() == "") {
+      $("#contentErrorMsg").text("Content is required.");
+    }
+    else {
+      $("#contentErrorMsg").text("");
+      if ($("#writtenTags").text().trim() == "") {
+        $("#Tags").val("emptyTag");
+      }
+      $("#createProjectForm").submit();
     }
   });
 </script>

@@ -202,6 +202,20 @@ footer {
     margin-bottom: 50px;
   }
 
+  #editor {
+    height: 400px;
+  }
+
+  #contentErrorMsg {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+  #dueDateAndTags {
+    padding-left: 0px;
+  }
+
   #AddTagBtn {
     margin-top: 0px;
   }

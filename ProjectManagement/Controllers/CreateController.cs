@@ -31,7 +31,7 @@ namespace ProjectManagement.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string Tags = "", string returnUrl = null)
+    public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string Tags, string returnUrl = null)
     {
       var user = await GetCurrentUserAsync();
 
@@ -46,7 +46,7 @@ namespace ProjectManagement.Controllers
       newProject.AddUser(currentUser);
       newProject.AssignOwner(currentUser);
 
-      if (Tags != "")
+      if (Tags != "emptyTag")
       {
         Tags = Tags.Trim();
         string [] tags = Tags.Split(' ');
