@@ -201,3 +201,7 @@ footer {
   .body-content {
     margin-bottom: 50px;
   }
+
+  #AddTagBtn {
+    margin-top: 0px;
+  }

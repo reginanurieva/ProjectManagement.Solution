@@ -10,18 +10,18 @@
 <form asp-controller="Create" asp-action="CreateProject" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
   <div class="form-group">
     <div class="col-md-12" style="margin-top: 20px;">
-      <input id="Name" name="Name" type="text" class="form-control" placeholder="Project Name"/>
+      <input id="Name" name="Name" type="text" class="form-control" placeholder="Project Name" required/>
     </div>
   </div>
   <!-- Create the editor container -->
   <div id="editor" style="height: 400px; margin-bottom: 20px;">
     <p></p>
   </div>
-  <textarea id="Content" name="Content" style="display: none;"></textarea>
+  <textarea id="Content" name="Content" style="display: none;" required></textarea>
   <div class="col-md-6">
     <label for="DueDate"><h4>Due Date :</h4></label>
     <br>
-    <input type="date" id="DueDate" name="DueDate" class="form-control">
+    <input type="date" id="DueDate" name="DueDate" class="form-control" required>
     <br>
     <label for="Tags"><h4>Tags :</h4></label>
     <input type="hidden" name="Tags" id="Tags">
