@@ -72,7 +72,9 @@ dotnet run
 
 ### Technologies used
 * C# 
-* .NET Core App 1.0.4
+* .NET Core App 1.0.4 & ASP.NET Core
+* MySql & SQLite
+* Quill.js & Hashtag.js
 * Mono
 * Atom
 * Visual Studio Code
