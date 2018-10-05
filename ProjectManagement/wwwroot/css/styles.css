@@ -130,12 +130,14 @@ p.form-control {
   color: white;
   margin-top: 10px;
 }
+
 .btn#edit{
   font-family: 'Karla', sans-serif;
   background-color: #004d99;
   color: white;
   margin-top: 10px;
 }
+
 .btn#delete{
   font-family: 'Karla', sans-serif;
   color: white;
@@ -166,66 +168,66 @@ footer {
 
 }
 
-  .panel-default > .panel-heading-custom1 {
+.panel-default > .panel-heading-custom1 {
   background: #004d99; color: #fff;
   font-family: 'Karla', sans-serif;
   font-size: 17px;
 }
 
-  .panel-default > .panel-heading-custom2 {
+.panel-default > .panel-heading-custom2 {
   background: #ffcc00; color: #fff;
   font-family: 'Karla', sans-serif;
   font-size: 17px;
 }
 
-  .panel-default > .panel-heading-custom3 {
-    background: #008060; color: #fff;
-    font-family: 'Karla', sans-serif;
-    font-size: 17px;
-  }
+.panel-default > .panel-heading-custom3 {
+  background: #008060; color: #fff;
+  font-family: 'Karla', sans-serif;
+  font-size: 17px;
+}
 
-  body{
-    font-family: 'Libre Baskerville', serif;
-  }
+body{
+  font-family: 'Libre Baskerville', serif;
+}
 
-  .panel{
-    box-shadow: 5px 5px 10px #CAC6C5;
-  }
+.panel{
+  box-shadow: 5px 5px 10px #CAC6C5;
+}
 
-  .tag {
-    background-color: #fff8d1;
-  }
+.tag {
+  background-color: #fff8d1;
+}
 
-  .row{
-    margin-bottom: 40px;
-  }
+.row{
+  margin-bottom: 40px;
+}
 
-  .body-content {
-    margin-bottom: 50px;
-  }
+.body-content {
+  margin-bottom: 50px;
+}
 
-  #editor {
-    height: 400px;
-  }
+#editor {
+  height: 400px;
+}
 
-  #contentErrorMsg {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-  }
+#contentErrorMsg {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
 
-  #dueDateAndTags {
-    padding-left: 0px;
-  }
+#dueDateAndTags {
+  padding-left: 0px;
+}
 
-  #AddTagBtn {
-    margin-top: 0px;
-  }
+#AddTagBtn {
+  margin-top: 0px;
+}
 
-  #addedTag {
-    display: none;
-  }
+#addedTag {
+  display: none;
+}
 
-  #registerBtn {
-    margin-left: 5px;
-  }
+#registerBtn {
+  margin-left: 5px;
+}

@@ -60,7 +60,7 @@
         <button class="btn btn-default create" id="AddTagBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
       </span>
     </div>
-    <br><button type="submit" class="btn btn-default" id="edit">Update</button>
+    <br><button type="submit" class="btn btn-default" id="edit" style="margin-top: 0;">Update</button>
   </div>
 </form>
 
@@ -84,6 +84,7 @@
   });
 
   Hashtag.replaceTags('#writtenTags');
+  $("#Tags").val($("#writtenTags").text());
 
   $("#AddTagBtn").click(function(event){
     event.preventDefault();
