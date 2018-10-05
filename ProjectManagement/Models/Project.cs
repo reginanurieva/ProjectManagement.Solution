@@ -329,7 +329,7 @@ namespace ProjectManagement.Models
       }
     }
 
-    public void UpdateTags(List<Tag> newTags)
+    public void DeleteTags()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
@@ -339,19 +339,19 @@ namespace ProjectManagement.Models
       cmd.Parameters.AddWithValue("@projectId", this.Id);
       cmd.ExecuteNonQuery();
 
-      foreach (var tag in newTags)
-      {
-        cmd.CommandText = @"INSERT INTO projects_tags (project_id, tag_id) VALUES (@projectId, @tagId);";
-        cmd.Parameters.AddWithValue("@projectId", this.Id);
-        cmd.Parameters.AddWithValue("@tagId", tag.Id);
-
-        cmd.ExecuteNonQuery();
-      }
-
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
+      }
+    }
+
+    public void UpdateTags(List<Tag> newTags)
+    {
+      this.DeleteTags();
+      foreach(Tag newTag in newTags)
+      {
+        this.AddTag(newTag);
       }
     }
 
