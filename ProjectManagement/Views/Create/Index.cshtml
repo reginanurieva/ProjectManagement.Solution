@@ -21,15 +21,14 @@
   <div class="col-md-6" id="dueDateAndTags">
     <label for="DueDate"><h4>Due Date :</h4></label>
     <input type="date" id="DueDate" name="DueDate" class="form-control" required>
-    <label for="Tags"><h4>Tags :</h4></label>
+    <label for="Tags"><h4>Tags : <span id="writtenTags" name="writtenTags"></span></h4></label>
     <input type="hidden" name="Tags" id="Tags">
     <div class="input-group">
-      <input type="text" class="form-control" maxlength="50" id="potentialTag">
+      <input type="text" class="form-control" maxlength="50" id="potentialTag" placeholder="Add a tag without '#'. You can remove written tags by double click.">
       <span class="input-group-btn">
         <button class="btn btn-default create" id="AddTagBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
       </span>
     </div>
-    <span id="writtenTags" name="writtenTags"></span>
     <button type="submit" class="create btn btn-default" id="createProjectBtn">Create</button>
   </div>
 </form>
@@ -75,5 +74,10 @@
       }
       $("#createProjectForm").submit();
     }
+  });
+  
+  // if click event is binded on existing parent element, we can bind event handler to dynamically added elements.
+  $("#writtenTags").on("dblclick", ".tag", function(){
+    $(this).remove();
   });
 </script>
