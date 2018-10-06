@@ -1,7 +1,12 @@
 @using System;
+@using Microsoft.AspNetCore.Identity
+@using ProjectManagement.Models
+
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Create Project";
+    var user = await @UserManager.GetUserAsync(User);
 }
 
 <h1 id="page-header">@ViewData["Title"]</h2>
@@ -29,6 +34,7 @@
         <button class="btn btn-default create" id="AddTagBtn"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
       </span>
     </div>
+    <input type="hidden" name="UserName" value="@user.UserName"> 
     <button type="submit" class="create btn btn-default" id="createProjectBtn">Create</button>
   </div>
 </form>

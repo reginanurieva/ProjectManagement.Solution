@@ -33,7 +33,6 @@ namespace ProjectManagement.Tests
       Assert.AreEqual(0, result);
     }
 
-
     [TestMethod]
     public void Equals_ReturnsTrueIfProjectsAreTheSame_Project()
     {

@@ -13,7 +13,7 @@ namespace ProjectManagement.Controllers
         public ActionResult Index()
         {
             List<Project> allProjects = Project.GetAll();
-            return View(allProjects);
+            return View("Index", allProjects);
         }
 
         [HttpPost("/explore/projects/{projectId}/users/{userId}/join")]

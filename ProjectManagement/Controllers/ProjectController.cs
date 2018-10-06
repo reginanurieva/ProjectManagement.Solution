@@ -13,13 +13,13 @@ namespace ProjectManagement.Controllers
     public class ProjectController : Controller
     {
         [HttpGet("/projects")]
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
         [HttpPost("/projects/newTodo")]
-        public IActionResult CreateTask(string todoName, string projectId)
+        public ActionResult CreateTask(string todoName, string projectId)
         {
             Todo newTodo = new Todo(todoName);
             newTodo.Save();
@@ -29,16 +29,15 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpGet("/projects/deleteTodo/{todoId}")]
-        public IActionResult DeleteTask(int todoId)
+        public ActionResult DeleteTask(int todoId)
         {
             Todo foundTodo = Todo.Find(todoId);
             foundTodo.Delete();
             return RedirectToAction("Index");
         }
 
-
         [HttpPost("/projects/updateStatus")]
-        public IActionResult UpdateStatus(string newStatus, string todoId)
+        public ActionResult UpdateStatus(string newStatus, string todoId)
         {
             Todo foundTodo = Todo.Find(int.Parse(todoId));
             Todo newTodo = new Todo(foundTodo.Name, newStatus);
@@ -50,14 +49,14 @@ namespace ProjectManagement.Controllers
         public ActionResult Details(int projectId)
         {
             Project foundProject = Project.Find(projectId);
-            return View(foundProject);
+            return View("Details", foundProject);
         }
 
         [HttpGet("/projects/update/{projectId}")]
         public ActionResult Edit(int projectId)
         {
             Project foundProject = Project.Find(projectId);
-            return View(foundProject);
+            return View("Edit", foundProject);
         }
 
         [HttpPost("/projects/update/{projectId}")]

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ProjectManagement.Models;
-// using ProjectManagement.Models.CreateViewModels;
 using ProjectManagement.Services;
 using MySql.Data.MySqlClient;
 
@@ -17,32 +16,18 @@ namespace ProjectManagement.Controllers
   [Authorize]
   public class CreateController : Controller
   {
-    private UserManager<ApplicationUser> _userManager;
-
-    public CreateController(UserManager<ApplicationUser> userManager)
-    {
-        _userManager = userManager;
-    }
-
     [HttpGet]
     public ActionResult Index()
     {
-      return View();
+      return View("Index");
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProject(string Name, string Content, DateTime DueDate, string Tags, string returnUrl = null)
+    public ActionResult CreateProject(string Name, string Content, DateTime DueDate, string Tags, string UserName, string returnUrl = null)
     {
-      var user = await GetCurrentUserAsync();
-
-      if (user == null)
-      {
-          return View("Error");
-      }
-
       Project newProject = new Project(Name, Content, DueDate, "In Progress");
       newProject.Save();
-      ProjectManagement.Models.User currentUser = ProjectManagement.Models.User.Find(user.UserName);
+      ProjectManagement.Models.User currentUser = ProjectManagement.Models.User.Find(UserName);
       newProject.AddUser(currentUser);
       newProject.AssignOwner(currentUser);
 
@@ -66,11 +51,6 @@ namespace ProjectManagement.Controllers
       }
 
       return RedirectToAction(nameof(ProjectController.Index), "Project");
-    }
-
-    private Task<ApplicationUser> GetCurrentUserAsync()
-    {
-      return _userManager.GetUserAsync(HttpContext.User);
     }
   }
 }

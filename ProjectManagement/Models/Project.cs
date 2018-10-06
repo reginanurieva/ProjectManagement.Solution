@@ -28,7 +28,6 @@ namespace ProjectManagement.Models
       this.Id = id;
     }
 
-
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
@@ -50,9 +49,7 @@ namespace ProjectManagement.Models
       {
         conn.Dispose();
       }
-
     }
-
 
     public static List<Project> GetAll()
     {
@@ -79,7 +76,6 @@ namespace ProjectManagement.Models
       }
       return allProjects;
     }
-
 
     public static Project Find(int id)
     {
@@ -111,7 +107,6 @@ namespace ProjectManagement.Models
 
       return newProject;
     }
-
 
     public void Delete()
     {
@@ -145,7 +140,6 @@ namespace ProjectManagement.Models
         conn.Dispose();
       }
     }
-
 
     public void Update(Project newProject)
     {
