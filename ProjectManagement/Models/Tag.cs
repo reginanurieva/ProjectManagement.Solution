@@ -147,7 +147,7 @@ namespace ProjectManagement.Models
             cmd.CommandText = @"UPDATE tags SET name = @newName WHERE id = @searchId;";
 
             cmd.Parameters.AddWithValue("@newName", newTag.Name);
-            cmd.Parameters.AddWithValue("@searchId", newTag.Id);
+            cmd.Parameters.AddWithValue("@searchId", this.Id);
 
             cmd.ExecuteNonQuery();
 
@@ -166,9 +166,7 @@ namespace ProjectManagement.Models
 
             var cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"DELETE FROM projects_tags WHERE tag_id = @searchId; DELETE FROM tags WHERE id = @searchId;";
-
             cmd.Parameters.AddWithValue("@searchId", this.Id);
-
             cmd.ExecuteNonQuery();
 
             conn.Close();

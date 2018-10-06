@@ -32,13 +32,12 @@ namespace ProjectManagement.Tests
       Assert.AreEqual(0, result);
     }
 
-
     [TestMethod]
-    public void Equals_ReturnsTrueIfNamesAreTheSame_Project()
+    public void Equals_ReturnsTrueIfTodosAreTheSame_Todo()
     {
       // Arrange, Act
-      Todo firstTodo = new Todo("Fix the bug", "in progress");
-      Todo secondTodo = new Todo("Fix the bug", "in progress");
+      Todo firstTodo = new Todo("Fix the bug", "In Progress", 1);
+      Todo secondTodo = new Todo("Fix the bug", "In Progress", 1);
 
       // Assert
       Assert.AreEqual(firstTodo, secondTodo);
@@ -48,8 +47,7 @@ namespace ProjectManagement.Tests
     public void Save_SavesToDatabase_TodosList()
     {
       //Arrange
-      Todo testTodo = new Todo("Add File", "in progress");
-
+      Todo testTodo = new Todo("Add File", "In Progress");
 
       //Act
       testTodo.Save();
@@ -57,52 +55,103 @@ namespace ProjectManagement.Tests
       List<Todo> testList = new List<Todo>{testTodo};
 
       //Assert
-      Assert.AreEqual(testTodo, Todo.GetAll()[0]);
+      CollectionAssert.AreEqual(testList, Todo.GetAll());
     }
-
 
     [TestMethod]
     public void Find_FindsTodoInDB_Todo()
     {
       //Arrange
-      Todo testTodo = new Todo("Add File", "in progress");
+      Todo testTodo = new Todo("Add File", "In Progress");
       testTodo.Save();
 
       //Act
       Todo foundTodo = Todo.Find(testTodo.Id);
 
       //Assert
-      Assert.AreEqual(testTodo.Name, foundTodo.Name);
+      Assert.AreEqual(testTodo, foundTodo);
     }
 
     [TestMethod]
     public void Update_UpdatesTodoInDB_String()
     {
       //Arrange
-      Todo testTodo = new Todo("Add file", "in progress");
+      Todo testTodo = new Todo("Add file", "In Progress");
       testTodo.Save();
-      testTodo.Name = "Add more files";
+      Todo newTodo = new Todo("Add more files", "Todo");
+      newTodo.Save();
 
       //Act
-      testTodo.Update(testTodo);
-
-      string result = Todo.Find(testTodo.Id).Name;
+      testTodo.Update(newTodo);
+      testTodo.Id = newTodo.Id;
 
       //Assert
-      Assert.AreEqual("Add more files", result);
+      Assert.AreEqual(newTodo, testTodo);
     }
 
-
     [TestMethod]
-    public void Get_TheJointTableInDB_Todo()
+    public void Delete()
     {
       //Arrange
-      Todo testTodo = new Todo("Add file", "in progress");
+      Todo testTodo = new Todo("Add file", "In Progress");
       testTodo.Save();
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project testProject = new Project("Planner", "content", newDateTime, "done", 1);
+      Todo newTodo = new Todo("Add more files", "Todo");
+      newTodo.Save();
+      List <Todo> expectedTodos = new List<Todo>{newTodo};
+
+      //Act
+      testTodo.Delete();
+      List <Todo> todos = Todo.GetAll();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTodos, todos);
+    }
+
+    [TestMethod]
+    public void DeleteAll()
+    {
+      //Arrange
+      Todo testTodo = new Todo("Add file", "In Progress");
+      testTodo.Save();
+      Todo newTodo = new Todo("Add more files", "Todo");
+      newTodo.Save();
+      List <Todo> expectedTodos = new List<Todo>{};
+
+      //Act
+      Todo.DeleteAll();
+      List <Todo> todos = Todo.GetAll();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTodos, todos);
+    }
+
+    [TestMethod]
+    public void AddProject_ConnectProjectToTodo()
+    {
+      //Arrange
+      Todo testTodo = new Todo("Add file", "In Progress");
+      testTodo.Save();
+      DateTime newDateTime = new DateTime(1234, 12, 11);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done", 1);
       testProject.Save();
 
+      //Act
+      testTodo.AddProject(testProject);
+      Project actualProject = testTodo.GetProject();
+
+      //Assert
+      Assert.AreEqual(testProject, actualProject);
+    }
+
+    [TestMethod]
+    public void GetProject_TheJointTableInDB_Todo()
+    {
+      //Arrange
+      Todo testTodo = new Todo("Add file", "In Progress");
+      testTodo.Save();
+      DateTime newDateTime = new DateTime(1234, 12, 11);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done", 1);
+      testProject.Save();
       testTodo.AddProject(testProject);
 
       //Act
@@ -110,7 +159,6 @@ namespace ProjectManagement.Tests
 
       //Assert
       Assert.AreEqual(testProject, actualProject);
-
     }
   }
 }

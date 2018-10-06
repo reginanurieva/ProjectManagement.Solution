@@ -35,12 +35,12 @@ namespace ProjectManagement.Tests
 
 
     [TestMethod]
-    public void Equals_ReturnsTrueIfNamesAreTheSame_Project()
+    public void Equals_ReturnsTrueIfProjectsAreTheSame_Project()
     {
       // Arrange, Act
-      DateTime time = DateTime.Now;
-      Project firstProject = new Project("Planner", "content", time, "done", 1);
-      Project secondProject = new Project("Planner", "content", time, "done", 1);
+      DateTime time = new DateTime(1234, 12, 23);
+      Project firstProject = new Project("Planner", "content", time, "Done", 1);
+      Project secondProject = new Project("Planner", "content", time, "Done", 1);
 
       // Assert
       Assert.AreEqual(firstProject, secondProject);
@@ -50,8 +50,8 @@ namespace ProjectManagement.Tests
     public void Save_SavesToDatabase_ProjectsList()
     {
       //Arrange
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project testProject = new Project("Planner", "content", newDateTime, "done", 1);
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done", 1);
 
       //Act
       testProject.Save();
@@ -62,13 +62,30 @@ namespace ProjectManagement.Tests
       CollectionAssert.AreEqual(testList, result);
     }
 
+    [TestMethod]
+    public void GetAll_ReturnAllProjects_ProjectsList()
+    {
+      //Arrange
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done");
+      testProject.Save();
+      Project newProject = new Project("Wedding Planner", "content", newDateTime, "Done");
+      newProject.Save();
+      List <Project> expectedProjects = new List <Project> {testProject, newProject};
+
+      //Act
+      List <Project> allProjects = Project.GetAll();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedProjects, allProjects);
+    }
 
     [TestMethod]
     public void Find_FindsProjectInDB_Project()
     {
       //Arrange
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project testProject = new Project("Planner", "content", newDateTime, "done", 1);
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done", 1);
       testProject.Save();
 
       //Act
@@ -82,10 +99,11 @@ namespace ProjectManagement.Tests
     public void Update_UpdatesProjectInDB_String()
     {
       //Arrange
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project testProject = new Project("Planner", "content", newDateTime, "done");
+      DateTime testDateTime = new DateTime(1234, 12, 23);
+      Project testProject = new Project("Planner", "content", testDateTime, "Done");
       testProject.Save();
-      Project newProject = new Project("Wedding Planner", "content", newDateTime, "done");
+      DateTime newDateTime = new DateTime(2018, 6, 7);
+      Project newProject = new Project("Wedding Planner", "new content", newDateTime, "In Progress");
       newProject.Save();
       newProject.Id = testProject.Id;
 
@@ -100,10 +118,10 @@ namespace ProjectManagement.Tests
     public void Delete_DeleteProjectFromDB()
     {
       //Arrange
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project testProject = new Project("Planner", "content", newDateTime, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done");
       testProject.Save();
-      Project newProject = new Project("Wedding Planner", "content", newDateTime, "done");
+      Project newProject = new Project("Wedding Planner", "content", newDateTime, "Done");
       newProject.Save();
       List <Project> expectedProjects = new List <Project> {newProject};
 
@@ -119,9 +137,10 @@ namespace ProjectManagement.Tests
     public void DeleteAll_DeleteAllProjectsFromDB()
     {
       //Arrange
-      Project testProject = new Project("Planner", "content", DateTime.Now, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project testProject = new Project("Planner", "content", newDateTime, "Done");
       testProject.Save();
-      Project newProject = new Project("Wedding Planner", "content", DateTime.Now, "done");
+      Project newProject = new Project("Wedding Planner", "content", newDateTime, "Done");
       newProject.Save();
       List <Project> expectedProjects = new List <Project> {};
 
@@ -142,7 +161,8 @@ namespace ProjectManagement.Tests
       User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
       user2.Save();
       List <User> expectedUsers = new List<User>{user1, user2};
-      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
       currentProject.Save();
       currentProject.AddUser(user1);
       currentProject.AddUser(user2);
@@ -163,7 +183,8 @@ namespace ProjectManagement.Tests
       User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
       user2.Save();
       List <User> expectedUsers = new List<User>{user1, user2};
-      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
       currentProject.Save();
 
       //Act
@@ -179,12 +200,12 @@ namespace ProjectManagement.Tests
     public void AddTodo_MakeNewTodo()
     {
       //Arrange
-      Todo todo1 = new Todo("todo1", "done");
+      Todo todo1 = new Todo("todo1", "Todo");
       todo1.Save();
-      Todo todo2 = new Todo("todo2", "done");
+      Todo todo2 = new Todo("todo2", "Done");
       todo2.Save();
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "In Progress");
       currentProject.Save();
       List <Todo> expectedTodos = new List<Todo>{todo1, todo2};
 
@@ -201,12 +222,12 @@ namespace ProjectManagement.Tests
     public void GetTodos_GetAllTodosInProject_List()
     {
       //Arrange
-      Todo todo1 = new Todo("todo1", "done");
+      Todo todo1 = new Todo("todo1", "Todo");
       todo1.Save();
-      Todo todo2 = new Todo("todo2", "done");
+      Todo todo2 = new Todo("todo2", "Done");
       todo2.Save();
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
       currentProject.Save();
       List <Todo> expectedTodos = new List<Todo>{todo1, todo2};
       currentProject.AddTodo(todo1);
@@ -223,12 +244,12 @@ namespace ProjectManagement.Tests
     public void GetTags_GetAllTagsOfProject_List()
     {
       //Arrange
-      Tag tag1 = new Tag("Hyewon");
+      Tag tag1 = new Tag("#Hyewon");
       tag1.Save();
-      Tag tag2 = new Tag("Cho");
+      Tag tag2 = new Tag("#Cho");
       tag2.Save();
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
       currentProject.Save();
       currentProject.AddTag(tag1);
       currentProject.AddTag(tag2);
@@ -245,18 +266,68 @@ namespace ProjectManagement.Tests
     public void AddTag_AddNewTag()
     {
       //Arrange
-      Tag tag1 = new Tag("Hyewon");
+      Tag tag1 = new Tag("#Hyewon");
       tag1.Save();
-      Tag tag2 = new Tag("Cho");
+      Tag tag2 = new Tag("#Cho");
       tag2.Save();
-      DateTime newDateTime = new DateTime(11/11/1111);
-      Project currentProject = new Project("Current Project", "Project content", newDateTime, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
       currentProject.Save();
       List <Tag> expectedTags = new List <Tag> {tag1, tag2};
 
       //Act
       currentProject.AddTag(tag1);
       currentProject.AddTag(tag2);
+      List<Tag> tags = currentProject.GetTags();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTags, tags);
+    }
+
+    [TestMethod]
+    public void DeleteTags_DeleteAllTags()
+    {
+      //Arrange
+      Tag tag1 = new Tag("#Hyewon");
+      tag1.Save();
+      Tag tag2 = new Tag("#Cho");
+      tag2.Save();
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
+      currentProject.Save();
+      currentProject.AddTag(tag1);
+      currentProject.AddTag(tag2);
+      List <Tag> expectedTags = new List <Tag> {};
+      
+      //Act
+      currentProject.DeleteTags();
+      List<Tag> tags = currentProject.GetTags();
+
+      //Assert
+      CollectionAssert.AreEqual(expectedTags, tags);
+    }
+
+    [TestMethod]
+    public void UpdateTags_UpdateTagsWithNewTags()
+    {
+      //Arrange
+      Tag tag1 = new Tag("#tag1");
+      tag1.Save();
+      Tag tag2 = new Tag("#tag2");
+      tag2.Save();
+      Tag tag3 = new Tag("#tag3");
+      tag3.Save();
+      Tag tag4 = new Tag("#tag4");
+      tag4.Save();
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
+      currentProject.Save();
+      currentProject.AddTag(tag1);
+      currentProject.AddTag(tag2);
+      List <Tag> expectedTags = new List <Tag> {tag3, tag4};
+      
+      //Act
+      currentProject.UpdateTags(expectedTags);
       List<Tag> tags = currentProject.GetTags();
 
       //Assert
@@ -271,8 +342,8 @@ namespace ProjectManagement.Tests
       user1.Save();
       User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
       user2.Save();
-      List <User> expectedUsers = new List<User>{user1, user2};
-      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      DateTime newDateTime = new DateTime(1234, 12, 23);
+      Project currentProject = new Project("Current Project", "Project content", newDateTime, "Done");
       currentProject.Save();
       currentProject.AddUser(user1);
       currentProject.AddUser(user2);
@@ -293,8 +364,7 @@ namespace ProjectManagement.Tests
       user1.Save();
       User user2 = new User("Hyeryun Cho", "jhng25252", "jhng25252@gmail.com");
       user2.Save();
-      List <User> expectedUsers = new List<User>{user1, user2};
-      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "done");
+      Project currentProject = new Project("Current Project", "Project content", DateTime.Now, "Done");
       currentProject.Save();
       currentProject.AddUser(user1);
       currentProject.AddUser(user2);

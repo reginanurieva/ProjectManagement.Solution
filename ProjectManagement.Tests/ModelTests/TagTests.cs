@@ -14,10 +14,12 @@ namespace ProjectManagement.Tests
             Project.DeleteAll();
             Tag.DeleteAll();
         }
+
         public TagTests()
         {
             DBConfiguration.ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=project_management_test;";
         }
+
         [TestMethod]
         public void GetAll_DBStartsEmpty_0()
         {
@@ -28,22 +30,37 @@ namespace ProjectManagement.Tests
             //Assert
             Assert.AreEqual(0, result);
         }
+
+        [TestMethod]
+        public void Equals_ReturnsTrueIfTagsAreTheSame_Tag()
+        {
+            // Arrange, Act
+            Tag firstTag = new Tag("#Planner", 1);
+            Tag secondTag = new Tag("#Planner", 1);
+
+            // Assert
+            Assert.AreEqual(firstTag, secondTag);
+        }
+
         [TestMethod]
         public void Save_SaveTag()
         {
             //Arrange
+            Tag newTag = new Tag("#Skye");
+            
             //Act
-            Tag newTag = new Tag("Skye");
             newTag.Save();
+            List <Tag> expectedTags = new List <Tag> {newTag};
 
             //Assert
-            Assert.AreEqual(newTag, Tag.GetAll()[0]);
+            CollectionAssert.AreEqual(expectedTags, Tag.GetAll());
         }
+
         [TestMethod]
-        public void Find_FindTag_Tag()
+        public void Find_FindTagWithId_Tag()
         {
             //Arrange
-            Tag newTag = new Tag("Skye");
+            Tag newTag = new Tag("#Skye");
             newTag.Save();
 
             //Act
@@ -54,42 +71,93 @@ namespace ProjectManagement.Tests
         }
 
         [TestMethod]
-        public void Update_UpdateTag_Tag()
+        public void Find_FindTagWithName_Tag()
         {
-            Tag newTag = new Tag("Skye");
+            //Arrange
+            Tag newTag = new Tag("#Skye");
             newTag.Save();
 
-            Tag editTag = new Tag("Meria");
+            //Act
+            Tag foundTag = Tag.Find(newTag.Name);
+
+            //Assert
+            Assert.AreEqual(newTag, foundTag);
+        }
+
+        [TestMethod]
+        public void Exist_CheckTagExistence_Tag()
+        {
+            //Arrange
+            Tag newTag = new Tag("#Skye");
+            newTag.Save();
+
+            //Act
+            bool resultTrue = Tag.Exist(newTag.Name);
+            bool resultFalse = Tag.Exist("#Hyewon");
+
+            //Assert
+            Assert.AreEqual(true, resultTrue);
+            Assert.AreEqual(false, resultFalse);
+        }
+
+        [TestMethod]
+        public void Update_UpdateTag_Tag()
+        {
+            Tag newTag = new Tag("#Skye");
+            newTag.Save();
+            Tag editTag = new Tag("#Meria");
             newTag.Update(editTag);
             editTag.Id = newTag.Id;
 
-            Assert.AreEqual(newTag, editTag);
+            Assert.AreEqual(editTag, newTag);
         }
+
         [TestMethod]
         public void Delete_DeleteATag()
         {
             //Arrange
-            Tag newTag = new Tag("Skye");
+            Tag newTag = new Tag("#Skye");
             newTag.Save();
+            Tag newTag2 = new Tag("#Meria");
+            newTag2.Save();
+            List <Tag> expectedTags = new List <Tag> {newTag2};
 
             //Act
             newTag.Delete();
-            int actualCount = Tag.GetAll().Count;
+            List <Tag> tags = Tag.GetAll();
 
             //Assert
-            Assert.AreEqual(0, actualCount);
+            CollectionAssert.AreEqual(expectedTags, tags);
+        }
+
+        [TestMethod]
+        public void DeleteAll_DeleteAllTags()
+        {
+            //Arrange
+            Tag newTag = new Tag("#Skye");
+            newTag.Save();
+            Tag newTag2 = new Tag("#Meria");
+            newTag2.Save();
+            List <Tag> expectedTags = new List <Tag> {};
+
+            //Act
+            Tag.DeleteAll();
+            List <Tag> tags = Tag.GetAll();
+
+            //Assert
+            CollectionAssert.AreEqual(expectedTags, tags);
         }
 
         [TestMethod]
         public void GetProjects_GetAllProjects_List()
         {
             //Arrange
-            Tag newTag = new Tag("Skye");
+            Tag newTag = new Tag("#Skye");
             newTag.Save();
-            DateTime newDateTime = new DateTime(11/11/1111);
-            Project firstProject = new Project("Planner", "content", newDateTime, "done", 1);
+            DateTime newDateTime = new DateTime(1234, 12, 23);
+            Project firstProject = new Project("Planner", "content", newDateTime, "Done");
             firstProject.Save();
-            Project secondProject = new Project("Wedding", "content", newDateTime, "done", 1);
+            Project secondProject = new Project("Wedding", "content", newDateTime, "Done");
             secondProject.Save();
             newTag.AddProject(firstProject);
             newTag.AddProject(secondProject);
@@ -108,10 +176,10 @@ namespace ProjectManagement.Tests
             //Arrange
             Tag newTag = new Tag("Skye");
             newTag.Save();
-            DateTime newDateTime = new DateTime(11/11/1111);
-            Project firstProject = new Project("Planner", "content", newDateTime, "done", 1);
+            DateTime newDateTime = new DateTime(1234, 12, 23);
+            Project firstProject = new Project("Planner", "content", newDateTime, "Done");
             firstProject.Save();
-            Project secondProject = new Project("Wedding", "content", newDateTime, "done", 1);
+            Project secondProject = new Project("Wedding", "content", newDateTime, "Done");
             secondProject.Save();
             List <Project> allProjects = new List<Project> {firstProject, secondProject};
 
@@ -123,36 +191,5 @@ namespace ProjectManagement.Tests
             //Assert
             CollectionAssert.AreEqual(allProjects, projects);
         }
-
-        [TestMethod]
-        public void Find_FindTagWithName_Tag()
-        {
-            //Arrange
-            Tag newTag = new Tag("Skye");
-            newTag.Save();
-
-            //Act
-            Tag foundTag = Tag.Find(newTag.Name);
-
-            //Assert
-            Assert.AreEqual(newTag, foundTag);
-        }
-
-        [TestMethod]
-        public void Exist_TagExist()
-        {
-            //Arrange
-            Tag newTag = new Tag("Skye");
-            newTag.Save();
-
-            //Act
-            bool resultTrue = Tag.Exist(newTag.Name);
-            bool resultFalse = Tag.Exist("something");
-
-            //Assert
-            Assert.AreEqual(true, resultTrue);
-            Assert.AreEqual(false, resultFalse);
-        }
-
     }
 }
