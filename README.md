@@ -13,6 +13,9 @@ _Project Management is a multitasking and job management database, created with 
 * _Once registered, the user may create new projects, assign directives and to-do lists, organize needed tasks, and keep track of what's done with click-and-drag to-do list functionality._
 * _Created projects may be organized with tags, to organize your own projects and find other like-minded creators._
 
+### Live demo
+[https://project-management-db-hw.herokuapp.com/](https://project-management-db-hw.herokuapp.com/)
+
 
 ### Known bugs
 * When editing the date in the project edit page, an exception is thrown.
