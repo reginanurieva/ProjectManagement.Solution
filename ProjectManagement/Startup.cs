@@ -97,6 +97,6 @@ namespace ProjectManagement
     }
     public static class DBConfiguration
     {
-        public static string ConnectionString = "server=localhost;user id=root;password=root;port=8889;database=project_management;Allow User Variables=true";
+        public static string ConnectionString = "server=projectmanagementdb.cdwm8g36lb7k.us-west-2.rds.amazonaws.com;user id=jhng2525;password=rooveone2525;port=3306;database=project_management;Allow User Variables=true";
     }
 }
