@@ -17,6 +17,7 @@ namespace ProjectManagement
 {
     public class Startup
     {
+        private string _rootPath;
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -30,6 +31,8 @@ namespace ProjectManagement
                 builder.AddUserSecrets<Startup>();
             }
 
+            this._rootPath = env.ContentRootPath;
+
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -41,7 +44,8 @@ namespace ProjectManagement
         {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite("Data Source="+this._rootPath+Configuration.GetConnectionString("DefaultConnection"))
+            );
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
