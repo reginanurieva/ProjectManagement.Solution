@@ -16,6 +16,10 @@ _Project Management is a multitasking and job management database, created with 
 ### Live demo
 [https://project-management-db-hw.herokuapp.com/](https://project-management-db-hw.herokuapp.com/)
 
+### Guest Account
+ID: guest
+PW: guest1234
+
 
 ### Known bugs
 * When editing the date in the project edit page, an exception is thrown.
